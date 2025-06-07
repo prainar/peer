@@ -1,5 +1,18 @@
 # Prok Professional Networking
 
+## 📚 Table of Contents
+
+- [What You’ll Build](#-what-youll-build)
+- [What You Will Do?](#-what-you-will-do)
+- [Learning Outcomes](#-learning-outcomes)
+- [Folder Structure](#-folder-structure)
+- [Tech Stack](#-tech-stack)
+- [How to Run the App](#-how-to-run-the-app)
+- [Daily Task Breakdown](#-daily-task-breakdown)
+- [Checkpoints & Milestones](#-checkpoints--milestones)
+- [Preview Screens](#-preview-screens)
+- [Extra Learning Resources](#-extra-learning-resources)
+
 ![App Screenshot](https://placehold.co/800x400?text=Prok+Professional+Networking+App+Screenshot)
 
 ---
@@ -97,19 +110,65 @@ Prok-Professional-Networking/
 
 ## 🔨 Daily Task Breakdown
 
-Each numbered folder (e.g., `01-login-signup-ui/`, `02-setup-auth/`, etc.) is a daily or module-based challenge. Tackle them in order for a guided learning path:
+Below are suggested ways to tackle the project, whether you’re working solo or as a team. Each day/module focuses on a real-world screen or feature, not just frontend/backend code.
 
-- **Day 1:** Login & Signup UI
-- **Day 2:** Authentication Backend
-- **Day 3:** User Profile Page
-- **Day 4:** Create a Post
-- **Day 5:** Feed & Posts
-- **Day 6:** Connections
-- **Day 7:** Messaging
-- **Day 8:** Job Board
-- ...and more!
+### 👤 1-Member Team (Solo Path)
 
-Each folder contains its own README with step-by-step instructions and tips.
+| Day | Module/Screen       | What You’ll Build/Do                                                                          |
+| --- | ------------------- | --------------------------------------------------------------------------------------------- |
+| 1   | Login & Signup UI   | Design and implement login/signup screens with form validation and user feedback.             |
+| 2   | Setup Auth          | Build backend registration/login endpoints and connect UI to backend for real authentication. |
+| 3   | Profile Page        | Create user profile view/edit screens, including form validation and profile picture upload.  |
+| 4   | User Profile Page   | Build a detailed user profile page with editable sections.                                    |
+| 5   | Create a Post       | Implement the UI and logic for users to create new posts.                                     |
+| 6   | Posts               | Display posts in a feed, enable interactions (like, comment, etc.).                           |
+| 7   | Feed                | Build the main feed screen, fetching and displaying posts from all users.                     |
+| 8   | Feed with Posts     | Enhance the feed with richer post content and user interactions.                              |
+| 9   | Connection Requests | Add screens for sending, accepting, and managing connection requests.                         |
+| 10  | Connections         | Manage user connections: view, remove, and interact with connections.                         |
+| 11  | Messaging           | Create chat/messaging screens and enable real-time or async messaging.                        |
+| 12  | Messaging Screen    | Build a dedicated messaging screen for conversations.                                         |
+| 13  | Job Board           | List jobs, allow users to apply, and manage job applications.                                 |
+| 14  | Jobs                | Implement job listing and application management features.                                    |
+| 15  | Responsive UI       | Make the app responsive for all devices and screen sizes.                                     |
+| 16  | Styling             | Polish the UI, add modern styling, and improve accessibility.                                 |
+| 17  | Deployment          | Deploy the app, set up environment variables, and test in production.                         |
+| 18  | Deployment View     | Create a deployment status or success screen.                                                 |
+| 19  | Advanced Features   | Add bonus features (e.g., notifications, analytics, search, etc.).                            |
+| 20  | Resume Builder      | Build a resume builder tool for users to create and download resumes.                         |
+
+### 👥 2-Member Team (Pair Path)
+
+| Day | Member 1 (Screen/Module)  | Member 2 (Screen/Module) |
+| --- | ------------------------- | ------------------------ |
+| 1   | Login Screen              | Signup Screen            |
+| 2   | Auth API (register/login) | Connect UI to Auth API   |
+| 3   | Profile View              | Profile Edit             |
+| 4   | User Profile Page         | Create a Post            |
+| 5   | Posts                     | Feed                     |
+| 6   | Feed with Posts           | Connection Requests      |
+| 7   | Connections               | Messaging                |
+| 8   | Messaging Screen          | Job Board                |
+| 9   | Jobs                      | Responsive UI            |
+| 10  | Styling                   | Deployment               |
+| 11  | Deployment View           | Advanced Features        |
+| 12  | Resume Builder            | (shared tasks)           |
+
+### 👨‍👩‍👧 3-Member Team (Trio Path)
+
+| Day | Member 1 (Screen/Module)  | Member 2 (Screen/Module) | Member 3 (Screen/Module) |
+| --- | ------------------------- | ------------------------ | ------------------------ |
+| 1   | Login Screen              | Signup Screen            | Welcome/Landing Screen   |
+| 2   | Auth API (register/login) | Connect UI to Auth API   | Error/Feedback Screens   |
+| 3   | Profile View              | Profile Edit             | Profile Picture/Settings |
+| 4   | User Profile Page         | Create a Post            | Feed                     |
+| 5   | Posts                     | Feed with Posts          | Connection Requests      |
+| 6   | Connections               | Messaging                | Messaging Screen         |
+| 7   | Job Board                 | Jobs                     | Responsive UI            |
+| 8   | Styling                   | Deployment               | Deployment View          |
+| 9   | Advanced Features         | Resume Builder           | (shared tasks)           |
+
+> 💡 **Tip:** For teams, communicate daily and merge your work often. Each member should own a screen or feature, not just a layer (frontend/backend), for a real-world experience.
 
 ---
 
@@ -136,16 +195,6 @@ Celebrate each milestone—you’re building a real app!
 - Feed with Posts
 - Connections & Messaging
 - Job Board
-
----
-
-## 👥 Teamwork (Optional)
-
-Want to work as a team? Here’s how you could split the project:
-
-- **Frontend Lead:** UI, React components, styling
-- **Backend Lead:** Flask API, database, authentication
-- **Full-stack/Integrator:** Connect frontend & backend, deployment, testing
 
 ---
 
