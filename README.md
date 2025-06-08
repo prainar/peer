@@ -42,11 +42,7 @@ A real-world, full-stack professional networking platform inspired by LinkedIn! 
 | Job Board           | List jobs, allow users to apply, and manage job applications.             | <img src="13-job-board/job-board.png" alt="Job Board" width="400"/>                                                                                  | [README](13-job-board/README.md)           |
 | Jobs                | Implement job listing and application management features.                | <img src="14-jobs/jobs.png" alt="Jobs" width="400"/>                                                                                                 | [README](14-jobs/README.md)                |
 | Responsive UI       | Make the app responsive for all devices and screen sizes.                 | <img src="15-responsive-ui/desktop-view.png" alt="Desktop View" width="400"/>                                                                        | [README](15-responsive-ui/README.md)       |
-| Styling             | Enhance the app's visual design and user experience with modern styling.  | <img src="https://placehold.co/800x400?text=No+Image" alt="No Image" width="400"/>                                                                   | [README](16-styling/README.md)             |
-| Deployment          | Deploy the full-stack app to a production environment.                    | <img src="https://placehold.co/800x400?text=No+Image" alt="No Image" width="400"/>                                                                   | [README](17-deployment/README.md)          |
-| Deployment View     | Create a deployment status or success screen.                             | <img src="https://placehold.co/800x400?text=No+Image" alt="No Image" width="400"/>                                                                   | [README](18-deployment-view/README.md)     |
-| Advanced Features   | Add advanced features, optimizations, or integrations to the application. | <img src="https://placehold.co/800x400?text=No+Image" alt="No Image" width="400"/>                                                                   | [README](19-advanced/README.md)            |
-| Resume Builder      | Build a resume builder tool for users to create and download resumes.     | <img src="https://placehold.co/800x400?text=No+Image" alt="No Image" width="400"/>                                                                   | [README](20-resume-builder/README.md)      |
+| Deployment          | Deploy your full-stack app to a live server.                              | <img src="https://placehold.co/800x400?text=Deployment" alt="Deployment" width="400"/>                                                               | [README](17-deployment/README.md)          |
 
 ---
 
@@ -140,11 +136,7 @@ Below are suggested ways to tackle the project, whether you’re working solo or
 | 13  | Job Board           | List jobs, allow users to apply, and manage job applications.                                 |
 | 14  | Jobs                | Implement job listing and application management features.                                    |
 | 15  | Responsive UI       | Make the app responsive for all devices and screen sizes.                                     |
-| 16  | Styling             | Polish the UI, add modern styling, and improve accessibility.                                 |
-| 17  | Deployment          | Deploy the app, set up environment variables, and test in production.                         |
-| 18  | Deployment View     | Create a deployment status or success screen.                                                 |
-| 19  | Advanced Features   | Add bonus features (e.g., notifications, analytics, search, etc.).                            |
-| 20  | Resume Builder      | Build a resume builder tool for users to create and download resumes.                         |
+| 16  | Deployment          | Deploy your full-stack app to a live server.                                                  |
 
 ### 👥 2-Member Team (Pair Path)
 
@@ -159,9 +151,7 @@ Below are suggested ways to tackle the project, whether you’re working solo or
 | 7   | Connections               | Messaging                |
 | 8   | Messaging Screen          | Job Board                |
 | 9   | Jobs                      | Responsive UI            |
-| 10  | Styling                   | Deployment               |
-| 11  | Deployment View           | Advanced Features        |
-| 12  | Resume Builder            | (shared tasks)           |
+| 10  | Deployment                |                          |
 
 ### 👨‍👩‍👧 3-Member Team (Trio Path)
 
@@ -174,8 +164,7 @@ Below are suggested ways to tackle the project, whether you’re working solo or
 | 5   | Posts                     | Feed with Posts          | Connection Requests      |
 | 6   | Connections               | Messaging                | Messaging Screen         |
 | 7   | Job Board                 | Jobs                     | Responsive UI            |
-| 8   | Styling                   | Deployment               | Deployment View          |
-| 9   | Advanced Features         | Resume Builder           | (shared tasks)           |
+| 8   | Deployment                |                          |                          |
 
 > 💡 **Tip:** For teams, communicate daily and merge your work often. Each member should own a screen or feature, not just a layer (frontend/backend), for a real-world experience.
 
@@ -204,6 +193,7 @@ Celebrate each milestone—you’re building a real app!
 - Feed with Posts
 - Connections & Messaging
 - Job Board
+- Deployment
 
 ---
 
