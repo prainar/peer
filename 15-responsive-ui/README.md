@@ -13,7 +13,7 @@ Build the **Responsive UI** module for the Prok Professional Networking app. Thi
 
 ## 📸 Preview
 
-![Desktop View](./desktop-view.png)
+<img src="desktop-view.png" alt="Desktop View" width="120"/>
 
 ## 🛠️ Tasks
 

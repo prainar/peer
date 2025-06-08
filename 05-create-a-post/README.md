@@ -14,7 +14,7 @@ Build the **Create a Post** module for the Prok Professional Networking app. Thi
 
 ## 📸 Preview
 
-![Post Creation](./post.png)
+<img src="post.png" alt="Post Creation" width="120"/>
 
 ## 🛠️ Tasks
 

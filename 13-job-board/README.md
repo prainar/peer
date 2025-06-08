@@ -14,7 +14,7 @@ Build the **Job Board** module of the Prok Professional Networking app. This mod
 
 ## 📸 Preview
 
-![Job Board](./job-board.png)
+<img src="job-board.png" alt="Job Board" width="120"/>
 
 ## 🛠️ Tasks
 

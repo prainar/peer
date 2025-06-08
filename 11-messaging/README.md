@@ -15,7 +15,7 @@ Build the **Messaging** module of the Prok Professional Networking app. This mod
 
 ## 📸 Preview
 
-![Messaging](./messaging.png)
+<img src="messaging.png" alt="Messaging" width="120"/>
 
 ## 🛠️ Tasks
 

@@ -14,7 +14,7 @@ Build the **User Profile Page** module for the Prok Professional Networking app.
 
 ## 📸 Preview
 
-![User Profile Page](./user-profile-page.png)
+<img src="user-profile-page.png" alt="User Profile Page" width="120"/>
 
 ## 🛠️ Tasks
 

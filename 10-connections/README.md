@@ -14,7 +14,7 @@ Build the **Connections** module of the Prok Professional Networking app. This m
 
 ## 📸 Preview
 
-![Connections](./connections.png)
+<img src="connections.png" alt="Connections" width="120"/>
 
 ## 🛠️ Tasks
 

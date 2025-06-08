@@ -14,7 +14,7 @@ Build the **Messaging Screen** module for the Prok Professional Networking app. 
 
 ## 📸 Preview
 
-![Messaging Screen](./messaging-screen.png)
+<img src="messaging-screen.png" alt="Messaging Screen" width="120"/>
 
 ## 🛠️ Tasks
 

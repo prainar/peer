@@ -14,8 +14,8 @@ Build the **Profile Page** module of the Prok Professional Networking app. This 
 
 ## 📸 Preview
 
-![Profile View](./profile.png)
-![Edit Profile](./edit-profile.png)
+<img src="profile.png" alt="Profile View" width="120"/>
+<img src="edit-profile.png" alt="Edit Profile" width="120"/>
 
 ## 🛠️ Tasks
 
