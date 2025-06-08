@@ -14,7 +14,7 @@ Build the **Jobs** module of the Prok Professional Networking app. This module i
 
 ## 📸 Preview
 
-<!-- Add a screenshot of the job detail and application interface here when available -->
+![Jobs](./jobs.png)
 
 ## 🛠️ Tasks
 

@@ -87,7 +87,7 @@ Build the **Login & Signup UI** module of the Prok Professional Networking app. 
 
 **Signup Screen:**
 
-![Signup Preview](./Signup.png)
+![Signup Preview](./Signup.png) 
 
 ## 🛠️ Tasks
 

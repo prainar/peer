@@ -14,7 +14,7 @@ Build the **Feed with Posts** module of the Prok Professional Networking app. Th
 
 ## 📸 Preview
 
-<!-- Add screenshots or GIFs of your feed UI here -->
+![Final Feed](./final-feed.png)
 
 ## 🛠️ Tasks
 

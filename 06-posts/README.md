@@ -14,7 +14,7 @@ Build the **My Posts** module of the Prok Professional Networking app. This modu
 
 ## 📸 Preview
 
-![Preview](./starter/preview.png)
+![Posts Listing](./listing-posts.png)
 
 ## 🛠️ Tasks
 

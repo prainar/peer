@@ -14,7 +14,7 @@ Build the **Basic Feed** module of the Prok Professional Networking app. This mo
 
 ## 📸 Preview
 
-<!-- Add a screenshot of the basic feed layout here when available -->
+![Basic Feed](./Basic-feed.png)
 
 ## 🛠️ Tasks
 

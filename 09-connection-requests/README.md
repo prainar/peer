@@ -14,7 +14,7 @@ Build the **Connection Requests** module of the Prok Professional Networking app
 
 ## 📸 Preview
 
-<!-- Add a screenshot of the connection requests management interface here when available -->
+![Connection Request](./Connection-request.png)
 
 ## 🛠️ Tasks
 
