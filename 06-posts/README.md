@@ -1,16 +1,16 @@
-# Day 3: Posts
+# Day 6: My Posts Listing and Details
 
 ## 🎯 Goal
 
-Build the **Posts** module of the Prok Professional Networking app. This module covers both frontend and backend for creating, displaying, and interacting with posts.
+Build the **My Posts** module of the Prok Professional Networking app. This module focuses on displaying a list of posts created by the logged-in user, showing post details (text, images, author, timestamp), and rendering them in a modern, user-friendly format.
 
 ## 📚 Learning Outcomes
 
-- Understand the core concepts of post creation and feed management in web applications.
-- Implement a clean and modern UI for post creation and display using React and Tailwind CSS.
-- Integrate frontend components with a Flask backend API.
-- Learn best practices for component separation, API usage, and secure data handling.
-- Connect the backend to a database for persistent post storage.
+- Fetch and display only the logged-in user's posts from the backend API.
+- Render post details: text, images, author, timestamp, etc.
+- Implement a clean and modern UI for a user's post list using React and Tailwind CSS.
+- Handle loading, error, and empty states gracefully.
+- (Optional) Support pagination or infinite scroll for large numbers of posts.
 
 ## 📸 Preview
 
@@ -20,7 +20,7 @@ Build the **Posts** module of the Prok Professional Networking app. This module 
 
 1. **Setup the Project**
 
-   - Clone the repository and navigate to the `day3-posts` folder.
+   - Clone the repository and navigate to the `06-posts` folder.
    - Install frontend dependencies in the `frontend` directory:
      ```bash
      cd frontend
@@ -34,38 +34,35 @@ Build the **Posts** module of the Prok Professional Networking app. This module 
 
 2. **Frontend Implementation**
 
-   - Build post creation and feed components using React and Tailwind CSS.
-   - Add form validation for post content.
-   - Connect components to backend APIs using fetch/axios.
-   - Display error messages and loading states for better UX.
+   - Build a component to display only the logged-in user's posts using React and Tailwind CSS.
+   - Fetch posts from the backend where the author matches the current user.
+   - Show post details: text, images, author, timestamp, etc.
+   - Handle loading spinners, error messages, and empty states (e.g., no posts yet).
+   - (Optional) Implement pagination or infinite scroll for large lists.
 
 3. **Backend Implementation**
 
-   - Create Flask API endpoints for `/posts` (GET, POST, DELETE).
+   - Create Flask API endpoints for `/posts` (GET) that filter posts by the logged-in user (e.g., using authentication/session info).
    - Use models (e.g., `post.py`) to interact with the database.
-   - Implement authentication and secure post management.
-   - Return appropriate responses and error codes.
+   - Ensure each post includes necessary details (text, images, author, timestamp).
+   - (Optional) Support pagination in the API.
 
-4. **Database Integration**
-
-   - Set up a database (e.g., SQLite or PostgreSQL) for post storage.
-   - Ensure post data is stored securely and can be retrieved/updated.
-
-5. **Testing**
-   - Test the full post flow: create, display, delete, error handling.
+4. **Testing**
+   - Test the list with multiple posts, no posts, and error scenarios.
    - Ensure the UI updates correctly based on API responses.
 
 ## 🧪 Bonus Challenge
 
 - Add an extra improvement, such as:
   - Enhanced styling for post cards.
-  - Additional validation (e.g., image upload, character limit).
-  - Improved UX flow (e.g., real-time updates, loading spinners).
-- Document your improvement in your own words at the end of this README.
+  - Pagination or infinite scroll.
+  - Real-time updates (e.g., using websockets).
+  - Improved UX flow (e.g., loading spinners, skeleton loaders).
+- Document your improvement at the end of this README.
 
 ## ✅ Deliverable
 
-A working posts module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
+A working module that lists only the logged-in user's posts with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
 
 ---
 
@@ -81,7 +78,7 @@ A working posts module with a clean UI and functional backend, pushed to GitHub 
 1. **Clone the repository**
    ```bash
    git clone <repo-url>
-   cd day3-posts
+   cd 06-posts
    ```
 2. **Install dependencies**
    - Frontend:
@@ -106,7 +103,7 @@ A working posts module with a clean UI and functional backend, pushed to GitHub 
      npm start
      ```
 4. **Access the app**
-   - Open your browser and go to `http://localhost:3000` for the frontend.
+   - Open your browser and go to `http://localhost:3000/my-posts` to view your posts.
    - Backend API runs on `http://localhost:5000` by default.
 
 ---
@@ -114,7 +111,7 @@ A working posts module with a clean UI and functional backend, pushed to GitHub 
 ## 🗂️ Folder Structure
 
 ```
-day3-posts/
+06-posts/
   README.md
   final/         # Your completed solution goes here
   starter/       # Starter code and assets
@@ -135,7 +132,7 @@ day3-posts/
 
 Describe your bonus improvement here. For example:
 
-> **Bonus Improvement:** Added image upload to posts using a custom React component. This allows users to share photos and increases engagement.
+> **Bonus Improvement:** Added pagination to the user's posts list for better navigation and performance.
 
 ---
 

@@ -1,5 +1,74 @@
 # Day 1: Login & Signup UI
 
+## 📚 Table of Contents
+
+- [Setup](#setup)
+- [Goal](#-goal)
+- [Learning Outcomes](#-learning-outcomes)
+- [Preview](#-preview)
+- [Tasks](#-tasks)
+- [Bonus Challenge](#-bonus-challenge)
+- [Deliverable](#-deliverable)
+- [Getting Started](#-getting-started)
+- [Folder Structure](#-folder-structure)
+- [Document Your Bonus Improvement](#-document-your-bonus-improvement)
+
+---
+
+## 🚀 Setup
+
+Follow these steps to set up both the Flask backend and React frontend for this module:
+
+### 1. Backend (Flask)
+
+1. Open a terminal and navigate to the backend folder:
+   ```bash
+   cd ../../app/backend
+   ```
+2. (Optional) Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Start the Flask server:
+   ```bash
+   flask run
+   ```
+   The backend will run at [http://localhost:5000](http://localhost:5000)
+
+### 2. Frontend (React)
+
+1. Open a new terminal and navigate to the frontend folder:
+   ```bash
+   cd ../../app/frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the React development server:
+   ```bash
+   npm start
+   ```
+   The frontend will run at [http://localhost:3000](http://localhost:3000)
+
+### 3. Free Hosting (Deploy Your App)
+
+- **Frontend (React):**
+  - [Vercel](https://vercel.com/) and [Netlify](https://www.netlify.com/) both support free React app hosting. Connect your GitHub repo and follow their deploy instructions.
+- **Backend (Flask):**
+  - [Render](https://render.com/) and [Railway](https://railway.app/) offer free Flask backend hosting. Push your backend code to a separate repo or subfolder and follow their setup guides.
+- **Free MySQL Database:**
+  - [PlanetScale](https://planetscale.com/) and [Clever Cloud](https://www.clever-cloud.com/) offer free MySQL hosting tiers. You can connect your Flask backend to these services by updating your database URI in the backend config.
+
+💡 **Pro Tip:** Always check the latest free tier limits and documentation for each service!
+
+---
+
 ## 🎯 Goal
 
 Build the **Login & Signup UI** module of the Prok Professional Networking app. This module focuses on creating the user interface for authentication screens.

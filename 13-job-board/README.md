@@ -1,26 +1,26 @@
-# Day 14: Jobs
+# Day 13 : Job Board
 
 ## 🎯 Goal
 
-Build the **Jobs** module of the Prok Professional Networking app. This module is focused on the details of a specific job and the application process.
+Build the **Job Board** module of the Prok Professional Networking app. This module is focused on displaying a list of available jobs to users, similar to a job board you’d see on LinkedIn or Indeed.
 
 ## 📚 Learning Outcomes
 
-- Show detailed information for a selected job (full description, requirements, company info, etc.)
-- Implement a UI for users to apply to the job (application form, upload resume, etc.)
-- (Optional) Show application status or confirmation
-- Integrate frontend components with a Flask backend API
-- Learn best practices for secure data handling and user workflows
+- List all job postings (title, company, location, summary, etc.)
+- Allow users to browse and search/filter jobs
+- Implement a clean and modern UI for job board listings using React and Tailwind CSS
+- Integrate frontend components with a backend API to fetch job data
+- Handle loading, error, and empty states gracefully
 
 ## 📸 Preview
 
-<!-- Add a screenshot of the job detail and application interface here when available -->
+<!-- Add a screenshot of the job board/listing interface here when available -->
 
 ## 🛠️ Tasks
 
 1. **Setup the Project**
 
-   - Clone the repository and navigate to the `14-jobs` folder.
+   - Clone the repository and navigate to the `13-job-board` folder.
    - Install frontend dependencies in the `frontend` directory:
      ```bash
      cd frontend
@@ -34,31 +34,31 @@ Build the **Jobs** module of the Prok Professional Networking app. This module i
 
 2. **Frontend Implementation**
 
-   - Build a UI to show detailed information for a selected job (description, requirements, company info, etc.)
-   - Add an application form for users to apply to the job (upload resume, etc.)
-   - (Optional) Show application status or confirmation after applying
+   - Build a UI to display a list of job postings (title, company, location, summary, etc.)
+   - Add search and filter options for jobs (optional)
+   - Do not include job application or job detail views in this module
    - Handle loading, error, and empty states
 
 3. **Backend Integration**
 
-   - Connect to backend endpoints for fetching job details and submitting applications
-   - Ensure proper authentication and error handling
+   - Connect to backend endpoints to fetch job listings
+   - Ensure proper error handling and data validation
 
 4. **Testing**
-   - Test viewing job details, applying to jobs, and application status/confirmation
-   - Test UI with no jobs, many jobs, and error scenarios
+   - Test the job board with multiple jobs, no jobs, and error scenarios
+   - Ensure the UI updates correctly based on API responses
 
 ## 🧪 Bonus Challenge
 
 - Add an extra improvement, such as:
-  - Enhanced styling for job detail and application forms
-  - Resume upload with file validation
-  - Real-time application status updates
+  - Enhanced styling for job cards
+  - Pagination or infinite scroll for job listings
+  - Improved UX flow (e.g., loading spinners, skeleton loaders)
 - Document your improvement at the end of this README
 
 ## ✅ Deliverable
 
-A working jobs module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
+A working job board module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
 
 ---
 
@@ -74,7 +74,7 @@ A working jobs module with a clean UI and functional backend, pushed to GitHub i
 1. **Clone the repository**
    ```bash
    git clone <repo-url>
-   cd 14-jobs
+   cd 13-job-board
    ```
 2. **Install dependencies**
    - Frontend:
@@ -99,7 +99,7 @@ A working jobs module with a clean UI and functional backend, pushed to GitHub i
      npm start
      ```
 4. **Access the app**
-   - Open your browser and go to `http://localhost:3000/jobs/:jobId` to view job details and apply.
+   - Open your browser and go to `http://localhost:3000/job-board` to view the job board.
    - Backend API runs on `http://localhost:5000` by default.
 
 ---
@@ -107,7 +107,7 @@ A working jobs module with a clean UI and functional backend, pushed to GitHub i
 ## 🗂️ Folder Structure
 
 ```
-14-jobs/
+13-job-board/
   README.md
   final/         # Your completed solution goes here
   backend/       # Flask backend code
@@ -115,8 +115,6 @@ A working jobs module with a clean UI and functional backend, pushed to GitHub i
     requirements.txt
     models/
       job.py
-      application.py
-      user.py
   frontend/      # React frontend code
     package.json
     src/
@@ -129,7 +127,7 @@ A working jobs module with a clean UI and functional backend, pushed to GitHub i
 
 Describe your bonus improvement here. For example:
 
-> **Bonus Improvement:** Added resume upload and application status tracking for a more complete job application experience.
+> **Bonus Improvement:** Added pagination to the job board for easier browsing of large job lists.
 
 ---
 

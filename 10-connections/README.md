@@ -1,14 +1,14 @@
-# Day 5: Connections
+# Day 10: Connections
 
 ## 🎯 Goal
 
-Build the **Connections** module of the Prok Professional Networking app. This module covers both frontend and backend for managing user connections (friend requests, accept/decline, and viewing connections).
+Build the **Connections** module of the Prok Professional Networking app. This module focuses on displaying and managing your established connections (users you are already connected with).
 
 ## 📚 Learning Outcomes
 
-- Understand the core concepts of user connections in social platforms.
-- Implement a clean and modern UI for managing connections using React and Tailwind CSS.
-- Integrate frontend components with a Flask backend API.
+- Understand the concept of a professional network and established connections.
+- Implement a clean and modern UI for viewing and managing connections using React and Tailwind CSS.
+- Integrate frontend components with a Flask backend API to fetch and manage connections.
 - Learn best practices for component separation, API usage, and secure data handling.
 - Connect the backend to a database for persistent connection storage.
 
@@ -20,7 +20,7 @@ Build the **Connections** module of the Prok Professional Networking app. This m
 
 1. **Setup the Project**
 
-   - Clone the repository and navigate to the `day5-connections` folder.
+   - Clone the repository and navigate to the `10-connections` folder.
    - Install frontend dependencies in the `frontend` directory:
      ```bash
      cd frontend
@@ -34,34 +34,29 @@ Build the **Connections** module of the Prok Professional Networking app. This m
 
 2. **Frontend Implementation**
 
-   - Build connection request and management components using React and Tailwind CSS.
-   - Add UI for sending, accepting, and declining requests.
-   - Connect components to backend APIs using fetch/axios.
-   - Display error messages and loading states for better UX.
+   - Build a UI to display the list of users you are connected with (your network).
+   - Add options to search, filter, or remove connections (optional).
+   - Show user details (name, avatar, headline, etc.) for each connection.
+   - Do not include pending requests (handled in the previous module).
 
 3. **Backend Implementation**
 
-   - Create Flask API endpoints for `/connections` (GET, POST, PUT, DELETE).
+   - Create Flask API endpoints for `/connections` (GET, DELETE) to fetch and remove established connections.
    - Use models (e.g., `connection.py`, `user.py`) to interact with the database.
    - Implement authentication and secure connection management.
    - Return appropriate responses and error codes.
 
-4. **Database Integration**
-
-   - Set up a database (e.g., SQLite or PostgreSQL) for connection storage.
-   - Ensure connection data is stored securely and can be retrieved/updated.
-
-5. **Testing**
-   - Test the full connection flow: send, accept, decline, view, error handling.
+4. **Testing**
+   - Test viewing, searching, and removing connections.
    - Ensure the UI updates correctly based on API responses.
 
 ## 🧪 Bonus Challenge
 
 - Add an extra improvement, such as:
   - Enhanced styling for connection cards.
-  - Real-time updates for requests.
+  - Real-time updates for changes in your network.
   - Improved UX flow (e.g., notifications, loading spinners).
-- Document your improvement in your own words at the end of this README.
+- Document your improvement at the end of this README.
 
 ## ✅ Deliverable
 
@@ -81,7 +76,7 @@ A working connections module with a clean UI and functional backend, pushed to G
 1. **Clone the repository**
    ```bash
    git clone <repo-url>
-   cd day5-connections
+   cd 10-connections
    ```
 2. **Install dependencies**
    - Frontend:
@@ -106,7 +101,7 @@ A working connections module with a clean UI and functional backend, pushed to G
      npm start
      ```
 4. **Access the app**
-   - Open your browser and go to `http://localhost:3000` for the frontend.
+   - Open your browser and go to `http://localhost:3000/connections` to view your network.
    - Backend API runs on `http://localhost:5000` by default.
 
 ---
@@ -114,10 +109,9 @@ A working connections module with a clean UI and functional backend, pushed to G
 ## 🗂️ Folder Structure
 
 ```
-day5-connections/
+10-connections/
   README.md
   final/         # Your completed solution goes here
-  starter/       # Starter code and assets
   backend/       # Flask backend code
     app.py
     requirements.txt
@@ -136,7 +130,7 @@ day5-connections/
 
 Describe your bonus improvement here. For example:
 
-> **Bonus Improvement:** Added real-time notifications for new connection requests using WebSockets. This improves user engagement and responsiveness.
+> **Bonus Improvement:** Added search and filter options to the connections list for easier navigation.
 
 ---
 

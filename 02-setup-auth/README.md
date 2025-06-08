@@ -1,4 +1,4 @@
-# Day 1: Setup Auth
+# Day 2: Setup Auth
 
 ## 🎯 Goal
 

@@ -1,26 +1,26 @@
-# Day 3: Profile Page
+# Day 8: Feed with Posts
 
 ## 🎯 Goal
 
-Build the **Profile Page** module of the Prok Professional Networking app. This module covers both frontend and backend for user profile display and editing.
+Build the **Feed with Posts** module of the Prok Professional Networking app. This module covers both frontend and backend for displaying a user's feed with posts, comments, and user engagement features.
 
 ## 📚 Learning Outcomes
 
-- Understand the core concepts of user profile management in web applications.
-- Implement a clean and modern UI for profile viewing and editing using React and Tailwind CSS.
+- Understand the core concepts of feed aggregation and user engagement in web applications.
+- Implement a clean and modern UI for the feed using React and Tailwind CSS.
+- Add support for comments, likes, and other interactions.
 - Integrate frontend components with a Flask backend API.
-- Learn best practices for component separation, API usage, and secure data handling.
-- Connect the backend to a database for persistent user profile storage.
+- Learn best practices for performance, error handling, and scalability.
 
 ## 📸 Preview
 
-![Preview](./starter/preview.png)
+<!-- Add screenshots or GIFs of your feed UI here -->
 
 ## 🛠️ Tasks
 
 1. **Setup the Project**
 
-   - Clone the repository and navigate to the `day2-profile-page` folder.
+   - Clone the repository and navigate to the `08-feed-with-posts` folder.
    - Install frontend dependencies in the `frontend` directory:
      ```bash
      cd frontend
@@ -34,38 +34,40 @@ Build the **Profile Page** module of the Prok Professional Networking app. This 
 
 2. **Frontend Implementation**
 
-   - Build profile view and edit forms using React and Tailwind CSS.
-   - Add form validation for user input (name, bio, etc.).
-   - Connect forms to backend APIs using fetch/axios.
-   - Display error messages and loading states for better UX.
+   - Build feed components to display posts, comments, and likes.
+   - Add UI for commenting, liking, and (optional) sharing posts.
+   - Handle loading, error, and empty feed states.
+   - Connect components to backend APIs using fetch/axios.
+   - Display user avatars, timestamps, and post content.
 
 3. **Backend Implementation**
 
-   - Create Flask API endpoints for `/profile` (GET, POST, PUT).
-   - Use models (e.g., `user.py`) to interact with the database.
-   - Implement authentication and secure profile updates.
+   - Create Flask API endpoints for `/feed`, `/posts`, `/comments`, `/likes` (GET, POST, DELETE).
+   - Use models to interact with the database for posts, comments, and likes.
+   - Implement authentication and secure feed management.
    - Return appropriate responses and error codes.
 
 4. **Database Integration**
 
-   - Set up a database (e.g., SQLite or PostgreSQL) for user profile storage.
-   - Ensure user data is stored securely and can be retrieved/updated.
+   - Set up a database (e.g., SQLite or PostgreSQL) for feed, post, and comment storage.
+   - Ensure data is stored securely and can be retrieved/updated efficiently.
 
 5. **Testing**
-   - Test the full profile flow: view, edit, error handling.
+   - Test the full feed flow: display, comment, like, error handling.
    - Ensure the UI updates correctly based on API responses.
 
 ## 🧪 Bonus Challenge
 
 - Add an extra improvement, such as:
-  - Enhanced styling for profile sections.
-  - Additional validation (e.g., profile picture upload, social links).
-  - Improved UX flow (e.g., success notifications, loading spinners).
+  - Infinite scroll or pagination for the feed.
+  - Enhanced styling for feed items and comments.
+  - Real-time updates for new posts or comments.
+  - Filtering or sorting options for the feed.
 - Document your improvement in your own words at the end of this README.
 
 ## ✅ Deliverable
 
-A working profile page module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
+A working feed module with a clean UI, user engagement features, and a functional backend, pushed to GitHub in the `/final` folder.
 
 ---
 
@@ -81,7 +83,7 @@ A working profile page module with a clean UI and functional backend, pushed to 
 1. **Clone the repository**
    ```bash
    git clone <repo-url>
-   cd day2-profile-page
+   cd 08-feed-with-posts
    ```
 2. **Install dependencies**
    - Frontend:
@@ -114,15 +116,15 @@ A working profile page module with a clean UI and functional backend, pushed to 
 ## 🗂️ Folder Structure
 
 ```
-day2-profile-page/
+08-feed-with-posts/
   README.md
   final/         # Your completed solution goes here
-  starter/       # Starter code and assets
   backend/       # Flask backend code
     app.py
     requirements.txt
     models/
-      user.py
+      post.py
+      comment.py
   frontend/      # React frontend code
     package.json
     src/
@@ -135,7 +137,7 @@ day2-profile-page/
 
 Describe your bonus improvement here. For example:
 
-> **Bonus Improvement:** Added profile picture upload and preview using a custom React component. This enhances user engagement and personalization.
+> **Bonus Improvement:** Added infinite scroll to the feed using Intersection Observer in React. This allows users to seamlessly browse more content.
 
 ---
 

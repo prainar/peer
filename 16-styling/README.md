@@ -2,57 +2,44 @@
 
 ## 🎯 Goal
 
-Build the **Styling** module of the Prok Professional Networking app. This module focuses on enhancing the visual design and user experience of the application.
+Build the **Styling** module of the Prok Professional Networking app. This module is focused on enhancing the app’s visual design and user experience with modern, consistent styling.
 
 ## 📚 Learning Outcomes
 
-- Understand the core concepts of modern web styling and responsive design.
-- Implement a visually appealing and consistent UI using React and Tailwind CSS.
-- Learn best practices for component separation, theming, and accessibility.
-- Integrate frontend components with a Flask backend API if needed.
+- Apply color themes, fonts, and spacing for a polished look
+- Style buttons, cards, forms, and other UI elements
+- Implement dark/light mode or custom themes (optional)
+- Ensure a visually appealing and consistent UI using React and Tailwind CSS
+- Improve accessibility and user experience
 
 ## 📸 Preview
 
-![Preview](./starter/preview.png)
+<!-- Add a screenshot showing the improved, styled UI with consistent theming -->
 
 ## 🛠️ Tasks
 
-1. **Setup the Project**
+1. **Refactor and Enhance UI Components**
 
-   - Clone the repository and navigate to the `day8-styling` folder.
-   - Install frontend dependencies in the `frontend` directory:
-     ```bash
-     cd frontend
-     npm install
-     ```
-   - Install backend dependencies in the `backend` directory (if required):
-     ```bash
-     cd backend
-     pip install -r requirements.txt
-     ```
+   - Use Tailwind CSS to style all major UI elements (buttons, cards, forms, etc.)
+   - Apply consistent color schemes, fonts, and spacing
+   - Add theming support (dark/light mode, if desired)
 
-2. **Frontend Implementation**
+2. **Improve Accessibility**
 
-   - Refactor and enhance UI components using Tailwind CSS.
-   - Ensure responsive design for all screen sizes.
-   - Add consistent theming, spacing, and color schemes.
-   - Improve accessibility (ARIA labels, contrast, keyboard navigation).
+   - Ensure good color contrast and readable fonts
+   - Add ARIA labels and keyboard navigation support
 
-3. **Backend Integration (Optional)**
-
-   - Connect styled components to backend APIs if dynamic data is needed.
-
-4. **Testing**
-   - Test the UI on different devices and browsers.
-   - Ensure accessibility and responsiveness.
+3. **Testing**
+   - Test the UI on different devices and browsers
+   - Ensure accessibility and visual consistency
 
 ## 🧪 Bonus Challenge
 
 - Add an extra improvement, such as:
-  - Dark mode toggle.
-  - Custom animations or transitions.
-  - Improved accessibility features.
-- Document your improvement in your own words at the end of this README.
+  - Custom animations or transitions
+  - User-selectable themes
+  - Accessibility enhancements
+- Document your improvement at the end of this README.
 
 ## ✅ Deliverable
 
@@ -65,14 +52,13 @@ A visually polished and accessible UI, pushed to GitHub in the `/final` folder.
 ### Prerequisites
 
 - Node.js and npm
-- Python 3.x and pip (if backend is used)
 
 ### Setup Steps
 
 1. **Clone the repository**
    ```bash
    git clone <repo-url>
-   cd day8-styling
+   cd 16-styling
    ```
 2. **Install dependencies**
    - Frontend:
@@ -80,38 +66,23 @@ A visually polished and accessible UI, pushed to GitHub in the `/final` folder.
      cd frontend
      npm install
      ```
-   - Backend (if needed):
-     ```bash
-     cd backend
-     pip install -r requirements.txt
-     ```
-3. **Run the applications**
-   - Start the backend server (if needed):
-     ```bash
-     cd backend
-     flask run
-     ```
+3. **Run the application**
    - Start the frontend development server:
      ```bash
      cd frontend
      npm start
      ```
 4. **Access the app**
-   - Open your browser and go to `http://localhost:3000` for the frontend.
-   - Backend API runs on `http://localhost:5000` by default (if used).
+   - Open your browser and go to `http://localhost:3000` to view the styled UI.
 
 ---
 
 ## 🗂️ Folder Structure
 
 ```
-day8-styling/
+16-styling/
   README.md
   final/         # Your completed solution goes here
-  starter/       # Starter code and assets
-  backend/       # Flask backend code (optional)
-    app.py
-    requirements.txt
   frontend/      # React frontend code
     package.json
     src/
@@ -124,7 +95,7 @@ day8-styling/
 
 Describe your bonus improvement here. For example:
 
-> **Bonus Improvement:** Added a dark mode toggle using Tailwind CSS and React context. This allows users to switch between light and dark themes easily.
+> **Bonus Improvement:** Added a dark mode toggle and custom animations for a more engaging user experience.
 
 ---
 

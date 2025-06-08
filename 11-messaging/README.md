@@ -1,26 +1,27 @@
-# Day 6: Messaging
+# Day 11: Messaging
 
 ## 🎯 Goal
 
-Build the **Messaging** module of the Prok Professional Networking app. This module covers both frontend and backend for real-time or asynchronous user messaging.
+Build the **Messaging** module of the Prok Professional Networking app. This module focuses on the overall messaging feature—setting up the infrastructure for messaging, listing conversations, starting new chats, and integrating messaging into the app’s navigation.
 
 ## 📚 Learning Outcomes
 
 - Understand the core concepts of messaging systems in web applications.
-- Implement a clean and modern UI for chat and message threads using React and Tailwind CSS.
-- Integrate frontend components with a Flask backend API.
+- Implement a UI for listing all conversations or contacts using React and Tailwind CSS.
+- Add the ability to start a new conversation.
+- Integrate messaging navigation into the main app.
+- Connect frontend components with a Flask backend API.
 - Learn best practices for component separation, API usage, and secure message handling.
-- Connect the backend to a database for persistent message storage.
 
 ## 📸 Preview
 
-![Preview](./starter/preview.png)
+<!-- Add a screenshot of the messaging/conversation list interface here when available -->
 
 ## 🛠️ Tasks
 
 1. **Setup the Project**
 
-   - Clone the repository and navigate to the `day6-messaging` folder.
+   - Clone the repository and navigate to the `11-messaging` folder.
    - Install frontend dependencies in the `frontend` directory:
      ```bash
      cd frontend
@@ -34,38 +35,33 @@ Build the **Messaging** module of the Prok Professional Networking app. This mod
 
 2. **Frontend Implementation**
 
-   - Build chat UI and message thread components using React and Tailwind CSS.
-   - Add form validation for message input.
-   - Connect components to backend APIs using fetch/axios or WebSockets.
-   - Display error messages and loading states for better UX.
+   - Build a UI to list all conversations or contacts.
+   - Add an option to start a new conversation.
+   - Implement navigation to individual chat screens (but not the chat UI itself).
+   - Show loading and error states for the conversation list.
 
 3. **Backend Implementation**
 
-   - Create Flask API endpoints for `/messages` (GET, POST).
-   - Use models (e.g., `message.py`, `user.py`) to interact with the database.
-   - Implement authentication and secure message storage.
+   - Create Flask API endpoints for `/conversations` (GET, POST) to fetch and start conversations.
+   - Use models (e.g., `conversation.py`, `user.py`) to interact with the database.
+   - Implement authentication and secure conversation management.
    - Return appropriate responses and error codes.
 
-4. **Database Integration**
-
-   - Set up a database (e.g., SQLite or PostgreSQL) for message storage.
-   - Ensure message data is stored securely and can be retrieved efficiently.
-
-5. **Testing**
-   - Test the full messaging flow: send, receive, error handling.
+4. **Testing**
+   - Test listing conversations, starting new chats, and navigating to chat screens.
    - Ensure the UI updates correctly based on API responses.
 
 ## 🧪 Bonus Challenge
 
 - Add an extra improvement, such as:
-  - Enhanced styling for chat bubbles.
-  - Real-time updates using WebSockets.
-  - Improved UX flow (e.g., typing indicators, loading spinners).
-- Document your improvement in your own words at the end of this README.
+  - Enhanced styling for the conversation list.
+  - Search or filter conversations.
+  - Improved UX flow (e.g., notifications, loading spinners).
+- Document your improvement at the end of this README.
 
 ## ✅ Deliverable
 
-A working messaging module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
+A working messaging interface module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
 
 ---
 
@@ -81,7 +77,7 @@ A working messaging module with a clean UI and functional backend, pushed to Git
 1. **Clone the repository**
    ```bash
    git clone <repo-url>
-   cd day6-messaging
+   cd 11-messaging
    ```
 2. **Install dependencies**
    - Frontend:
@@ -106,7 +102,7 @@ A working messaging module with a clean UI and functional backend, pushed to Git
      npm start
      ```
 4. **Access the app**
-   - Open your browser and go to `http://localhost:3000` for the frontend.
+   - Open your browser and go to `http://localhost:3000/messaging` to view the messaging interface.
    - Backend API runs on `http://localhost:5000` by default.
 
 ---
@@ -114,15 +110,14 @@ A working messaging module with a clean UI and functional backend, pushed to Git
 ## 🗂️ Folder Structure
 
 ```
-day6-messaging/
+11-messaging/
   README.md
   final/         # Your completed solution goes here
-  starter/       # Starter code and assets
   backend/       # Flask backend code
     app.py
     requirements.txt
     models/
-      message.py
+      conversation.py
       user.py
   frontend/      # React frontend code
     package.json
@@ -136,7 +131,7 @@ day6-messaging/
 
 Describe your bonus improvement here. For example:
 
-> **Bonus Improvement:** Added real-time chat using Flask-SocketIO and React context. This allows users to see new messages instantly.
+> **Bonus Improvement:** Added search and filter options to the conversation list for easier navigation.
 
 ---
 

@@ -1,71 +1,60 @@
-# Day 4: Feed
+# Day 7: Basic Feed
 
 ## 🎯 Goal
 
-Build the **Feed** module of the Prok Professional Networking app. This module covers both frontend and backend for displaying a user's feed with posts and updates.
+Build the **Basic Feed** module of the Prok Professional Networking app. This module introduces the concept of a feed—a stream of content (such as posts) for the user. The focus here is on layout and structure, using static or mock data, without advanced features like comments or likes.
 
 ## 📚 Learning Outcomes
 
-- Understand the core concepts of feed aggregation and display in web applications.
-- Implement a clean and modern UI for the feed using React and Tailwind CSS.
-- Integrate frontend components with a Flask backend API.
-- Learn best practices for component separation, API usage, and efficient data fetching.
-- Connect the backend to a database for persistent feed storage.
+- Understand the concept of a feed in social/professional networking apps.
+- Implement a basic feed layout using React and Tailwind CSS.
+- Render a list of static or mock posts (no backend integration required).
+- Practice UI composition and responsive design.
+- Prepare for more advanced feed features in later modules.
 
 ## 📸 Preview
 
-![Preview](./starter/preview.png)
+<!-- Add a screenshot of the basic feed layout here when available -->
 
 ## 🛠️ Tasks
 
 1. **Setup the Project**
 
-   - Clone the repository and navigate to the `day4-feed` folder.
+   - Clone the repository and navigate to the `07-feed` folder.
    - Install frontend dependencies in the `frontend` directory:
      ```bash
      cd frontend
      npm install
      ```
-   - Install backend dependencies in the `backend` directory:
-     ```bash
-     cd backend
-     pip install -r requirements.txt
-     ```
 
 2. **Frontend Implementation**
 
-   - Build feed components using React and Tailwind CSS.
-   - Add loading states and error handling for data fetching.
-   - Connect components to backend APIs using fetch/axios.
-   - Display posts and updates in a user-friendly format.
+   - Build a feed component that displays a list of posts using static or mock data.
+   - Focus on layout, card design, and responsive UI.
+   - Show post details: text, author, timestamp (use placeholder data).
+   - Do not implement comments, likes, or backend integration yet.
+   - Handle empty state (e.g., show a message if there are no posts).
 
-3. **Backend Implementation**
+3. **(Optional) Styling**
 
-   - Create Flask API endpoints for `/feed` (GET).
-   - Use models (e.g., `feed.py`, `post.py`) to interact with the database.
-   - Implement authentication and efficient feed aggregation.
-   - Return appropriate responses and error codes.
+   - Enhance the look and feel of the feed with Tailwind CSS.
+   - Add placeholder images or avatars for posts.
 
-4. **Database Integration**
-
-   - Set up a database (e.g., SQLite or PostgreSQL) for feed and post storage.
-   - Ensure feed data is stored securely and can be retrieved efficiently.
-
-5. **Testing**
-   - Test the full feed flow: display, refresh, error handling.
-   - Ensure the UI updates correctly based on API responses.
+4. **Testing**
+   - Test the feed with several mock posts and with no posts.
+   - Ensure the layout is responsive and visually appealing.
 
 ## 🧪 Bonus Challenge
 
 - Add an extra improvement, such as:
-  - Enhanced styling for feed items.
-  - Infinite scroll or pagination.
-  - Improved UX flow (e.g., real-time updates, loading spinners).
-- Document your improvement in your own words at the end of this README.
+  - Skeleton loaders for loading state (even if data is static).
+  - Themed feed cards (light/dark mode).
+  - Accessibility improvements.
+- Document your improvement at the end of this README.
 
 ## ✅ Deliverable
 
-A working feed module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
+A working basic feed module with a clean, static UI, pushed to GitHub in the `/final` folder.
 
 ---
 
@@ -74,14 +63,13 @@ A working feed module with a clean UI and functional backend, pushed to GitHub i
 ### Prerequisites
 
 - Node.js and npm
-- Python 3.x and pip
 
 ### Setup Steps
 
 1. **Clone the repository**
    ```bash
    git clone <repo-url>
-   cd day4-feed
+   cd 07-feed
    ```
 2. **Install dependencies**
    - Frontend:
@@ -89,41 +77,24 @@ A working feed module with a clean UI and functional backend, pushed to GitHub i
      cd frontend
      npm install
      ```
-   - Backend:
-     ```bash
-     cd backend
-     pip install -r requirements.txt
-     ```
-3. **Run the applications**
-   - Start the backend server:
-     ```bash
-     cd backend
-     flask run
-     ```
+3. **Run the application**
    - Start the frontend development server:
      ```bash
      cd frontend
      npm start
      ```
 4. **Access the app**
-   - Open your browser and go to `http://localhost:3000` for the frontend.
-   - Backend API runs on `http://localhost:5000` by default.
+   - Open your browser and go to `http://localhost:3000/feed` to view the basic feed.
 
 ---
 
 ## 🗂️ Folder Structure
 
 ```
-day4-feed/
+07-feed/
   README.md
   final/         # Your completed solution goes here
   starter/       # Starter code and assets
-  backend/       # Flask backend code
-    app.py
-    requirements.txt
-    models/
-      feed.py
-      post.py
   frontend/      # React frontend code
     package.json
     src/
@@ -136,7 +107,7 @@ day4-feed/
 
 Describe your bonus improvement here. For example:
 
-> **Bonus Improvement:** Added infinite scroll to the feed using Intersection Observer in React. This allows users to seamlessly browse more content.
+> **Bonus Improvement:** Added skeleton loaders to the feed for a better loading experience, even with static data.
 
 ---
 
