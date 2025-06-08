@@ -50,14 +50,6 @@ Build the **Connections** module of the Prok Professional Networking app. This m
    - Test viewing, searching, and removing connections.
    - Ensure the UI updates correctly based on API responses.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for connection cards.
-  - Real-time updates for changes in your network.
-  - Improved UX flow (e.g., notifications, loading spinners).
-- Document your improvement at the end of this README.
-
 ## ✅ Deliverable
 
 A working connections module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
@@ -123,14 +115,6 @@ A working connections module with a clean UI and functional backend, pushed to G
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added search and filter options to the connections list for easier navigation.
 
 ---
 

@@ -56,14 +56,6 @@ Build the **Profile Page** module of the Prok Professional Networking app. This 
    - Test the full profile flow: view, edit, error handling.
    - Ensure the UI updates correctly based on API responses.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for profile sections.
-  - Additional validation (e.g., profile picture upload, social links).
-  - Improved UX flow (e.g., success notifications, loading spinners).
-- Document your improvement in your own words at the end of this README.
-
 ## ✅ Deliverable
 
 A working profile page module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
@@ -129,14 +121,6 @@ day2-profile-page/
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added profile picture upload and preview using a custom React component. This enhances user engagement and personalization.
 
 ---
 

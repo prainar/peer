@@ -51,14 +51,6 @@ Build the **Messaging** module of the Prok Professional Networking app. This mod
    - Test listing conversations, starting new chats, and navigating to chat screens.
    - Ensure the UI updates correctly based on API responses.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for the conversation list.
-  - Search or filter conversations.
-  - Improved UX flow (e.g., notifications, loading spinners).
-- Document your improvement at the end of this README.
-
 ## ✅ Deliverable
 
 A working messaging interface module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
@@ -124,14 +116,6 @@ A working messaging interface module with a clean UI and functional backend, pus
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added search and filter options to the conversation list for easier navigation.
 
 ---
 

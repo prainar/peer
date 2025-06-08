@@ -48,14 +48,6 @@ Build the **Jobs** module of the Prok Professional Networking app. This module i
    - Test viewing job details, applying to jobs, and application status/confirmation
    - Test UI with no jobs, many jobs, and error scenarios
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for job detail and application forms
-  - Resume upload with file validation
-  - Real-time application status updates
-- Document your improvement at the end of this README
-
 ## ✅ Deliverable
 
 A working jobs module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
@@ -122,14 +114,6 @@ A working jobs module with a clean UI and functional backend, pushed to GitHub i
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added resume upload and application status tracking for a more complete job application experience.
 
 ---
 

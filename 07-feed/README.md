@@ -44,14 +44,6 @@ Build the **Basic Feed** module of the Prok Professional Networking app. This mo
    - Test the feed with several mock posts and with no posts.
    - Ensure the layout is responsive and visually appealing.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Skeleton loaders for loading state (even if data is static).
-  - Themed feed cards (light/dark mode).
-  - Accessibility improvements.
-- Document your improvement at the end of this README.
-
 ## ✅ Deliverable
 
 A working basic feed module with a clean, static UI, pushed to GitHub in the `/final` folder.
@@ -100,17 +92,5 @@ A working basic feed module with a clean, static UI, pushed to GitHub in the `/f
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added skeleton loaders to the feed for a better loading experience, even with static data.
-
----
-
-If you have any questions or need help, feel free to open an issue or reach out to the instructor.
 
 ---

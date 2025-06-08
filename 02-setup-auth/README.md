@@ -51,14 +51,6 @@ Build the **Setup Auth** module of the Prok Professional Networking app. This mo
    - Test the full authentication flow: registration, login, error handling.
    - Ensure the UI updates correctly based on API responses.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for forms and buttons.
-  - Additional validation (e.g., password strength meter).
-  - Improved UX flow (e.g., redirect after login, loading spinners).
-- Document your improvement in your own words at the end of this README.
-
 ## ✅ Deliverable
 
 A working authentication module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
@@ -130,14 +122,6 @@ day1-setup-auth/
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added a password strength meter to the signup form using a custom React component. This helps users create stronger passwords and improves security.
 
 ---
 

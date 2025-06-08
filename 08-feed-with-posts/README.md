@@ -56,15 +56,6 @@ Build the **Feed with Posts** module of the Prok Professional Networking app. Th
    - Test the full feed flow: display, comment, like, error handling.
    - Ensure the UI updates correctly based on API responses.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Infinite scroll or pagination for the feed.
-  - Enhanced styling for feed items and comments.
-  - Real-time updates for new posts or comments.
-  - Filtering or sorting options for the feed.
-- Document your improvement in your own words at the end of this README.
-
 ## ✅ Deliverable
 
 A working feed module with a clean UI, user engagement features, and a functional backend, pushed to GitHub in the `/final` folder.
@@ -130,14 +121,6 @@ A working feed module with a clean UI, user engagement features, and a functiona
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added infinite scroll to the feed using Intersection Observer in React. This allows users to seamlessly browse more content.
 
 ---
 

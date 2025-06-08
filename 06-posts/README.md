@@ -51,15 +51,6 @@ Build the **My Posts** module of the Prok Professional Networking app. This modu
    - Test the list with multiple posts, no posts, and error scenarios.
    - Ensure the UI updates correctly based on API responses.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for post cards.
-  - Pagination or infinite scroll.
-  - Real-time updates (e.g., using websockets).
-  - Improved UX flow (e.g., loading spinners, skeleton loaders).
-- Document your improvement at the end of this README.
-
 ## ✅ Deliverable
 
 A working module that lists only the logged-in user's posts with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
@@ -125,14 +116,6 @@ A working module that lists only the logged-in user's posts with a clean UI and 
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added pagination to the user's posts list for better navigation and performance.
 
 ---
 

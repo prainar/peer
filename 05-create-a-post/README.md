@@ -143,14 +143,6 @@ A working post creation form that connects to the backend, validates input, and 
 
 ---
 
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added image preview and drag-and-drop support for post images, making the post creation process more interactive and user-friendly.
-
----
-
 If you have any questions or need help, feel free to open an issue or reach out to the instructor.
 
 ---

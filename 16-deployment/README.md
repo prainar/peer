@@ -40,14 +40,6 @@ Build the **Deployment** module of the Prok Professional Networking app. This mo
    - Ensure all features work as expected in production.
    - Monitor logs and fix any deployment issues.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Automated deployment with GitHub Actions or similar CI/CD tools.
-  - Custom domain and SSL setup.
-  - Performance monitoring and error tracking.
-- Document your improvement in your own words at the end of this README.
-
 ## ✅ Deliverable
 
 A deployed, production-ready Prok Professional Networking module, with links and documentation, pushed to GitHub in the `/final` folder.
@@ -105,14 +97,6 @@ day9-deployment/
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Set up automated deployment to Heroku using GitHub Actions. This ensures every push to main triggers a new deployment automatically.
 
 ---
 

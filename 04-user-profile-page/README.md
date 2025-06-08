@@ -55,13 +55,6 @@ Build the **User Profile Page** module for the Prok Professional Networking app.
    - Test viewing several different users' profiles (including non-existent users).
    - Check that the UI updates correctly for loading, error, and empty states.
 
-## 🧪 Bonus Challenge
-
-- Add a section for mutual connections or shared interests (if available).
-- Show a 'Connect' or 'Message' button (but do not implement the full feature yet).
-- Add a fallback avatar if the user has no profile picture.
-- Document your improvement at the end of this README.
-
 ## ✅ Deliverable
 
 A working user profile page module that displays another user's public profile in a read-only format, pushed to GitHub in the `/final` folder.
@@ -127,14 +120,6 @@ A working user profile page module that displays another user's public profile i
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added a fallback avatar and a 'Connect' button to the user profile page for enhanced networking experience.
 
 ---
 

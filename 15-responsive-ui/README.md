@@ -36,14 +36,6 @@ Build the **Responsive UI** module for the Prok Professional Networking app. Thi
    - Test the app on phones, tablets, and desktops.
    - Ensure all features are usable and visually appealing on every device.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Responsive images or videos
-  - Mobile-first navigation drawer
-  - Accessibility enhancements
-- Document your improvement at the end of this README.
-
 ## ✅ Deliverable
 
 A fully responsive and accessible UI, pushed to GitHub in the `/final` folder.
@@ -91,14 +83,6 @@ A fully responsive and accessible UI, pushed to GitHub in the `/final` folder.
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added a mobile-first navigation drawer for improved usability on small screens.
 
 ---
 

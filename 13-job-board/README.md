@@ -48,14 +48,6 @@ Build the **Job Board** module of the Prok Professional Networking app. This mod
    - Test the job board with multiple jobs, no jobs, and error scenarios
    - Ensure the UI updates correctly based on API responses
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for job cards
-  - Pagination or infinite scroll for job listings
-  - Improved UX flow (e.g., loading spinners, skeleton loaders)
-- Document your improvement at the end of this README
-
 ## ✅ Deliverable
 
 A working job board module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
@@ -120,14 +112,6 @@ A working job board module with a clean UI and functional backend, pushed to Git
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added pagination to the job board for easier browsing of large job lists.
 
 ---
 

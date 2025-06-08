@@ -47,14 +47,6 @@ Build the **Connection Requests** module of the Prok Professional Networking app
    - Test sending, accepting, and declining requests.
    - Test UI with no requests, many requests, and error scenarios.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for request cards.
-  - Real-time updates for new requests.
-  - Improved UX flow (e.g., notifications, loading spinners).
-- Document your improvement at the end of this README.
-
 ## ✅ Deliverable
 
 A working connection requests module with a clean UI and functional backend, pushed to GitHub in the `/final` folder.
@@ -120,14 +112,6 @@ A working connection requests module with a clean UI and functional backend, pus
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added real-time notifications for new connection requests using WebSockets. This improves user engagement and responsiveness.
 
 ---
 

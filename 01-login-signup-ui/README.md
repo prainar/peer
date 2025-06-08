@@ -7,11 +7,9 @@
 - [Learning Outcomes](#-learning-outcomes)
 - [Preview](#-preview)
 - [Tasks](#-tasks)
-- [Bonus Challenge](#-bonus-challenge)
 - [Deliverable](#-deliverable)
 - [Getting Started](#-getting-started)
 - [Folder Structure](#-folder-structure)
-- [Document Your Bonus Improvement](#-document-your-bonus-improvement)
 
 ---
 
@@ -87,7 +85,7 @@ Build the **Login & Signup UI** module of the Prok Professional Networking app. 
 
 **Signup Screen:**
 
-![Signup Preview](./Signup.png) 
+![Signup Preview](./Signup.png)
 
 ## 🛠️ Tasks
 
@@ -105,14 +103,6 @@ Build the **Login & Signup UI** module of the Prok Professional Networking app. 
 3. **Testing**
    - Test the UI for usability and responsiveness.
    - Ensure all form states (valid, invalid, loading) are handled.
-
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for forms and buttons.
-  - Password visibility toggle.
-  - Improved UX flow (e.g., transitions, focus states).
-- Document your improvement in your own words at the end of this README.
 
 ## ✅ Deliverable
 
@@ -156,14 +146,6 @@ day1-login-&-signup-ui/
   starter/       # Starter code and assets
   final/         # Your completed solution goes here
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added a password visibility toggle to the login and signup forms for better usability.
 
 ---
 

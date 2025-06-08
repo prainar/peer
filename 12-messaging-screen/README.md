@@ -48,14 +48,6 @@ Build the **Messaging Screen** module for the Prok Professional Networking app. 
    - Test displaying chat history, sending messages, and receiving new messages.
    - Test UI with no messages, many messages, and error scenarios.
 
-## 🧪 Bonus Challenge
-
-- Add an extra improvement, such as:
-  - Enhanced styling for chat bubbles.
-  - Real-time updates using WebSockets.
-  - Typing indicators or read receipts.
-- Document your improvement at the end of this README.
-
 ## ✅ Deliverable
 
 A working messaging screen module with a clean chat UI and functional backend, pushed to GitHub in the `/final` folder.
@@ -121,14 +113,6 @@ A working messaging screen module with a clean chat UI and functional backend, p
     src/
       index.jsx
 ```
-
----
-
-## 📝 Document Your Bonus Improvement
-
-Describe your bonus improvement here. For example:
-
-> **Bonus Improvement:** Added real-time chat updates and typing indicators for a more interactive chat experience.
 
 ---
 
