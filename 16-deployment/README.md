@@ -27,6 +27,7 @@ Build the **Deployment** module of the Prok Professional Networking app. This mo
      ```
    - Set up environment variables for both frontend and backend.
    - Update Flask backend configuration for production (e.g., disable debug mode).
+   - Ensure your backend is configured to use MySQL as the database.
 
 3. **Deployment Implementation**
 

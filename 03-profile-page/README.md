@@ -10,7 +10,7 @@ Build the **Profile Page** module of the Prok Professional Networking app. This 
 - Implement a clean and modern UI for profile viewing and editing using React and Tailwind CSS.
 - Integrate frontend components with a Flask backend API.
 - Learn best practices for component separation, API usage, and secure data handling.
-- Connect the backend to a database for persistent user profile storage.
+- Connect the backend to a MySQL database for persistent user profile storage.
 
 ## 📸 Preview
 
@@ -49,7 +49,7 @@ Build the **Profile Page** module of the Prok Professional Networking app. This 
 
 4. **Database Integration**
 
-   - Set up a database (e.g., SQLite or PostgreSQL) for user profile storage.
+   - Set up a MySQL database for user profile storage.
    - Ensure user data is stored securely and can be retrieved/updated.
 
 5. **Testing**
@@ -68,6 +68,7 @@ A working profile page module with a clean UI and functional backend, pushed to 
 
 - Node.js and npm
 - Python 3.x and pip
+- MySQL
 
 ### Setup Steps
 

@@ -74,7 +74,7 @@ Prok-Professional-Networking/
 
 - **Frontend:** React, Tailwind CSS
 - **Backend:** Flask (Python)
-- **Database:** (You choose: SQLite, PostgreSQL, etc.)
+- **Database:** MySQL
 - **Other:** REST API, JWT Auth, WebSockets (for messaging)
 
 ---
