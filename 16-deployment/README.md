@@ -11,10 +11,6 @@ Build the **Deployment** module of the Prok Professional Networking app. This mo
 - Implement deployment scripts and environment configuration.
 - Learn best practices for security, scalability, and maintainability.
 
-## 📸 Preview
-
-![Preview](./starter/preview.png)
-
 ## 🛠️ Tasks
 
 1. **Setup the Project**

@@ -12,10 +12,6 @@ Build the **Setup Auth** module of the Prok Professional Networking app. This mo
 - Learn best practices for component separation, API usage, and secure authentication.
 - Connect the backend to a database for persistent user storage.
 
-## 📸 Preview
-
-![Preview](./starter/preview.png)
-
 ## 🛠️ Tasks
 
 1. **Setup the Project**
