@@ -1,4 +1,4 @@
-# Day 1: Project Setup
+# Day 1: login-signup-ui
 
 ## 🎯 Goal
 
@@ -6,7 +6,7 @@ Set up the development environment and create the initial project structure for 
 
 ## 📚 Learning Outcomes
 
-- Set up development environment
+- Set up development environment 
 - Initialize project structure
 - Configure basic dependencies
 - Create initial documentation
