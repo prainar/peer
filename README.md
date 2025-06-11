@@ -64,42 +64,65 @@ Prok-Professional-Networking/
 
 ## 🚀 Getting Started
 
-1. **Clone the Repository**
+### Prerequisites
+
+- Node.js (v14 or higher)
+- Python (v3.8 or higher)
+- Git
+- Code editor (VS Code recommended)
+
+To check your installed versions:
+
+```bash
+# Check Node.js version
+node --version
+
+# Check Python version
+python --version
+```
+
+1.**Fork the Template Repository (Online - on GitHub/GitLab)**
+
+   Go to the course template repository in your web browser:
+   "https://github.com/AathamAnsari03/Prok-Professional-Networking.git"
+
+   In the top-right corner of the repository page, click the "Fork" button.
+
+   > **What is Forking?** This creates a personal copy of the entire template repository under your own GitHub/GitLab account. This copy is completely independent of the original course template. You have full control over your fork.
+
+   If prompted, choose your personal account as the owner of the fork.
+
+2.**Clone Your Fork to Your Local Machine**
+
+   Now that you have your own copy online, let's bring it to your computer:
+
+   - Go to your newly forked repository on GitHub/GitLab (it will be under your username)
+   - Click the green "Code" button
+   - Copy the URL (make sure it's the HTTPS URL, unless you've set up SSH keys)
+   - Open your terminal and navigate to your desired directory
+   - Run the following commands:
 
    ```bash
-   git clone https://github.com/your-username/prok-professional-networking.git
-   cd Prok-Professional-Networking
+   # Clone your fork
+   git clone <URL_of_YOUR_FORK>
+   # Example: git clone https://github.com/your-username/prok-professional-networking.git
+
+   # Change into the project directory
+   cd prok-professional-networking
    ```
 
-2. **Set Up Frontend**
+   > **What is Cloning?** This downloads a complete copy of your online fork to your local machine. This is your personal workspace for the course.
+
+3. **Configure Your Git User Information (One-Time Setup)**
+
+   This tells Git who you are when you make changes. If you've already done this for other projects on your computer, you can skip this step:
 
    ```bash
-   cd app/frontend
-   npm install
+   git config --global user.name "Your Name"
+   git config --global user.email "your.email@example.com"
    ```
 
-3. **Set Up Backend**
-
-   ```bash
-   cd ../backend
-   pip install -r requirements.txt
-   ```
-
-4. **Start Development**
-
-   ```bash
-   # Terminal 1 - Backend
-   cd app/backend
-   flask run
-
-   # Terminal 2 - Frontend
-   cd app/frontend
-   npm start
-   ```
-
-5. **Access the Application**
-   - Frontend: [http://localhost:3000](http://localhost:3000)
-   - Backend API: [http://localhost:5000](http://localhost:5000)
+   > **Note:** The `--global` flag sets your name and email for all Git projects on your computer.
 
 ---
 
