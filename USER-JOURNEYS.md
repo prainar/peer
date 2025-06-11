@@ -1,257 +1,140 @@
 # User Journeys: Prok Professional Networking Platform
 
-## 1. New User Onboarding Journey
+This document outlines the key user journeys that students will implement in this tutorial-based project. Each journey focuses on teaching specific development concepts and practical implementation skills.
 
-### Scenario: First-time user wants to create a professional profile and start networking
+## 1. Authentication & Profile Journey
 
-#### Steps & Touchpoints
+### Learning Focus: Basic Authentication and Data Management
 
-1. **Landing Page**
+#### Steps & Implementation Points
 
-   - User arrives at prok.com
-   - Sees value proposition and key features
-   - Clicks "Join Now" or "Sign Up"
-   - _Pain Point:_ Clear value proposition needed to convert visitors
+1. **Registration & Login**
 
-2. **Registration**
+   - Implement email/password registration
+   - Create login functionality
+   - Handle form validation
+   - Store user data securely
 
-   - Enters email and password
-   - Verifies email address
-   - _Opportunity:_ Social sign-up options (Google, LinkedIn)
+2. **Profile Creation**
+   - Build profile form with basic fields
+   - Implement image upload
+   - Create profile view/edit pages
+   - Practice data persistence
 
-3. **Profile Creation**
+## 2. Content Creation Journey
 
-   - Basic Information
-     - Name, location, industry
-     - Professional headline
-     - Profile picture upload
-   - Professional Details
-     - Work experience
-     - Education
-     - Skills
-   - _Pain Point:_ Long form might cause drop-off
-   - _Opportunity:_ Progress indicator and save draft feature
+### Learning Focus: CRUD Operations and Data Relationships
 
-4. **Initial Network Building**
+#### Steps & Implementation Points
 
-   - Email contact import
-   - Industry-based suggestions
-   - Company-based suggestions
-   - _Opportunity:_ Smart suggestions based on profile data
+1. **Post Creation**
 
-5. **Feed Introduction**
-   - Personalized feed setup
-   - Content preferences
-   - _Opportunity:_ AI-powered content recommendations
+   - Build post creation form
+   - Implement text input handling
+   - Add basic media support
+   - Connect to backend API
 
-## 2. Job Seeker Journey
+2. **Feed Display**
+   - Create responsive feed layout
+   - Implement post listing
+   - Add basic interactions
+   - Practice data fetching
 
-### Scenario: Professional looking for new opportunities
+## 3. Job Board Journey
 
-#### Steps & Touchpoints
+### Learning Focus: Search and Filter Implementation
+
+#### Steps & Implementation Points
 
 1. **Job Search**
 
-   - Enters search criteria
-   - Applies filters (location, industry, experience)
-   - Views job listings
-   - _Pain Point:_ Too many irrelevant results
-   - _Opportunity:_ Smart job matching algorithm
+   - Build search interface
+   - Implement filters
+   - Create job listings
+   - Practice API integration
 
 2. **Job Application**
+   - Create application form
+   - Handle form submission
+   - Implement basic validation
+   - Store application data
 
-   - Reviews job details
-   - Uploads resume
-   - Fills application form
-   - _Pain Point:_ Repetitive information entry
-   - _Opportunity:_ Auto-fill from profile
+## 4. Messaging Journey
 
-3. **Application Tracking**
+### Learning Focus: Basic Communication Features
 
-   - Views application status
-   - Receives updates
-   - _Opportunity:_ Real-time status notifications
+#### Steps & Implementation Points
 
-4. **Follow-up Actions**
-   - Connects with recruiters
-   - Saves interesting jobs
-   - _Opportunity:_ Smart follow-up reminders
+1. **Message Interface**
 
-## 3. Content Creator Journey
+   - Build chat UI
+   - Implement message sending
+   - Create conversation view
+   - Practice real-time updates
 
-### Scenario: Professional sharing industry insights
+2. **Message Management**
+   - Handle message storage
+   - Implement basic notifications
+   - Create message history
+   - Practice data relationships
 
-#### Steps & Touchpoints
+## 5. Responsive Design Journey
 
-1. **Content Creation**
+### Learning Focus: Responsive Layout Implementation
 
-   - Chooses content type (post, article)
-   - Writes content
-   - Adds media
-   - _Pain Point:_ Formatting issues
-   - _Opportunity:_ Rich text editor with templates
+#### Steps & Implementation Points
 
-2. **Audience Selection**
+1. **Navigation System**
 
-   - Chooses visibility
-   - Tags relevant connections
-   - _Opportunity:_ Smart audience suggestions
+   - Implement mobile menu
+   - Create tablet layout
+   - Build desktop navigation
+   - Practice responsive design
 
-3. **Post Publishing**
+2. **Content Layout**
+   - Create mobile-first design
+   - Implement breakpoints
+   - Build responsive components
+   - Practice CSS Grid/Flexbox
 
-   - Reviews post
-   - Publishes
-   - _Opportunity:_ Best time to post suggestions
+## Learning Outcomes
 
-4. **Engagement Management**
-   - Responds to comments
-   - Tracks engagement
-   - _Opportunity:_ Engagement analytics
+By implementing these journeys, students will learn to:
 
-## 4. Recruiter Journey
+- Build and manage user authentication
+- Create and manipulate data relationships
+- Implement responsive layouts
+- Handle form submissions and validation
+- Practice API integration
+- Manage state and data flow
+- Implement basic error handling
+- Use Git for version control
 
-### Scenario: HR professional seeking candidates
+## Implementation Guidelines
 
-#### Steps & Touchpoints
+1. **Start Simple**
 
-1. **Candidate Search**
+   - Begin with basic functionality
+   - Add features incrementally
+   - Focus on core concepts first
 
-   - Enters search criteria
-   - Uses advanced filters
-   - _Pain Point:_ Finding exact skill matches
-   - _Opportunity:_ AI-powered candidate matching
+2. **Progressive Enhancement**
 
-2. **Candidate Evaluation**
+   - Build mobile-first
+   - Add tablet support
+   - Enhance for desktop
 
-   - Reviews profiles
-   - Checks mutual connections
-   - _Opportunity:_ Skill verification system
+3. **Code Organization**
 
-3. **Initial Contact**
+   - Follow component structure
+   - Practice clean code principles
+   - Document your code
 
-   - Sends connection request
-   - Writes personalized message
-   - _Pain Point:_ Low response rates
-   - _Opportunity:_ Message templates
+4. **Testing & Debugging**
+   - Test on different devices
+   - Handle common errors
+   - Practice debugging skills
 
-4. **Candidate Management**
-   - Tracks communication
-   - Manages pipeline
-   - _Opportunity:_ CRM integration
+---
 
-## 5. Network Builder Journey
-
-### Scenario: Professional expanding their network
-
-#### Steps & Touchpoints
-
-1. **Connection Discovery**
-
-   - Views suggested connections
-   - Searches by industry/company
-   - _Pain Point:_ Finding relevant connections
-   - _Opportunity:_ Smart connection suggestions
-
-2. **Connection Request**
-
-   - Reviews profile
-   - Personalizes request
-   - _Opportunity:_ Context-aware message suggestions
-
-3. **Connection Management**
-
-   - Organizes connections
-   - Creates groups
-   - _Opportunity:_ Smart grouping suggestions
-
-4. **Engagement**
-   - Interacts with connections
-   - Shares content
-   - _Opportunity:_ Engagement reminders
-
-## 6. Company Page Manager Journey
-
-### Scenario: Business professional managing company presence
-
-#### Steps & Touchpoints
-
-1. **Page Setup**
-
-   - Creates company page
-   - Adds company information
-   - _Pain Point:_ Verification process
-   - _Opportunity:_ Quick verification for established companies
-
-2. **Content Management**
-
-   - Posts updates
-   - Shares company news
-   - _Opportunity:_ Content calendar
-
-3. **Employee Management**
-
-   - Invites employees
-   - Manages admin access
-   - _Pain Point:_ Employee verification
-   - _Opportunity:_ Bulk employee import
-
-4. **Analytics & Insights**
-   - Views page analytics
-   - Tracks engagement
-   - _Opportunity:_ Competitor analysis
-
-## 7. Mobile User Journey
-
-### Scenario: Professional using the platform on mobile
-
-#### Steps & Touchpoints
-
-1. **Quick Actions**
-
-   - Views notifications
-   - Responds to messages
-   - _Pain Point:_ Limited screen space
-   - _Opportunity:_ Gesture-based navigation
-
-2. **Content Consumption**
-
-   - Scrolls feed
-   - Reads articles
-   - _Pain Point:_ Slow loading
-   - _Opportunity:_ Offline reading mode
-
-3. **Mobile-Specific Features**
-
-   - Uses camera for profile
-   - Shares location
-   - _Opportunity:_ AR features for networking
-
-4. **Cross-Device Sync**
-   - Continues on desktop
-   - Syncs preferences
-   - _Opportunity:_ Seamless device switching
-
-## Key Success Metrics for User Journeys
-
-1. **Completion Rates**
-
-   - Profile completion
-   - Job application completion
-   - Connection request acceptance
-
-2. **Engagement Metrics**
-
-   - Time spent on platform
-   - Content creation rate
-   - Message response rate
-
-3. **Satisfaction Metrics**
-
-   - Net Promoter Score
-   - Feature adoption rate
-   - User retention rate
-
-4. **Technical Metrics**
-   - Page load times
-   - Error rates
-   - Mobile responsiveness
+This document focuses on the core journeys that students will implement as part of their learning experience. Each journey is designed to teach specific development concepts while building a functional professional networking platform.

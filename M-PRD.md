@@ -1,259 +1,135 @@
-# Market Product Requirements Document (M-PRD)
 
-## Prok Professional Networking App - Responsive UI Implementation
+---
+
+# Prok Professional Networking App - Tutorial Module: Responsive UI
 
-### 1. Executive Summary
+### 1. Overview
 
-The Prok Professional Networking app requires a comprehensive responsive UI implementation to ensure optimal user experience across all devices. This implementation will focus on creating a seamless, performant, and accessible interface that caters to our diverse user base while meeting specific business metrics and technical requirements.
+This document outlines the requirements for a **tutorial-based, full-stack module** designed to teach students how to build a responsive UI for a professional networking app, similar to LinkedIn. The primary focus is on **hands-on learning outcomes** and practical application of concepts, not production-level features or advanced optimizations.
 
-### 2. Market Analysis
+### 2. Target Audience
 
-#### 2.1 Target Market Segments
+This tutorial is ideal for:
 
-1. **Primary Users:**
-   - Young to Mid-Career Professionals (2-10 years experience)
-   - Recruiters and Hiring Managers
-   - Thought Leaders & Industry Experts
-   - SMB Owners & Entrepreneurs
+* Students learning full-stack web development.
+* Beginner to intermediate developers with **basic familiarity with HTML, CSS, JavaScript, and Python fundamentals**.
+* Anyone interested in understanding and building a responsive UI for a professional networking (LinkedIn-style) application.
 
-#### 2.2 User Behavior Patterns
+### 3. Learning Goals
 
-- **Mobile (60% of traffic):**
+By the end of this tutorial, students will be able to:
 
-  - Quick checks and notifications
-  - Casual browsing
-  - Basic networking activities
-  - Light content consumption
+* **Understand and implement responsive layouts** that adapt seamlessly across mobile, tablet, and desktop screen sizes.
+* Design and implement **device-specific navigation systems**.
+* Build core UI components like a **dynamic feed and comprehensive profile pages** with basic interactivity.
+* Integrate essential features such as a **job board, job application process, and a basic messaging system**.
+* Practice and understand the **fundamental full-stack flow**, including how frontend and backend components communicate.
+* **Utilize version control (Git)** for collaborative development and project management.
+* Implement **basic error handling** for a smoother user experience.
 
-- **Desktop (35% of traffic):**
+### 4. Core Tutorial Features
 
-  - Job applications
-  - Content creation
-  - Deep networking
-  - Recruiting tasks
-  - Learning activities
+1.  **Navigation System:** Learn to implement navigation tailored for different devices, emphasizing responsive design principles.
+    * **Mobile:** **Hamburger menu** for compact screens.
+    * **Tablet:** Key features visibly accessible without clutter.
+    * **Desktop:** **Horizontal navigation bar** for efficient access.
+2.  **Feed Interface:** Build a dynamic content feed that adjusts to screen real estate.
+    * **Mobile:** **Single-column layout**.
+    * **Tablet:** **Two-column layout**.
+    * **Desktop:** **Three-column layout**.
+    * *Optional:* Implement simple infinite scroll for content loading.
+3.  **Profile Pages:** Create comprehensive user profiles.
+    * **Tabbed or sectioned layout** for organized information.
+    * **Editable profile information** with backend integration.
+4.  **Job Search & Application:** Develop functionalities for job discovery.
+    * **Job search interface with filters**.
+    * **Simple application form** for job submissions.
+5.  **Messaging System:** Implement a basic communication feature.
+    * **Basic chat UI** (real-time functionality is *not* required for this tutorial).
 
-- **Tablet (5% of traffic):**
-  - Content consumption
-  - Light professional tasks
-  - Casual networking
+### 5. Technical Requirements
 
-### 3. Product Requirements
+* **Frontend:** **React** for building interactive user interfaces.
+* **Backend:** **Flask** (Python) for server-side logic and API creation.
+* **Styling:** **Tailwind CSS** for rapid and utility-first styling.
+* **Version Control:** **Git** for tracking changes and managing project versions from day one.
+* **Deployment:**
+    * **Frontend:** **Netlify** or **AWS** for static site hosting.
+    * **Backend:** **Python Anywhere** for Flask application hosting.
+* **Non-Requirements:** No advanced optimization, complex accessibility features, or production-level deployment strategies are required. The emphasis is on **code clarity, learning, and fundamental concepts**.
 
-#### 3.1 Core Features & Responsive Requirements
+### 6. Success Metrics (Student Outcomes)
 
-1. **Navigation System**
+Upon completing this tutorial, students will successfully be able to:
 
-   - Mobile: Collapsible hamburger menu
-   - Tablet: Hybrid navigation with key features always visible
-   - Desktop: Full horizontal navigation
-   - Priority features must be accessible within 2 clicks/taps
+* Build and explain layouts that effectively adapt to various screen sizes.
+* Implement distinct navigation systems for mobile and desktop environments.
+* Create and edit a user profile, demonstrating data persistence.
+* Add and view posts within a dynamic feed interface.
+* Search for jobs and complete a basic application process.
+* Send and view messages within the app's basic messaging system.
+* Demonstrate a clear understanding of the basic full-stack flow, including frontend-backend communication.
+* Utilize Git for managing their project's codebase.
+* Implement basic error handling for a more robust user experience.
 
-2. **Feed Interface**
+### 7. Suggested Timeline (Flexible)
 
-   - Mobile: Single column, optimized for vertical scrolling
-   - Tablet: Two-column layout in landscape
-   - Desktop: Three-column layout with sidebars
-   - Infinite scroll with lazy loading
-   - Pull-to-refresh functionality
+This timeline is a guide and can be adjusted based on student pace and needs. Each milestone culminates in a working, deployable state. Students should anticipate dedicating **5-7 focused hours per day** to keep pace with this intensive schedule, allowing for learning new concepts, coding, debugging, and integration.
 
-3. **Profile Pages**
+---
 
-   - Mobile: Tabbed interface for different sections
-   - Tablet/Desktop: Side-by-side layout
-   - Responsive image handling
-   - Collapsible sections for detailed information
+**Milestone 1: Core Features & First Deployment (Days 1-6)**
 
-4. **Job Search & Application**
+* **Day 1:** Set up **React and Flask projects**, introduce Git, and build the **Login & Signup UI** (frontend). *(Estimated 6-8 hours due to initial setup and new concepts)*
+* **Day 2:** Implement **Authentication Backend** using Flask and connect it to the frontend UI.
+* **Day 3:** Develop **User Profile View & Edit UI** (frontend) and integrate with backend for data retrieval.
+* **Day 4:** Implement **User Profile Edit Logic** on the backend, allowing users to update their information.
+* **Day 5:** Build **Post Creation UI** (frontend) and implement the necessary backend logic for storing posts.
+* **Day 6:** **Deploy Milestone 1** *(Estimated 4-6 hours, can vary)*
+    * **Frontend:** Deploy to **Netlify** or **AWS**.
+    * **Backend:** Deploy to **Python Anywhere**.
 
-   - Mobile: Streamlined, step-by-step application process
-   - Tablet/Desktop: Advanced search with filters
-   - Save progress functionality
-   - Offline capability for draft applications
+---
 
-5. **Messaging System**
-   - Mobile: Full-screen chat interface
-   - Tablet: Split view with conversation list
-   - Desktop: Three-panel layout
-   - Real-time notifications
-   - File sharing capabilities
+**Milestone 2: Advanced Features & Second Deployment (Days 7-12)**
 
-#### 3.2 Technical Requirements
+* **Day 7:** Implement **Posts Listing UI** (frontend) and integrate with the backend API to fetch existing posts.
+* **Day 8:** Build the **Basic Feed Display**, integrating posts into a responsive layout.
+* **Day 9:** Enhance the Feed with **Basic Interactions** (e.g., liking/commenting placeholders) and ensure responsiveness.
+* **Day 10:** Develop the **Comprehensive Navigation System** (mobile hamburger, tablet, desktop horizontal) and integrate with existing features.
+* **Day 11:** Implement the **Job Board & Application UI** (frontend) and corresponding backend API endpoints.
+* **Day 12:** **Deploy Milestone 2** *(Estimated 4-6 hours, can vary)*
+    * **Frontend:** Deploy to **Netlify** or **AWS**.
+    * **Backend:** Deploy to **Python Anywhere**.
 
-1. **Performance Metrics**
+---
 
-   - LCP: < 2.5s (mobile)
-   - FID/INP: < 100ms/200ms
-   - CLS: < 0.1
-   - Initial load: < 3s (mobile), < 1.5s (desktop)
-   - Bundle size: < 500KB (gzipped)
+**Milestone 3 and Beyond:**
 
-2. **Browser Support**
+* **Day 13:** Develop the **Messaging UI** (frontend) for basic chat functionality.
+* **Day 14:** Integrate **Messaging Backend Logic** (Flask) to send and receive messages.
+* **Day 15:** Implement **Final Messaging Features** (e.g., viewing conversation history) and refine UI.
+* **Day 16:** **Final Deployment** *(Estimated 3-5 hours)*
+    * **Frontend:** Deploy to **Netlify** or **AWS**.
+    * **Backend:** Deploy to **Python Anywhere**.
 
-   - Latest 3 versions of:
-     - Chrome
-     - Firefox
-     - Safari
-     - Edge
-   - No IE11 support required
+---
 
-3. **Device Support**
-   - Mobile: 320px - 428px
-   - Tablet: 429px - 1024px
-   - Desktop: 1025px+
+### 8. Quality Criteria
 
-### 4. Success Metrics
+* Code is **readable, well-commented, and adheres to basic coding standards**.
+* **Responsive breakpoints** function correctly, adapting the UI across various device sizes.
+* All main features are **fully demo-able and functional**.
+* Students can **clearly explain their code** and the underlying concepts.
+* Basic **error handling** is implemented for common user interactions.
 
-#### 4.1 Business Metrics
+### 9. Communication Plan
 
-- Mobile engagement rate: +25%
-- Profile completion rate: +15%
-- Job application completion: +20%
-- Connection acceptance rate: +10%
-- Mobile bounce rate: -30%
-- Mobile-initiated actions: +15%
-- New user registrations: +10%
+* **Daily check-ins or progress updates** to monitor learning and address immediate concerns.
+* Dedicated **Q&A sessions** to clarify doubts and deepen understanding.
+* Encourage **sharing of code and demos** among students to foster a collaborative learning environment.
 
-#### 4.2 Technical Metrics
+---
 
-- Core Web Vitals compliance
-- Cross-browser compatibility
-- Responsive breakpoint accuracy
-- Performance benchmarks
-- Accessibility compliance (WCAG 2.1)
-
-### 5. Implementation Timeline (16 Days)
-
-#### Phase 1: Core Feed & Profile (Days 1-6)
-
-- Day 1-2: Basic responsive layout setup
-- Day 3-4: Navigation system implementation
-- Day 5-6: Profile pages and feed interface
-
-#### Phase 2: Job Search & Application (Days 7-10)
-
-- Day 7-8: Job search interface and filtering system
-- Day 9-10: Application process and save functionality
-
-#### Phase 3: Messaging & Connections (Days 11-13)
-
-- Day 11: Chat interface and real-time features
-- Day 12-13: Connection management and notifications
-
-#### Phase 4: Content Creation & Admin (Days 14-16)
-
-- Day 14: Post creation and company pages
-- Day 15: Admin dashboard implementation
-- Day 16: Final testing and deployment
-
-#### Testing & Optimization (Parallel to Development)
-
-- Continuous testing across all phases
-- Performance optimization
-- Bug fixes
-- User feedback implementation
-
-### 6. Risk Assessment
-
-#### 6.1 Technical Risks
-
-- Performance degradation on older devices
-- Browser compatibility issues
-- Network latency affecting real-time features
-- Image optimization challenges
-- Compressed timeline may impact quality
-
-#### 6.2 Mitigation Strategies
-
-- Progressive enhancement approach
-- Comprehensive testing matrix
-- CDN implementation
-- Responsive image optimization
-- Performance monitoring
-- Prioritize critical features and implement agile development practices
-- Use pre-built components where possible to accelerate development
-
-### 7. Resource Requirements
-
-#### 7.1 Team (Adjusted for 16-day timeline)
-
-- 3 Frontend Developers
-- 1 UI/UX Designer
-- 2 QA Engineers
-- 1 Project Manager
-
-#### 7.2 Tools & Infrastructure
-
-- BrowserStack/LambdaTest
-- Performance monitoring tools
-- Design system
-- Version control system
-- CI/CD pipeline
-- Component library for rapid development
-
-### 8. Competitive Differentiation
-
-- Lighter, faster mobile experience
-- Better information hierarchy
-- Purpose-built experiences for different user segments
-- Superior accessibility features
-- Optimized performance metrics
-
-### 9. Daily Milestones
-
-#### Week 1 (Days 1-6)
-
-- **Day 1:** Project setup, environment configuration
-- **Day 2:** Basic responsive layout implementation
-- **Day 3:** Navigation system for mobile
-- **Day 4:** Navigation system for tablet/desktop
-- **Day 5:** Profile page mobile view
-- **Day 6:** Profile page tablet/desktop view
-
-#### Week 2 (Days 7-13)
-
-- **Day 7:** Job search interface mobile
-- **Day 8:** Job search interface tablet/desktop
-- **Day 9:** Application process mobile
-- **Day 10:** Application process tablet/desktop
-- **Day 11:** Chat interface implementation
-- **Day 12:** Connection management system
-- **Day 13:** Real-time features and notifications
-
-#### Week 3 (Days 14-16)
-
-- **Day 14:** Content creation tools
-- **Day 15:** Admin dashboard
-- **Day 16:** Final testing and deployment
-
-### 10. Quality Assurance Plan
-
-#### 10.1 Testing Strategy
-
-- Automated testing for critical paths
-- Cross-browser testing
-- Device testing matrix
-- Performance testing
-- Accessibility testing
-
-#### 10.2 Acceptance Criteria
-
-- All responsive breakpoints working correctly
-- Performance metrics met
-- Accessibility standards compliance
-- Cross-browser compatibility
-- Mobile-first approach maintained
-
-### 11. Communication Plan
-
-#### 11.1 Daily Updates
-
-- Morning standup meetings
-- End-of-day progress reports
-- Issue tracking and resolution
-
-#### 11.2 Stakeholder Updates
-
-- Daily progress reports
-- Risk assessment updates
-- Resource allocation updates
+This document has been simplified and tailored for a tutorial context. Any advanced or production-specific features from other potential project requirements have been intentionally removed or ignored to maintain focus on core learning objectives for freshers.
+```

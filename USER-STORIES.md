@@ -1,5 +1,7 @@
 # User Stories
 
+This document outlines the core user stories that students will implement in this tutorial-based project. Each story focuses on teaching specific development concepts and practical implementation skills.
+
 ## Table of Contents
 
 1. [Authentication & Profile Management](#1-authentication--profile-management)
@@ -12,100 +14,120 @@
 
 ## 1. Authentication & Profile Management
 
-### Registration & Login
+### Learning Focus: Basic Authentication and Data Management
 
-- As a new user, I want to sign up with my email so that I can create my professional profile.
-- As a user, I want to sign in with my social media accounts so that I can quickly access the platform.
-- As a user, I want to reset my password so that I can regain access to my account if I forget it.
-- As a user, I want to enable two-factor authentication so that I can secure my account.
+#### Registration & Login
 
-### Profile Management
+- As a new user, I want to register with email and password so that I can create my account
+- As a user, I want to log in with my credentials so that I can access my profile
+- As a user, I want to see validation errors so that I can correct my input
 
-- As a user, I want to create a detailed professional profile so that others can learn about my experience.
-- As a user, I want to upload a professional photo so that others can recognize me.
-- As a user, I want to add my work experience so that others can see my career progression.
-- As a user, I want to list my skills so that recruiters can find me for relevant opportunities.
-- As a user, I want to add my education history so that others can verify my qualifications.
-- As a user, I want to customize my profile visibility so that I can control who sees my information.
-- As a user, I want to add a professional headline so that others can quickly understand my role.
+#### Profile Management
 
-## 2. Feed & Content Management
+- As a user, I want to create a basic profile so that others can learn about me
+- As a user, I want to upload a profile picture so that others can recognize me
+- As a user, I want to edit my profile information so that it stays current
+- As a user, I want to view my profile so that I can verify my information
 
-### Content Creation
+## 2. Content Management
 
-- As a user, I want to create posts so that I can share my professional insights.
-- As a user, I want to share articles so that I can contribute to industry discussions.
-- As a user, I want to add media to my posts so that I can make them more engaging.
-- As a user, I want to schedule posts so that I can maintain a consistent presence.
+### Learning Focus: CRUD Operations and Data Relationships
 
-### Content Interaction
+#### Post Creation
 
-- As a user, I want to like posts so that I can show appreciation for content.
-- As a user, I want to comment on posts so that I can engage in discussions.
-- As a user, I want to share posts so that I can spread valuable content.
-- As a user, I want to save posts so that I can reference them later.
+- As a user, I want to create a new post so that I can share my thoughts
+- As a user, I want to add text to my post so that I can express my ideas
+- As a user, I want to see my post after creation so that I can verify it
 
-### Feed Management
+#### Feed Interaction
 
-- As a user, I want to customize my feed so that I see relevant content.
-- As a user, I want to filter my feed by content type so that I can focus on specific topics.
-- As a user, I want to mute certain users so that I can control my feed content.
-- As a user, I want to report inappropriate content so that I can help maintain community standards.
+- As a user, I want to view posts in my feed so that I can see updates
+- As a user, I want to like posts so that I can show appreciation
+- As a user, I want to comment on posts so that I can engage in discussion
 
-## 3. Networking & Connections
+## 3. Job Board
 
-### Connection Management
+### Learning Focus: Search and Filter Implementation
 
-- As a user, I want to send connection requests so that I can expand my network.
-- As a user, I want to accept connection requests so that I can grow my professional network.
-- As a user, I want to manage my connections so that I can organize my network.
-- As a user, I want to see mutual connections so that I can find common ground.
+#### Job Search
 
-### Network Discovery
+- As a user, I want to search for jobs so that I can find opportunities
+- As a user, I want to filter jobs by location so that I can find nearby positions
+- As a user, I want to view job details so that I can learn more about the position
 
-- As a user, I want to find people in my industry so that I can connect with peers.
-- As a user, I want to see suggested connections so that I can grow my network.
-- As a user, I want to search for professionals by skills so that I can find experts.
-- As a user, I want to filter connections by company so that I can find colleagues.
+#### Job Application
 
-## 4. Job Board & Applications
+- As a user, I want to apply for a job so that I can pursue opportunities
+- As a user, I want to see my applications so that I can track my progress
+- As a user, I want to receive confirmation so that I know my application was received
 
-### Job Search
+## 4. Messaging System
 
-- As a job seeker, I want to search for jobs by location so that I can find opportunities near me.
-- As a job seeker, I want to filter jobs by salary so that I can find suitable positions.
-- As a job seeker, I want to save job searches so that I can easily find new opportunities.
-- As a job seeker, I want to set up job alerts so that I can be notified of new positions.
+### Learning Focus: Basic Communication Features
 
-### Application Management
+#### Direct Messaging
 
-- As a job seeker, I want to upload my resume so that I can apply for jobs.
-- As a job seeker, I want to track my applications so that I can follow up appropriately.
-- As a job seeker, I want to save jobs so that I can apply later.
-- As a job seeker, I want to see application status so that I can know where I stand.
+- As a user, I want to send a message so that I can communicate with others
+- As a user, I want to view my messages so that I can read conversations
+- As a user, I want to see when messages are sent so that I know they were delivered
 
-### Recruiter Features
+## 5. Responsive Design
 
-- As a recruiter, I want to post jobs so that I can find candidates.
-- As a recruiter, I want to search for candidates so that I can fill positions.
-- As a recruiter, I want to manage applications so that I can track the hiring process.
-- As a recruiter, I want to contact candidates so that I can discuss opportunities.
+### Learning Focus: Responsive Layout Implementation
 
-## 5. Messaging System
+#### Mobile Experience
 
-### Direct Messaging
+- As a mobile user, I want to access the site so that I can use it on my phone
+- As a mobile user, I want to navigate easily so that I can find features
+- As a mobile user, I want to view content clearly so that I can read it comfortably
 
-- As a user, I want to send messages to connections so that I can communicate privately.
-- As a user, I want to share files in messages so that I can collaborate effectively.
-- As a user, I want to see message status so that I know if it was delivered and read.
-- As a user, I want to search my messages so that I can find past conversations.
+#### Desktop Experience
 
-### Group Messaging
+- As a desktop user, I want to use the full interface so that I can access all features
+- As a desktop user, I want to see more content at once so that I can browse efficiently
+- As a desktop user, I want to use keyboard shortcuts so that I can navigate quickly
 
-- As a user, I want to create group chats so that I can communicate with multiple people.
-- As a user, I want to add participants to group chats so that I can include relevant people.
-- As a user, I want to leave group chats so that I can manage my conversations.
-- As a user, I want to mute group notifications so that I can control my alerts.
+## Learning Outcomes
+
+By implementing these user stories, students will learn to:
+
+- Build and manage user authentication
+- Create and manipulate data relationships
+- Implement responsive layouts
+- Handle form submissions and validation
+- Practice API integration
+- Manage state and data flow
+- Implement basic error handling
+- Use Git for version control
+
+## Implementation Guidelines
+
+1. **Start Simple**
+
+   - Begin with basic functionality
+   - Add features incrementally
+   - Focus on core concepts first
+
+2. **Progressive Enhancement**
+
+   - Build mobile-first
+   - Add tablet support
+   - Enhance for desktop
+
+3. **Code Organization**
+
+   - Follow component structure
+   - Practice clean code principles
+   - Document your code
+
+4. **Testing & Debugging**
+   - Test on different devices
+   - Handle common errors
+   - Practice debugging skills
+
+---
+
+This document focuses on the core user stories that students will implement as part of their learning experience. Each story is designed to teach specific development concepts while building a functional professional networking platform.
 
 ## 6. Company Pages
 
