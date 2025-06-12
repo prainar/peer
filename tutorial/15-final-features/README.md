@@ -151,6 +151,14 @@ git push origin main
 
 <img src="final-features.png" alt="Final Features UI" width="120"/>
 
+## Preview
+
+![Analytics Dashboard](https://i.imgur.com/7TZxGp4.png)
+![User Settings](https://i.imgur.com/8TZxGp5.png)
+![Admin Panel](https://i.imgur.com/9TZxGp6.png)
+
+## Overview
+
 ## ✅ Deliverable
 
 A polished and optimized messaging system with:

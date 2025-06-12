@@ -170,6 +170,14 @@ A fully responsive and accessible navigation system with:
         navigation.js
 ```
 
+## Preview
+
+![Navigation Bar](https://i.imgur.com/1SZxGp7.png)
+![Mobile Menu](https://i.imgur.com/2SZxGp8.png)
+![Breadcrumbs](https://i.imgur.com/3SZxGp9.png)
+
+## Overview
+
 ---
 
 If you have any questions or need help, feel free to open an issue or reach out to the instructor.

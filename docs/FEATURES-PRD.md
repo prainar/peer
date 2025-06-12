@@ -44,7 +44,6 @@ This document outlines the features for a tutorial-based professional networking
 - **Learning Goal:** Create search and filter functionality
 - **Features:**
   - Job search with filters
-  - Basic application form
 
 ## 3. Final Features (Milestone 3)
 

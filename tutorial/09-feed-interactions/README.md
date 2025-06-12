@@ -131,6 +131,14 @@ git push origin main
 
 <img src="feed-interactions.png" alt="Feed Interactions UI" width="120"/>
 
+## Preview
+
+![Like Button](https://i.imgur.com/7RZxGp4.png)
+![Comment Section](https://i.imgur.com/8RZxGp5.png)
+![Share Options](https://i.imgur.com/9RZxGp6.png)
+
+## Overview
+
 ## ✅ Deliverable
 
 A fully interactive feed system with:

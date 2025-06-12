@@ -168,7 +168,9 @@ git push origin main
 
 ## 📸 Preview
 
-<img src="profile-ui.png" alt="Profile UI" width="120"/>
+![Profile View](https://i.imgur.com/OQZxGp4.png)
+![Profile Edit](https://i.imgur.com/PQZxGp5.png)
+![Profile Settings](https://i.imgur.com/QQZxGp6.png)
 
 ## ✅ Deliverable
 

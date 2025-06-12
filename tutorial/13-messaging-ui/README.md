@@ -140,6 +140,14 @@ git push origin main
 
 <img src="messaging-ui.png" alt="Messaging UI" width="120"/>
 
+## Preview
+
+![Chat Interface](https://i.imgur.com/1TZxGp7.png)
+![Message Thread](https://i.imgur.com/2TZxGp8.png)
+![Notifications](https://i.imgur.com/3TZxGp9.png)
+
+## Overview
+
 ## ✅ Deliverable
 
 A fully functional messaging interface with:

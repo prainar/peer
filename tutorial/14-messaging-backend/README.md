@@ -138,7 +138,11 @@ git push origin main
 
 ## 📸 Preview
 
-<img src="messaging-backend.png" alt="Messaging Backend" width="120"/>
+![WebSocket Architecture](https://i.imgur.com/4TZxGp1.png)
+![Message Queue](https://i.imgur.com/5TZxGp2.png)
+![Database Schema](https://i.imgur.com/6TZxGp3.png)
+
+## Overview
 
 ## ✅ Deliverable
 

@@ -168,7 +168,9 @@ git push origin main
 
 ## 📸 Preview
 
-<img src="auth-flow.png" alt="Authentication Flow" width="120"/>
+![Authentication Flow](https://i.imgur.com/LQZxGp1.png)
+![JWT Token Structure](https://i.imgur.com/MQZxGp2.png)
+![API Endpoints](https://i.imgur.com/NQZxGp3.png)
 
 ## ✅ Deliverable
 

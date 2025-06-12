@@ -131,6 +131,14 @@ git push origin main
 
 <img src="basic-feed.png" alt="Basic Feed UI" width="120"/>
 
+## Preview
+
+![Feed Layout](https://i.imgur.com/4RZxGp1.png)
+![Feed Filters](https://i.imgur.com/5RZxGp2.png)
+![Feed Sorting](https://i.imgur.com/6RZxGp3.png)
+
+## Overview
+
 ## ✅ Deliverable
 
 A responsive and engaging feed system with:

@@ -129,6 +129,14 @@ git push origin main
 
 <img src="posts-listing.png" alt="Posts Listing UI" width="120"/>
 
+## Preview
+
+![Posts Feed](https://i.imgur.com/1RZxGp7.png)
+![Post Card](https://i.imgur.com/2RZxGp8.png)
+![Infinite Scroll](https://i.imgur.com/3RZxGp9.png)
+
+## Overview
+
 ## ✅ Deliverable
 
 A performant and responsive post listing system with:

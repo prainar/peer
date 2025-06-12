@@ -111,7 +111,11 @@ git push origin main
 
 ## 📸 Preview
 
-<img src="deployment.png" alt="Deployment Process" width="120"/>
+![Deployment Architecture](https://i.imgur.com/XQZxGp4.png)
+![CI/CD Pipeline](https://i.imgur.com/YQZxGp5.png)
+![Environment Setup](https://i.imgur.com/ZQZxGp6.png)
+
+## Overview
 
 ## ✅ Deliverable
 

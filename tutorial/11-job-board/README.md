@@ -138,7 +138,9 @@ git push origin main
 
 ## 📸 Preview
 
-<img src="job-board.png" alt="Job Board UI" width="120"/>
+![Job Listings](https://i.imgur.com/4SZxGp1.png)
+![Job Details](https://i.imgur.com/5SZxGp2.png)
+![Job Search](https://i.imgur.com/6SZxGp3.png)
 
 ## ✅ Deliverable
 

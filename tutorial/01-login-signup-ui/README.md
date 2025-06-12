@@ -6,7 +6,7 @@ Set up the development environment and create the initial project structure for 
 
 ## 📚 Learning Outcomes
 
-- Set up development environment 
+- Set up development environment
 - Initialize project structure
 - Configure basic dependencies
 - Create initial documentation
@@ -100,7 +100,7 @@ _ **Validation:** Basic client-side validation to ensure required fields are not
   - Frontend: http://localhost:3000
   - Backend API: http://localhost:5000
 
-  6.**Testing**
+    6.**Testing**
 
   - Test form validation
   - Test responsive design
@@ -153,11 +153,13 @@ git merge assignment-1-feature # Merge the feature branch into your main
 git push origin main        # Push the updated main to your fork online
 ```
 
-```
+## Preview
 
-## 📸 Preview
+![Login Page](https://i.imgur.com/8KQZxGp.png)
+![Signup Page](https://i.imgur.com/JQZxGp8.png)
+![Forgot Password](https://i.imgur.com/KQZxGp9.png)
 
-<img src="login-signup.png" alt="Login Signup UI" width="120"/>
+## Overview
 
 ## ✅ Deliverable
 
@@ -166,4 +168,7 @@ A working project setup with login/signup UI, properly version controlled with G
 ---
 
 If you have any questions or need help, feel free to open an issue or reach out to the instructor.
+
+```
+
 ```

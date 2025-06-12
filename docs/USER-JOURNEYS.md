@@ -53,12 +53,6 @@ This document outlines the key user journeys that students will implement in thi
    - Create job listings
    - Practice API integration
 
-2. **Job Application**
-   - Create application form
-   - Handle form submission
-   - Implement basic validation
-   - Store application data
-
 ## 4. Messaging Journey
 
 ### Learning Focus: Basic Communication Features

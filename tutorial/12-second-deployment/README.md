@@ -135,6 +135,14 @@ git push origin main
 
 <img src="second-deployment.png" alt="Second Deployment Process" width="120"/>
 
+## Preview
+
+![Deployment Dashboard](https://i.imgur.com/7SZxGp4.png)
+![Monitoring](https://i.imgur.com/8SZxGp5.png)
+![Scaling](https://i.imgur.com/9SZxGp6.png)
+
+## Overview
+
 ## ✅ Deliverable
 
 A fully deployed and optimized application with:

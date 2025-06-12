@@ -148,6 +148,14 @@ git push origin main
 
 <img src="final-deployment.png" alt="Final Deployment Process" width="120"/>
 
+## Preview
+
+![Production Architecture](https://i.imgur.com/1UZxGp7.png)
+![Load Balancing](https://i.imgur.com/2UZxGp8.png)
+![Security Setup](https://i.imgur.com/3UZxGp9.png)
+
+## Overview
+
 ## ✅ Deliverable
 
 A fully deployed production application with:
