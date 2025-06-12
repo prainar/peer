@@ -1,63 +1,71 @@
-# Day 2: Authentication Backend
+# Day 2: authentication-backend
 
 ## 🎯 Goal
 
-Implement Authentication Backend using Flask and connect it to the frontend UI.
+Implement the authentication backend using Flask, and integrate it with the frontend UI.
 
 ## 📚 Learning Outcomes
 
-- Implement user authentication in Flask
-- Set up JWT token-based authentication
-- Create secure password hashing
-- Implement user registration and login endpoints
-- Connect frontend authentication UI with backend
-- Handle authentication errors and responses
+- Implement user authentication in Flask  
+- Set up JWT token-based authentication  
+- Create secure password hashing  
+- Implement user registration and login endpoints  
+- Connect frontend authentication UI with backend  
+- Handle authentication errors and responses  
 
 ## 🚀 Getting Started
 
-Ensure your Day 1 setup is complete and all dependencies are installed. You should have separate frontend and backend directories. Basic understanding of JWT and Flask routes/middleware is required.
+Ensure your Day 1 setup is complete and all dependencies are installed. You should have separate `frontend/` and `backend/` directories. Basic understanding of JWT and Flask routes/middleware is required.
 
 ## 🛠️ Tasks
 
 ### Create and Switch to a New Branch
 
-> **IMPORTANT:** Always create a new branch for each distinct piece of work.
+> **IMPORTANT:** Never work directly on the main branch! Always create a new branch for each assignment or distinct piece of work.
 
 ```bash
 # First, ensure you are on your 'main' branch and it's up-to-date
 git checkout main
-git pull origin main  # Get any potential updates from your own fork's main
+git pull origin main
 
-# Now, create and switch to a new branch for this day's assignment/feature
+# Now, create and switch to a new branch for this assignment
 git checkout -b day-2-authentication
 ```
 
-> **What's happening?** You're creating an independent line of development for this day's tasks.
+> **What's happening?** You're creating an isolated branch to implement your authentication logic without modifying the main branch prematurely.
 
 ### Set Up Development Environment
 
-#### Backend Virtual Environment (if not already active from previous day):
+#### Backend Environment (Reactivate if needed)
 
 ```bash
 cd backend
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-#### Install Backend Dependencies:
+#### Install Backend Dependencies
 
 ```bash
 pip install Flask-SQLAlchemy Flask-Migrate Werkzeug PyJWT Flask-JWT-Extended Flask-CORS
 ```
 
-#### Frontend (already set up from Day 1):
+> These libraries will help manage your database, secure passwords, and enable token-based authentication with cross-origin support.
 
-Ensure your frontend directory has all Node.js dependencies installed via `npm install`.
+#### Frontend Preparation
+
+Ensure your frontend already has dependencies installed from Day 1:
+
+```bash
+cd frontend
+npm install
+```
 
 ### Backend Implementation
 
-#### Set up User Model and Database
+#### Database Setup and User Model
 
-Configure `app.py` to use SQLAlchemy and define a User model with fields: id, username, email, and password_hash. Integrate password hashing using werkzeug.security's generate_password_hash and check_password_hash.
+- Create a `User` model with fields: `id`, `username`, `email`, and `password_hash`.
+- Use `generate_password_hash` and `check_password_hash` from `werkzeug.security`.
 
 ```bash
 flask db init
@@ -65,99 +73,107 @@ flask db migrate -m "Initial migration: Create User table"
 flask db upgrade
 ```
 
-#### Create Registration Endpoint (POST /api/signup)
+#### Registration Endpoint (POST `/api/signup`)
 
-- **Purpose:** Handle new user registration
-- **Request Body:** username, email, and password
-- **Backend Logic:**
-  - Hash the received password
-  - Create a new User instance
-  - Add the new user to the database
-  - Handle existing email/username conflicts
+- **Purpose:** Allow new users to register
+- **Input:** `username`, `email`, `password`
+- **Logic:**
+  - Hash password
+  - Save new user
+  - Validate uniqueness
 - **Responses:**
-  - Success: 201 Created with user data
-  - Error: 400 Bad Request for invalid data
+  - `201 Created` – user created
+  - `400 Bad Request` – invalid input or duplicate user
 
-#### Create Login Endpoint (POST /api/login)
+#### Login Endpoint (POST `/api/login`)
 
-- **Purpose:** Authenticate users and provide JWT token
-- **Request Body:** email/username and password
-- **Backend Logic:**
+- **Purpose:** Authenticate users and issue JWT token
+- **Input:** `username/email`, `password`
+- **Logic:**
   - Verify credentials
   - Generate JWT token
-  - Return token and user data
+  - Return token + user data
 - **Responses:**
-  - Success: 200 OK with token
-  - Error: 401 Unauthorized for invalid credentials
+  - `200 OK` – success with token
+  - `401 Unauthorized` – incorrect credentials
 
 ### Frontend Integration
 
 #### Connect Login Form to Backend
 
-- Modify the Login component to make POST requests to `/api/login`
-- Send credentials from form state
-- Handle loading states and errors
+- Send POST request to `/api/login` with form data
+- Use `fetch` or `axios` to make request
+- Display loading or error states
 
 #### Handle Authentication Responses
 
-- Parse JSON responses from the backend
-- Display success/error messages in the UI
-- Use useState for UI message management
+- Show success or error messages based on backend response
+- Use `useState` to manage feedback and message UI
 
-#### Implement Token Storage
+#### Token Storage and Usage
 
-- Extract token from login response
-- Store token securely in localStorage
-- Add token to subsequent API requests
+- Store JWT token in `localStorage`
+- Attach token to protected API requests
+
+```js
+localStorage.setItem("token", token)
+```
 
 ### Security Features
 
-- Implement password validation (minimum 8 characters, special characters)
-- Add rate limiting for auth endpoints
-- Set up CORS for frontend-backend communication
-- Add input sanitization for all user inputs
+- Enforce minimum password complexity
+- Add basic rate limiting on auth endpoints
+- Set up CORS between frontend and backend
+- Sanitize all user inputs
 
 ### Run the Application
 
 ```bash
-# Start the backend server (in one terminal)
+# Backend
 cd backend
 flask run
 
-# Start the frontend development server (in another terminal)
+# Frontend
 cd frontend
 npm run dev
 ```
 
-The application will be available at:
+Application available at:
 
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
+- Frontend: [http://localhost:3000](http://localhost:3000)  
+- Backend API: [http://localhost:5000](http://localhost:5000)
 
 ### Testing
 
-- Test registration flow with valid and invalid data
-- Test login flow with correct and incorrect credentials
-- Test token validation and expiration
-- Test protected route access
-- Test error handling and user feedback
+- Test registration with new and duplicate data
+- Test login with valid/invalid credentials
+- Confirm JWT token is returned and stored
+- Access protected routes with/without token
+- Verify frontend error messages display properly
 
-## 🔄 Git Workflow
+---
 
-### Develop and Save Your Progress
+### Git Workflow
+
+1. **Develop and Save Your Progress**
 
 ```bash
+git status
 git add .
 git commit -m "Day 2: Implement authentication backend and frontend integration"
 ```
 
-### Push Your Changes to Your Fork
+> Use clear commit messages that explain the key changes you've made.
+
+2. **Push Your Changes to Your Fork**
 
 ```bash
 git push -u origin day-2-authentication
 ```
 
-### Merge After Completion
+> Uploads your branch to your forked repo.
+
+3. **Merge After Assignment Completion**
 
 ```bash
 git checkout main
@@ -166,48 +182,22 @@ git merge day-2-authentication
 git push origin main
 ```
 
+> Merge your work only once it's been tested and finalized.
+
+---
+
 ## 📸 Preview
 
-![Authentication Flow](https://i.imgur.com/LQZxGp1.png)
-![JWT Token Structure](https://i.imgur.com/MQZxGp2.png)
+![Authentication Flow](https://i.imgur.com/LQZxGp1.png)  
+![JWT Token Structure](https://i.imgur.com/MQZxGp2.png)  
 ![API Endpoints](https://i.imgur.com/NQZxGp3.png)
 
 ## ✅ Deliverable
 
-A fully functional authentication system with:
+A fully functional authentication system:
 
-- Secure backend implementation with JWT
-- Frontend integration with protected routes
-- Proper error handling and user feedback
-- All tests passing
-- Clean, documented code
+- Secure user auth with JWT in Flask backend  
+- Integrated frontend login with proper token handling  
+- Error messaging and form feedback  
+- All tests passing and code documented
 
-## 🗂️ Folder Structure
-
-```
-02-authentication-backend/
-  README.md
-  final/         # Your completed solution goes here
-  backend/       # Flask backend code
-    app.py
-    requirements.txt
-    models/
-      user.py
-    routes/
-      auth.py
-    middleware/
-      auth.py
-  frontend/      # React frontend code
-    package.json
-    src/
-      services/
-        auth.js
-      components/
-        Login.jsx
-        Signup.jsx
-      App.jsx
-```
-
----
-
-If you have any questions or need help, feel free to open an issue or reach out to the instructor.

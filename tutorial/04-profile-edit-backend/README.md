@@ -1,8 +1,8 @@
-# Day 4: Profile Edit Backend
+# Day 4: profile-edit-backend
 
 ## 🎯 Goal
 
-Implement backend functionality for user profile management, including data updates and image handling.
+Implement backend functionality for user profile management, including data updates, image handling, and frontend integration.
 
 ## 📚 Learning Outcomes
 
@@ -12,10 +12,11 @@ Implement backend functionality for user profile management, including data upda
 - Handle profile data validation
 - Implement proper error handling
 - Set up secure file serving
+- Integrate frontend with backend
 
 ## 🚀 Getting Started
 
-Ensure your Day 3 profile UI implementation is complete and working. You should have a good understanding of file handling in Flask, database operations, and basic image processing concepts.
+Ensure your Day 3 profile UI implementation is complete and working. You should have a good understanding of file handling in Flask, database operations, and basic image processing concepts. The frontend should be ready for backend integration.
 
 ## 🛠️ Tasks
 
@@ -105,21 +106,35 @@ flask db upgrade
   - Success: 200 OK with image URL
   - Error: 400 Bad Request for invalid file
 
+### Frontend Integration
+
+#### Implement Profile Data Endpoints
+
+- Create `GET /api/profile` endpoint
+- Add `PUT /api/profile` endpoint
+- Create `POST /api/profile/image` endpoint
+- Handle authentication headers
+
+#### Set up Data Fetching
+
+- Add loading states
+- Implement error handling
+- Cache profile data
+- Handle offline scenarios
+
 ### Security Features
 
-#### Implement File Validation
+#### Basic File Validation
 
-- Add file type whitelist
-- Set maximum file size
-- Validate image dimensions
-- Check file content type
+- Check file type (only allow images: jpg, png)
+- Set maximum file size (5MB)
+- Basic file naming (use timestamp)
 
-#### Set up Secure File Serving
+#### Basic File Serving
 
-- Configure secure file paths
-- Implement access control
-- Add file expiration
-- Set up CDN integration
+- Set up secure file paths
+- Basic access control (only logged-in users)
+- Store files in a separate directory
 
 ### Run the Application
 
@@ -141,6 +156,7 @@ The application will be available at:
 - Test security measures and access control
 - Test error handling and recovery
 - Test rate limiting and abuse prevention
+- Test frontend-backend integration
 
 ## 🔄 Git Workflow
 
@@ -148,7 +164,7 @@ The application will be available at:
 
 ```bash
 git add .
-git commit -m "Day 4: Implement profile edit backend"
+git commit -m "Day 4: Implement profile edit backend and frontend integration"
 ```
 
 ### Push Your Changes to Your Fork
@@ -168,8 +184,8 @@ git push origin main
 
 ## 📸 Preview
 
-![Profile API](https://i.imgur.com/RQZxGp7.png)
-![Data Flow](https://i.imgur.com/SQZxGp8.png)
+![Profile API](https://i.imgur.com/RQZxGp7.png)  
+![Data Flow](https://i.imgur.com/SQZxGp8.png)  
 ![Database Schema](https://i.imgur.com/TQZxGp9.png)
 
 ## ✅ Deliverable
@@ -180,29 +196,7 @@ A secure and robust backend system with:
 - Secure image upload and processing
 - Proper validation and error handling
 - Security measures implemented
+- Frontend integration complete
 - Clean, documented code
 - All tests passing
 
-## 🗂️ Folder Structure
-
-```
-04-profile-edit-backend/
-  README.md
-  final/         # Your completed solution goes here
-  backend/       # Flask backend code
-    app.py
-    requirements.txt
-    models/
-      profile.py
-    routes/
-      profile.py
-    utils/
-      file_handler.py
-      image_processor.py
-    config/
-      upload.py
-```
-
----
-
-If you have any questions or need help, feel free to open an issue or reach out to the instructor.

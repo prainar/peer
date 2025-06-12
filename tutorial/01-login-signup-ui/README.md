@@ -168,8 +168,3 @@ A working project setup with login/signup UI, properly version controlled with G
 
 ---
 
-If you have any questions or need help, feel free to open an issue or reach out to the instructor.
-
-```
-
-```
