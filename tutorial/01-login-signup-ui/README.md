@@ -155,9 +155,10 @@ git push origin main        # Push the updated main to your fork online
 
 ## Preview
 
-![Login Page](https://i.imgur.com/8KQZxGp.png)
-![Signup Page](https://i.imgur.com/JQZxGp8.png)
-![Forgot Password](https://i.imgur.com/KQZxGp9.png)
+![Login Desktop View](login-desk.png)
+![Login Mobile View](login-mobile.png)
+![Signup Desktop View](signup-desk.png)
+![Signup Mobile View](sugnup-mobile.png)
 
 ## Overview
 

@@ -138,9 +138,9 @@ git push origin main
 
 ## 📸 Preview
 
-![Job Listings](https://i.imgur.com/4SZxGp1.png)
-![Job Details](https://i.imgur.com/5SZxGp2.png)
-![Job Search](https://i.imgur.com/6SZxGp3.png)
+![Job Board Desktop View](job-board-desk.png)
+![Job Board Mobile View 1](job-board-mobile.png)
+![Job Board Mobile View 2](job-board2-moile.png)
 
 ## ✅ Deliverable
 

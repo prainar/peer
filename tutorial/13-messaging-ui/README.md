@@ -142,9 +142,9 @@ git push origin main
 
 ## Preview
 
-![Chat Interface](https://i.imgur.com/1TZxGp7.png)
-![Message Thread](https://i.imgur.com/2TZxGp8.png)
-![Notifications](https://i.imgur.com/3TZxGp9.png)
+![Messaging Desktop View](message-desk.png)
+![Messaging Mobile View 1](message1-mobile.png)
+![Messaging Mobile View 2](message2-mobile.png)
 
 ## Overview
 

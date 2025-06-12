@@ -166,11 +166,10 @@ git merge day-3-profile-ui
 git push origin main
 ```
 
-## 📸 Preview
+## �� Preview
 
-![Profile View](https://i.imgur.com/OQZxGp4.png)
-![Profile Edit](https://i.imgur.com/PQZxGp5.png)
-![Profile Settings](https://i.imgur.com/QQZxGp6.png)
+![Profile Desktop View](profile-desk.png)
+![Profile Mobile View](profile-mobile.png)
 
 ## ✅ Deliverable
 

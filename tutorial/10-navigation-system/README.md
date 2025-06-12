@@ -172,9 +172,9 @@ A fully responsive and accessible navigation system with:
 
 ## Preview
 
-![Navigation Bar](https://i.imgur.com/1SZxGp7.png)
-![Mobile Menu](https://i.imgur.com/2SZxGp8.png)
-![Breadcrumbs](https://i.imgur.com/3SZxGp9.png)
+![Navigation Desktop View](nav-desk.png)
+![Navigation Mobile View 1](nav1-mobile.png)
+![Navigation Mobile View 2](nav2-mobile.png)
 
 ## Overview
 

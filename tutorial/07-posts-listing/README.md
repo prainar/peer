@@ -131,9 +131,8 @@ git push origin main
 
 ## Preview
 
-![Posts Feed](https://i.imgur.com/1RZxGp7.png)
-![Post Card](https://i.imgur.com/2RZxGp8.png)
-![Infinite Scroll](https://i.imgur.com/3RZxGp9.png)
+![Posts Listing Desktop View](post-listing-desk.png)
+![Posts Listing Mobile View](post-listing-mobile.png)
 
 ## Overview
 

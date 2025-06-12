@@ -135,9 +135,8 @@ git push origin main
 
 ## Preview
 
-![Post Creation Form](https://i.imgur.com/UQZxGp1.png)
-![Rich Text Editor](https://i.imgur.com/VQZxGp2.png)
-![Media Upload](https://i.imgur.com/WQZxGp3.png)
+![Create Post Desktop View](create-post-desk.png)
+![Create Post Mobile View](create-post-mobile.png)
 
 ## Overview
 

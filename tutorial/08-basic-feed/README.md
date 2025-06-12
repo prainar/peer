@@ -133,9 +133,8 @@ git push origin main
 
 ## Preview
 
-![Feed Layout](https://i.imgur.com/4RZxGp1.png)
-![Feed Filters](https://i.imgur.com/5RZxGp2.png)
-![Feed Sorting](https://i.imgur.com/6RZxGp3.png)
+![Feed Desktop View](feed-desk.png)
+![Feed Mobile View](feed-mobile.png)
 
 ## Overview
 
