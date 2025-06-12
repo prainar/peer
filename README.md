@@ -19,6 +19,27 @@
 
 A hands-on, tutorial-based professional networking platform that teaches you full-stack development! You'll learn to build a LinkedIn-inspired application step by step, focusing on practical implementation and core concepts.
 
+### 📋 Module Overview
+
+| Day | Module                                                                 | Preview                                                                                                                                                                                                                                                   | Description                                              |
+| --- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| 1   | [Login/Signup UI](tutorial/01-login-signup-ui/README.md)               | ![Login Desktop](tutorial/01-login-signup-ui/login-desk.png) ![Login Mobile](tutorial/01-login-signup-ui/login-mobile.png) ![Signup Desktop](tutorial/01-login-signup-ui/signup-desk.png) ![Signup Mobile](tutorial/01-login-signup-ui/sugnup-mobile.png) | Create responsive login and signup forms with validation |
+| 2   | [Authentication Backend](tutorial/02-authentication-backend/README.md) |                                                                                                                                                                                                                                                           | Implement secure user authentication with JWT            |
+| 3   | [Profile View & Edit UI](tutorial/03-profile-view-edit-ui/README.md)   | ![Profile Desktop](tutorial/03-profile-view-edit-ui/profile-desk.png) ![Profile Mobile](tutorial/03-profile-view-edit-ui/profile-mobile.png)                                                                                                              | Build user profile pages with edit functionality         |
+| 4   | [Profile Edit Backend](tutorial/04-profile-edit-backend/README.md)     |                                                                                                                                                                                                                                                           | Create profile management API endpoints                  |
+| 5   | [Post Creation](tutorial/05-post-creation/README.md)                   | ![Post Creation Desktop](tutorial/05-post-creation/create-post-desk.png) ![Post Creation Mobile](tutorial/05-post-creation/create-post-mobile.png)                                                                                                        | Implement post creation with media upload                |
+| 6   | [Posts Listing](tutorial/06-posts-listing/README.md)                   | ![Posts Listing Desktop](tutorial/06-posts-listing/post-listing-desk.png) ![Posts Listing Mobile](tutorial/06-posts-listing/post-listing-mobile.png)                                                                                                      | Display posts with infinite scroll                       |
+| 7   | [First Deployment](tutorial/07-first-deployment/README.md)             |                                                                                                                                                                                                                                                           | Deploy initial version to production                     |
+| 8   | [Basic Feed](tutorial/08-basic-feed/README.md)                         | ![Basic Feed Desktop](tutorial/08-basic-feed/feed-desk.png) ![Basic Feed Mobile](tutorial/08-basic-feed/feed-mobile.png)                                                                                                                                  | Create a dynamic social feed                             |
+| 9   | [Feed Interactions](tutorial/09-feed-interactions/README.md)           |                                                                                                                                                                                                                                                           | Add like, comment, and share features                    |
+| 10  | [Navigation System](tutorial/10-navigation-system/README.md)           | ![Navigation Desktop](tutorial/10-navigation-system/nav-desk.png) ![Navigation Mobile 1](tutorial/10-navigation-system/nav1-mobile.png) ![Navigation Mobile 2](tutorial/10-navigation-system/nav2-mobile.png)                                             | Implement responsive navigation                          |
+| 11  | [Job Board](tutorial/11-job-board/README.md)                           | ![Job Board Desktop](tutorial/11-job-board/job-board-desk.png) ![Job Board Mobile 1](tutorial/11-job-board/job-board-mobile.png) ![Job Board Mobile 2](tutorial/11-job-board/job-board2-moile.png)                                                        | Create job posting and application system                |
+| 12  | [Second Deployment](tutorial/12-second-deployment/README.md)           |                                                                                                                                                                                                                                                           | Deploy updated version with new features                 |
+| 13  | [Messaging UI](tutorial/13-messaging-ui/README.md)                     | ![Messaging Desktop](tutorial/13-messaging-ui/message-desk.png) ![Messaging Mobile 1](tutorial/13-messaging-ui/message1-mobile.png) ![Messaging Mobile 2](tutorial/13-messaging-ui/message2-mobile.png)                                                   | Build real-time messaging interface                      |
+| 14  | [Messaging Backend](tutorial/14-messaging-backend/README.md)           |                                                                                                                                                                                                                                                           | Implement WebSocket-based messaging                      |
+| 15  | [Final Integration](tutorial/15-final-integration/README.md)           |                                                                                                                                                                                                                                                           | Connect all modules and features                         |
+| 16  | [Final Deployment](tutorial/16-final-deployment/README.md)             |                                                                                                                                                                                                                                                           | Deploy complete application with monitoring              |
+
 ---
 
 ## 🎓 Learning Goals
@@ -83,35 +104,35 @@ python --version
 
 1.**Fork the Template Repository (Online - on GitHub/GitLab)**
 
-   Go to the course template repository in your web browser:
-   "https://github.com/AathamAnsari03/Prok-Professional-Networking.git"
+Go to the course template repository in your web browser:
+"https://github.com/AathamAnsari03/Prok-Professional-Networking.git"
 
-   In the top-right corner of the repository page, click the "Fork" button.
+In the top-right corner of the repository page, click the "Fork" button.
 
-   > **What is Forking?** This creates a personal copy of the entire template repository under your own GitHub/GitLab account. This copy is completely independent of the original course template. You have full control over your fork.
+> **What is Forking?** This creates a personal copy of the entire template repository under your own GitHub/GitLab account. This copy is completely independent of the original course template. You have full control over your fork.
 
-   If prompted, choose your personal account as the owner of the fork.
+If prompted, choose your personal account as the owner of the fork.
 
 2.**Clone Your Fork to Your Local Machine**
 
-   Now that you have your own copy online, let's bring it to your computer:
+Now that you have your own copy online, let's bring it to your computer:
 
-   - Go to your newly forked repository on GitHub/GitLab (it will be under your username)
-   - Click the green "Code" button
-   - Copy the URL (make sure it's the HTTPS URL, unless you've set up SSH keys)
-   - Open your terminal and navigate to your desired directory
-   - Run the following commands:
+- Go to your newly forked repository on GitHub/GitLab (it will be under your username)
+- Click the green "Code" button
+- Copy the URL (make sure it's the HTTPS URL, unless you've set up SSH keys)
+- Open your terminal and navigate to your desired directory
+- Run the following commands:
 
-   ```bash
-   # Clone your fork
-   git clone <URL_of_YOUR_FORK>
-   # Example: git clone https://github.com/your-username/prok-professional-networking.git
+```bash
+# Clone your fork
+git clone <URL_of_YOUR_FORK>
+# Example: git clone https://github.com/your-username/prok-professional-networking.git
 
-   # Change into the project directory
-   cd prok-professional-networking
-   ```
+# Change into the project directory
+cd prok-professional-networking
+```
 
-   > **What is Cloning?** This downloads a complete copy of your online fork to your local machine. This is your personal workspace for the course.
+> **What is Cloning?** This downloads a complete copy of your online fork to your local machine. This is your personal workspace for the course.
 
 3. **Configure Your Git User Information (One-Time Setup)**
 
@@ -135,11 +156,11 @@ python --version
 - Day 3: User Profile View & Edit UI
 - Day 4: Profile Edit Backend
 - Day 5: Post Creation
-- Day 6: First Deployment
+- Day 6: Posts Listing
+- Day 7: First Deployment
 
 ### Milestone 2: Advanced Features (Days 7-12)
 
-- Day 7: Posts Listing
 - Day 8: Basic Feed
 - Day 9: Feed Interactions
 - Day 10: Navigation System
@@ -150,7 +171,7 @@ python --version
 
 - Day 13: Messaging UI
 - Day 14: Messaging Backend
-- Day 15: Final Features
+- Day 15: Final Integration
 - Day 16: Final Deployment
 
 ---
