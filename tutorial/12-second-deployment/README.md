@@ -124,14 +124,6 @@ Ensure your Day 11 Job Board is complete and tested. You should have access to d
     git push origin main
     ```
 
-## 📸 Preview
-
-<img src="second-deployment.png" alt="Second Deployment Process" width="120"/>
-
-![Deployment Dashboard](https://i.imgur.com/7SZxGp4.png)
-![Monitoring](https://i.imgur.com/8SZxGp5.png)
-![Scaling](https://i.imgur.com/9SZxGp6.png)
-
 ## ✅ Deliverable
 
 A fully deployed and optimized application with:

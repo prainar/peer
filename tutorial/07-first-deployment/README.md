@@ -109,11 +109,6 @@ git merge day-7-deployment
 git push origin main
 ```
 
-## 📸 Preview
-
-![Deployment Architecture](https://i.imgur.com/XQZxGp4.png)  
-![CI/CD Pipeline](https://i.imgur.com/YQZxGp5.png)  
-![Environment Setup](https://i.imgur.com/ZQZxGp6.png)
 
 ## Overview
 

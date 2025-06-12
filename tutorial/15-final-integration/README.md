@@ -166,9 +166,6 @@ Ensure all previous modules (Days 1-14) are complete and tested. You should unde
     git push origin main
     ```
 
-## 📸 Preview
-
-![Complete Application Overview](final-overview.png)
 
 ## ✅ Deliverable
 

@@ -182,11 +182,6 @@ git merge day-4-profile-backend
 git push origin main
 ```
 
-## 📸 Preview
-
-![Profile API](https://i.imgur.com/RQZxGp7.png)  
-![Data Flow](https://i.imgur.com/SQZxGp8.png)  
-![Database Schema](https://i.imgur.com/TQZxGp9.png)
 
 ## ✅ Deliverable
 

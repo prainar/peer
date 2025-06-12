@@ -153,9 +153,7 @@ Ensure Day 15 (Final Integration) is complete and all modules are working togeth
     git push origin main
     ```
 
-## 📸 Preview
 
-![Production Deployment Architecture](deployment-architecture.png)
 
 ## ✅ Deliverable
 
