@@ -35,27 +35,8 @@ git checkout -b your-assignment-branch-name
 
 > **What's happening?** You're creating an independent line of development. The main branch in your fork should ideally remain a clean copy of the original template. Your new branch is where you'll make all your assignment-specific changes.
 
-2.**Set Up Development Environment**
 
-```bash
-# Create and activate a Python virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
-
-# Create project directories
-mkdir -p frontend backend
-cd frontend
-
-# Initialize React project with Vite
-npm create vite@latest . -- --template react-ts
-
-# Set up backend structure
-cd ../backend
-mkdir -p app tests
-touch requirements.txt
-```
-
-3.**Install Dependencies**
+2.**Install Dependencies**
 
 ```bash
 # Install frontend dependencies
@@ -64,10 +45,14 @@ npm install
 
 # Install backend dependencies
 cd ../backend (Another Terminal)
+# Create and activate a Python virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
 pip install -r requirements.txt
 ```
 
-4.**Frontend Implementation**
+3.**Frontend Implementation**
 
 **Login Page/Component:**
 _ **Inputs:** Fields for `username`, (or `email`) and `password`.
@@ -83,7 +68,7 @@ _ **Validation:** Basic client-side validation to ensure required fields are not
   _ Required field checks for all inputs.
   _ Password length validation (minimum 8 characters). \* Confirmation that `password` and `confirm_password` fields match.
 
-  5.**Run the Application**
+  4.**Run the Application**
 
   ```bash
   # Start the backend server (in one terminal)
@@ -100,7 +85,7 @@ _ **Validation:** Basic client-side validation to ensure required fields are not
   - Frontend: http://localhost:3000
   - Backend API: http://localhost:5000
 
-    6.**Testing**
+ 5.**Testing**
 
   - Test form validation
   - Test responsive design
