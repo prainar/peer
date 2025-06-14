@@ -46,6 +46,10 @@ npm install
 
 3.**Frontend Implementation**
 
+```bash
+# Say Copilot to implement the following and paste this content into Copilot. 
+# Add all the screenshots to Copilot and ask it to give the same model.
+```
 **Login Page/Component:**
 _ **Inputs:** Fields for `username`, (or `email`) and `password`.
 _ **Action:** A "Login" button to submit credentials.
@@ -63,7 +67,7 @@ _ **Validation:** Basic client-side validation to ensure required fields are not
   4.**Run the Application**
 
   ```bash
-  # Start the frontend development server (in another terminal)
+  # Start the frontend development server
   cd frontend
   npm run dev
   ```
