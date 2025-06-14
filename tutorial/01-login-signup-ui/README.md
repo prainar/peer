@@ -21,20 +21,19 @@ Set up the development environment and create the initial project structure for 
 
 **Create and Switch to a New Branch**
 
-> **IMPORTANT:** Never work directly on the main branch! Always create a new branch for each assignment or distinct piece of work.
+> **IMPORTANT:** Never work directly on the master branch! Always create a new branch for each assignment or distinct piece of work.
 
 ```bash
-# First, ensure you are on your 'main' branch and it's up-to-date
-git checkout main
-git pull origin main  # Get any potential updates from your own fork's main
+# First, ensure you are on your 'master' branch and it's up-to-date
+git checkout master
+git pull origin master  # Get any potential updates from your own fork's master
 
 # Now, create and switch to a new branch for your assignment/feature
 # Choose a descriptive name, e.g., 'assignment-1-login-form' or 'feature-user-profile'
 git checkout -b your-assignment-branch-name
 ```
 
-> **What's happening?** You're creating an independent line of development. The main branch in your fork should ideally remain a clean copy of the original template. Your new branch is where you'll make all your assignment-specific changes.
-
+> **What's happening?** You're creating an independent line of development. The master branch in your fork should ideally remain a clean copy of the original template. Your new branch is where you'll make all your assignment-specific changes.
 
 2.**Install Dependencies**
 
@@ -43,13 +42,6 @@ git checkout -b your-assignment-branch-name
 cd frontend (one Terminal)
 npm install
 
-# Install backend dependencies
-cd ../backend (Another Terminal)
-# Create and activate a Python virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
-
-pip install -r requirements.txt
 ```
 
 3.**Frontend Implementation**
@@ -71,10 +63,6 @@ _ **Validation:** Basic client-side validation to ensure required fields are not
   4.**Run the Application**
 
   ```bash
-  # Start the backend server (in one terminal)
-  cd backend
-  flask run
-
   # Start the frontend development server (in another terminal)
   cd frontend
   npm run dev
@@ -83,9 +71,8 @@ _ **Validation:** Basic client-side validation to ensure required fields are not
   The application will be available at:
 
   - Frontend: http://localhost:3000
-  - Backend API: http://localhost:5000
 
- 5.**Testing**
+    5.**Testing**
 
   - Test form validation
   - Test responsive design
@@ -132,10 +119,10 @@ git push -u origin your-assignment-branch-name
 After your assignment is complete and submitted:
 
 ```bash
-git checkout main           # Switch to your local main
-git pull origin main        # Ensure your local main is up-to-date with your remote main
-git merge assignment-1-feature # Merge the feature branch into your main
-git push origin main        # Push the updated main to your fork online
+git checkout master           # Switch to your local master
+git pull origin master        # Ensure your local master is up-to-date with your remote master
+git merge assignment-1-feature # Merge the feature branch into your master
+git push origin master        # Push the updated master to your fork online
 ```
 
 ## Preview
@@ -152,4 +139,3 @@ git push origin main        # Push the updated main to your fork online
 A working project setup with login/signup UI, properly version controlled with Git.
 
 ---
-

@@ -6,12 +6,12 @@ Build Post Creation UI (frontend) and implement the necessary backend logic for 
 
 ## 📚 Learning Outcomes
 
-* Create post creation interface.
-* Implement rich text editing.
-* Handle media uploads.
-* Create post storage system.
-* Implement post validation.
-* Design user-friendly post creation flow.
+- Create post creation interface.
+- Implement rich text editing.
+- Handle media uploads.
+- Create post storage system.
+- Implement post validation.
+- Design user-friendly post creation flow.
 
 ## 🚀 Getting Started
 
@@ -20,12 +20,13 @@ Ensure your Day 4 Profile Backend is complete and working. You should understand
 ## 🛠️ Tasks
 
 1.  **Create and Switch to a New Branch**
+
     > **IMPORTANT:** Always create a new branch for each distinct piece of work.
 
     ```bash
-    # First, ensure you are on your 'main' branch and it's up-to-date
-    git checkout main
-    git pull origin main  # Get any potential updates from your own fork's main
+    # First, ensure you are on your 'master' branch and it's up-to-date
+    git checkout master
+    git pull origin master  # Get any potential updates from your own fork's master
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-5-post-creation
@@ -34,42 +35,46 @@ Ensure your Day 4 Profile Backend is complete and working. You should understand
     > **What's happening?** You're creating an independent line of development for this day's tasks.
 
 2.  **Set Up Development Environment**
-    * **Backend Virtual Environment (if not already active):**
+
+    - **Backend Virtual Environment (if not already active):**
+      ```bash
+      cd backend
+      source venv/bin/activate  # On Windows use: venv\Scripts\activate
+      ```
+    - **Install Additional Dependencies:**
+      ```bash
+      pip install Flask Flask-SQLAlchemy Flask-Migrate Pillow python-magic
+      ```
+    - **Frontend (already set up from previous days):**
+      - Ensure your frontend directory has all Node.js dependencies installed via:
         ```bash
-        cd backend
-        source venv/bin/activate  # On Windows use: venv\Scripts\activate
+        npm install
         ```
-    * **Install Additional Dependencies:**
-        ```bash
-        pip install Flask Flask-SQLAlchemy Flask-Migrate Pillow python-magic
-        ```
-    * **Frontend (already set up from previous days):**
-        * Ensure your frontend directory has all Node.js dependencies installed via:
-            ```bash
-            npm install
-            ```
 
 3.  **Frontend Implementation**
-    * **Create Post Creation Form:**
-        * Design a form for post content, including sections for text, media, and a preview.
-        * Implement a rich text editor for the main post body to allow formatted input.
-        * Add functionality for media uploads (images/videos).
-        * Create a post preview component to show how the post will look before submission.
-        * Implement client-side form validation for post content and media, along with loading states during submission.
+
+    - **Create Post Creation Form:**
+      - Design a form for post content, including sections for text, media, and a preview.
+      - Implement a rich text editor for the main post body to allow formatted input.
+      - Add functionality for media uploads (images/videos).
+      - Create a post preview component to show how the post will look before submission.
+      - Implement client-side form validation for post content and media, along with loading states during submission.
 
 4.  **Backend Implementation**
-    * **Create Post Model and Endpoints:**
-        * Define a `Post` database model with fields such as `id`, `user_id` (foreign key to the User model), `content`, `media_url` (nullable), `created_at`, etc.
-        * Implement the `POST /api/posts` endpoint for handling post creation requests.
-        * Set up the necessary logic for media storage and validation on the server side.
-        * Add post metadata and consider initial indexing for future search functionality.
+
+    - **Create Post Model and Endpoints:**
+      - Define a `Post` database model with fields such as `id`, `user_id` (foreign key to the User model), `content`, `media_url` (nullable), `created_at`, etc.
+      - Implement the `POST /api/posts` endpoint for handling post creation requests.
+      - Set up the necessary logic for media storage and validation on the server side.
+      - Add post metadata and consider initial indexing for future search functionality.
 
 5.  **Media Handling**
-    * **Implement Image and Video Upload:**
-        * Set up file upload handling on the backend for both images and videos.
-        * Validate uploaded file types and sizes to ensure they meet requirements.
-        * Process and securely store media files on the server (e.g., in a dedicated uploads folder).
-        * Generate accessible media URLs that the frontend can use to display the uploaded content.
+
+    - **Implement Image and Video Upload:**
+      - Set up file upload handling on the backend for both images and videos.
+      - Validate uploaded file types and sizes to ensure they meet requirements.
+      - Process and securely store media files on the server (e.g., in a dedicated uploads folder).
+      - Generate accessible media URLs that the frontend can use to display the uploaded content.
 
 6.  **Run the Application**
 
@@ -85,17 +90,17 @@ Ensure your Day 4 Profile Backend is complete and working. You should understand
 
     The application will be available at:
 
-    -   Frontend: `http://localhost:3000/create-post`
-    -   Backend API: `http://localhost:5000`
+    - Frontend: `http://localhost:3000/create-post`
+    - Backend API: `http://localhost:5000`
 
 7.  **Testing**
 
-    * Test post creation with text-only content.
-    * Test post creation with both text and image media.
-    * Test post creation with both text and video media.
-    * Test media uploads for various image and video formats/sizes.
-    * Test form validation and ensure appropriate error handling is displayed.
-    * Test loading states and user feedback during post submission.
+    - Test post creation with text-only content.
+    - Test post creation with both text and image media.
+    - Test post creation with both text and video media.
+    - Test media uploads for various image and video formats/sizes.
+    - Test form validation and ensure appropriate error handling is displayed.
+    - Test loading states and user feedback during post submission.
 
 ## 🔄 Git Workflow
 
@@ -115,10 +120,10 @@ Ensure your Day 4 Profile Backend is complete and working. You should understand
 3.  **Merge After Completion**
 
     ```bash
-    git checkout main
-    git pull origin main
+    git checkout master
+    git pull origin master
     git merge day-5-post-creation
-    git push origin main
+    git push origin master
     ```
 
 ## 📸 Preview
@@ -132,8 +137,8 @@ Ensure your Day 4 Profile Backend is complete and working. You should understand
 
 A fully functional post creation system with:
 
-* Rich text editing.
-* Media upload and preview.
-* Proper validation and error handling.
-* Clean, documented code.
-* All tests passing.
+- Rich text editing.
+- Media upload and preview.
+- Proper validation and error handling.
+- Clean, documented code.
+- All tests passing.

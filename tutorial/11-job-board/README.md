@@ -24,8 +24,8 @@ Ensure your Day 10 Navigation System is complete and tested. You should understa
 
     ```bash
     # First, ensure you are on your 'main' branch and it's up-to-date
-    git checkout main
-    git pull origin main # Get any potential updates from your own fork's main
+    git checkout master
+    git pull origin master # Get any potential updates from your own fork's main
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-11-job-board
@@ -113,10 +113,10 @@ Ensure your Day 10 Navigation System is complete and tested. You should understa
 3.  **Merge After Completion**
 
     ```bash
-    git checkout main
-    git pull origin main
+    git checkout master
+    git pull origin master
     git merge day-11-job-board
-    git push origin main
+    git push origin master
     ```
 
 ## 📸 Preview

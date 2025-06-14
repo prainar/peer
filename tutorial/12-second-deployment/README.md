@@ -24,8 +24,8 @@ Ensure your Day 11 Job Board is complete and tested. You should have access to d
 
     ```bash
     # First, ensure you are on your 'main' branch and it's up-to-date
-    git checkout main
-    git pull origin main  # Get any potential updates from your own fork's main
+    git checkout master
+    git pull origin master  # Get any potential updates from your own fork's main
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-12-second-deployment
@@ -118,10 +118,10 @@ Ensure your Day 11 Job Board is complete and tested. You should have access to d
 3.  **Merge After Completion**
 
     ```bash
-    git checkout main
-    git pull origin main
+    git checkout master
+    git pull origin master
     git merge day-12-second-deployment
-    git push origin main
+    git push origin master
     ```
 
 ## ✅ Deliverable

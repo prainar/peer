@@ -25,8 +25,8 @@ Ensure all previous modules (Days 1-14) are complete and tested. You should unde
 
     ```bash
     # First, ensure you are on your 'main' branch and it's up-to-date
-    git checkout main
-    git pull origin main # Get any potential updates from your own fork's main
+    git checkout master
+    git pull origin master # Get any potential updates from your own fork's main
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-15-final-integration
@@ -160,10 +160,10 @@ Ensure all previous modules (Days 1-14) are complete and tested. You should unde
 3.  **Merge After Completion**
 
     ```bash
-    git checkout main
-    git pull origin main
+    git checkout master
+    git pull origin master
     git merge day-15-final-integration
-    git push origin main
+    git push origin master
     ```
 
 

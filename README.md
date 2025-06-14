@@ -91,6 +91,8 @@ Prok-Professional-Networking/
 - Python (v3.8 or higher)
 - Git
 - Code editor (VS Code recommended)
+- Copilot
+- For VS code, Git, Copilt, use this link -> "https://g.co/gemini/share/bb771d63f18b"
 
 To check your installed versions:
 
@@ -128,6 +130,8 @@ Now that you have your own copy online, let's bring it to your computer:
 git clone <URL_of_YOUR_FORK>
 # Example: git clone https://github.com/your-username/prok-professional-networking.git
 
+# Open the project in VS code.
+# Open the terminal in VS code.
 # Change into the project directory
 cd prok-professional-networking
 ```

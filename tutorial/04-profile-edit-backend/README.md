@@ -25,9 +25,9 @@ Ensure your Day 3 profile UI implementation is complete and working. You should 
 > **IMPORTANT:** Always create a new branch for each distinct piece of work.
 
 ```bash
-# First, ensure you are on your 'main' branch and it's up-to-date
-git checkout main
-git pull origin main  # Get any potential updates from your own fork's main
+# First, ensure you are on your 'master' branch and it's up-to-date
+git checkout master
+git pull origin master  # Get any potential updates from your own fork's master
 
 # Now, create and switch to a new branch for this day's assignment/feature
 git checkout -b day-4-profile-backend
@@ -176,12 +176,11 @@ git push -u origin day-4-profile-backend
 ### Merge After Completion
 
 ```bash
-git checkout main
-git pull origin main
+git checkout master
+git pull origin master
 git merge day-4-profile-backend
-git push origin main
+git push origin master
 ```
-
 
 ## ✅ Deliverable
 
@@ -194,4 +193,3 @@ A secure and robust backend system with:
 - Frontend integration complete
 - Clean, documented code
 - All tests passing
-
