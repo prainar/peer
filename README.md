@@ -92,7 +92,7 @@ Prok-Professional-Networking/
 - Git
 - Code editor (VS Code recommended)
 - Copilot
-- For VS code, Git, Copilt, use this link -> "https://g.co/gemini/share/bb771d63f18b"
+- To download VS Code, sign in to Git, and use Copilot, use the following link.-> "https://g.co/gemini/share/bb771d63f18b"
 
 To check your installed versions:
 
