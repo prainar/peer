@@ -12,7 +12,7 @@ import MessageList from '../components/messaging/MessageList';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Feed />,
+    element: <Login />,
   },
   {
     path: '/login',
