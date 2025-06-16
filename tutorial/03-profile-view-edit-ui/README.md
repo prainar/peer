@@ -39,7 +39,7 @@ Ensure your Day 2 authentication is complete and working. You should have a good
     - **Frontend Dependencies:**
       ```bash
       cd frontend
-      npm install react-dropzone axios
+      npm install react-hook-form yup @hookform/resolvers
       ```
 
 3.  **Profile View Implementation**
@@ -93,11 +93,15 @@ Ensure your Day 2 authentication is complete and working. You should have a good
 
 6.  **Run the Application**
 
-    ```bash
-    # Start the frontend development server
-    cd frontend
-    npm run dev
-    ```
+      ```bash
+      # Start the frontend development server
+      cd frontend
+      npm run dev
+
+      cd app/backend
+      export FLASK_APP=.
+      flask run
+      ```
 
     The application will be available at:
 
