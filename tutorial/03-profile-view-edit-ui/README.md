@@ -93,15 +93,15 @@ Ensure your Day 2 authentication is complete and working. You should have a good
 
 6.  **Run the Application**
 
-      ```bash
-      # Start the frontend development server
-      cd frontend
-      npm run dev
+    ```bash
+    # Start the frontend development server
+    cd frontend
+    npm run dev
 
-      cd app/backend
-      export FLASK_APP=.
-      flask run
-      ```
+    cd app/backend
+    export FLASK_APP=.
+    flask run
+    ```
 
     The application will be available at:
 
@@ -143,6 +143,8 @@ Ensure your Day 2 authentication is complete and working. You should have a good
 
 ![Profile Desktop View](profile-desk.png)
 ![Profile Mobile View](profile-mobile.png)
+![Profile Edit Desktop View](profile-edit-desk.png)
+![Profile Edit Mobile View](profile-edit-mobile.png)
 
 ## ✅ Deliverable
 
