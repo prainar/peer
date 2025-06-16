@@ -39,7 +39,7 @@ git checkout -b your-assignment-branch-name
 
 ```bash
 # Install frontend dependencies
-cd frontend (one Terminal)
+cd app/frontend (one Terminal)
 npm install
 
 ```
@@ -68,7 +68,7 @@ _ **Validation:** Basic client-side validation to ensure required fields are not
 
   ```bash
   # Start the frontend development server
-  cd frontend
+  cd app/frontend
   npm run dev
   ```
 

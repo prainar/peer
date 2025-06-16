@@ -39,7 +39,7 @@ git checkout -b day-2-authentication
 #### Backend Environment (Reactivate if needed)
 
 ```bash
-cd backend
+cd app/backend
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
@@ -56,7 +56,7 @@ pip install Flask-SQLAlchemy Flask-Migrate Werkzeug PyJWT Flask-JWT-Extended Fla
 Ensure your frontend already has dependencies installed from Day 1:
 
 ```bash
-cd frontend
+cd app/frontend
 npm install
 ```
 

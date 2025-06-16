@@ -38,7 +38,7 @@ Ensure your Day 2 authentication is complete and working. You should have a good
 
     - **Frontend Dependencies:**
       ```bash
-      cd frontend
+      cd app/frontend
       npm install react-hook-form yup @hookform/resolvers
       ```
 
@@ -95,7 +95,7 @@ Ensure your Day 2 authentication is complete and working. You should have a good
 
     ```bash
     # Start the frontend development server
-    cd frontend
+    cd app/frontend
     npm run dev
 
     cd app/backend
