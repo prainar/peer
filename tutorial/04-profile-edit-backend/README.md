@@ -61,7 +61,6 @@ pip install Pillow python-magic Flask-Limiter
 
 **⚠️ Note:** For beginners, use `db.create_all()` instead of complex migration tools.
 
-
 #### Create Profile Update Endpoint (PUT /api/profile)
 
 - **Purpose:** Handle profile data updates
@@ -180,29 +179,94 @@ git merge day-4-profile-backend
 git push origin main
 ```
 
-
-
 ## ⚠️ Common Problems & Solutions
 
-### Import Errors
-- **Problem:** `ModuleNotFoundError: No module named 'app'`
-- **Solution:** Use absolute imports, not relative imports
-- **Example:** Use `from models.user import User` instead of `from ..models.user import User`
+### 1. Import Errors & Package Structure
 
-### Directory Issues
-- **Problem:** `ImportError: attempted relative import beyond top-level package`
-- **Solution:** Always run your app from the project root directory
-- **Example:** Run `python main.py` from `/your-project/`, not from `/your-project/models/`
+- **Problem:** `ModuleNotFoundError: No module named 'app'` or `ImportError: attempted relative import beyond top-level package`
+- **Solution:**
+  - Always use **absolute imports** (e.g., `from models.user import User`).
+  - **Never use relative imports** like `from ..models.user import User`.
+  - Always run your app from the **project root** (e.g., `python main.py` from `/your-project/app/backend`).
 
-### Database Issues
-- **Problem:** Tables not created
-- **Solution:** Use `db.create_all()` in your main.py, not complex migrations for beginners
+### 2. Blueprint Registration
 
-### Virtual Environment Issues
-- **Problem:** Package not found
-- **Solution:** Always activate your virtual environment first
-- **Command:** `source venv/bin/activate` (Linux/Mac) or `venv\Scripts\activate` (Windows)
+- **Problem:** API route returns 404 even though it exists in your code.
+- **Solution:**
+  - Make sure all blueprints are imported and registered in `main.py`.
+  - Add a debug print after registering blueprints to confirm:
+    ```python
+    print('>>> All blueprints registered!')
+    ```
+  - List all routes at startup to debug:
+    ```python
+    with app.app_context():
+        print('>>> Registered routes:')
+        for rule in app.url_map.iter_rules():
+            print(rule)
+    ```
 
+### 3. Database Issues
+
+- **Problem:** Tables not created, or profile not found for a user.
+- **Solution:**
+  - Use `db.create_all()` in your `main.py` to ensure tables are created.
+  - **Auto-create a blank profile** for every new user on signup and on profile update if missing.  
+    This avoids "Profile not found" errors.
+
+### 4. JWT & Authentication Issues
+
+- **Problem:** API returns 401 or 404, but curl works and frontend does not.
+- **Solution:**
+  - Always send the JWT token in the `Authorization` header:  
+    `Authorization: Bearer <token>`
+  - Make sure your frontend reads the token from `localStorage` and sends it with every API request.
+  - If using curl, make sure the token matches the logged-in user in the frontend.
+  - If you get `"Profile not found"` but login works, check if the user has a profile in the database.
+
+### 5. Profile Not Found (404)
+
+- **Problem:** User logs in but gets `"Profile not found"` on profile page or when saving changes.
+- **Solution:**
+  - **Auto-create a profile** for every new user on signup.
+  - In the profile update endpoint, auto-create a profile if not found before updating.
+  - This ensures every user always has a profile and avoids 404 errors.
+
+### 6. CORS & API URL Confusion
+
+- **Problem:** Frontend requests fail or hit the wrong port.
+- **Solution:**
+  - Set `API_URL` in your frontend to match your backend (e.g., `http://127.0.0.1:5000`).
+  - Make sure CORS is enabled in Flask: `CORS(app)`.
+  - Always check the **Network tab** in browser dev tools to see the real request and response.
+
+### 7. Virtual Environment Issues
+
+- **Problem:** Package not found or wrong Python version.
+- **Solution:**
+  - Always activate your virtual environment first:
+    - Linux/Mac: `source venv/bin/activate`
+    - Windows: `venv\Scripts\activate`
+  - Install all dependencies listed in `requirements.txt`.
+
+### 8. Debugging Tips
+
+- **Print debug info** in your backend to confirm code is running.
+- **Check the database** (with a tool or CLI) to confirm users and profiles exist.
+- **Use curl** to test endpoints directly and compare with frontend requests.
+- **Check request headers** in the browser to ensure JWT is sent.
+
+---
+
+## 🏆 Best Practices
+
+- **Auto-create related records** (like profiles) on signup to avoid missing data errors.
+- **Handle all error cases** in both backend and frontend, and show clear messages to users.
+- **Keep your code modular** (use blueprints, context, and services).
+- **Test each endpoint** with both curl and the frontend.
+- **Document your troubleshooting steps** for future reference.
+
+---
 
 ## ✅ Deliverable
 
@@ -215,4 +279,3 @@ A secure and robust backend system with:
 - Frontend integration complete
 - Clean, documented code
 - All tests passing
-
