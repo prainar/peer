@@ -25,9 +25,9 @@ Ensure your Day 3 profile UI implementation is complete and working. You should 
 > **IMPORTANT:** Always create a new branch for each distinct piece of work.
 
 ```bash
-# First, ensure you are on your 'master' branch and it's up-to-date
-git checkout master
-git pull origin master  # Get any potential updates from your own fork's master
+# First, ensure you are on your 'main' branch and it's up-to-date
+git checkout main
+git pull origin main  # Get any potential updates from your own fork's main
 
 # Now, create and switch to a new branch for this day's assignment/feature
 git checkout -b day-4-profile-backend
@@ -56,13 +56,11 @@ pip install Pillow python-magic Flask-Limiter
 
 - Extend User model with profile fields
 - Add validation rules for each field
-- Implement database migrations
+- Use simple database creation (no complex migrations for beginners)
 - Set up model relationships
 
-```bash
-flask db migrate -m "Add profile fields to User model"
-flask db upgrade
-```
+**⚠️ Note:** For beginners, use `db.create_all()` instead of complex migration tools.
+
 
 #### Create Profile Update Endpoint (PUT /api/profile)
 
@@ -176,11 +174,35 @@ git push -u origin day-4-profile-backend
 ### Merge After Completion
 
 ```bash
-git checkout master
-git pull origin master
+git checkout main
+git pull origin main
 git merge day-4-profile-backend
-git push origin master
+git push origin main
 ```
+
+
+
+## ⚠️ Common Problems & Solutions
+
+### Import Errors
+- **Problem:** `ModuleNotFoundError: No module named 'app'`
+- **Solution:** Use absolute imports, not relative imports
+- **Example:** Use `from models.user import User` instead of `from ..models.user import User`
+
+### Directory Issues
+- **Problem:** `ImportError: attempted relative import beyond top-level package`
+- **Solution:** Always run your app from the project root directory
+- **Example:** Run `python main.py` from `/your-project/`, not from `/your-project/models/`
+
+### Database Issues
+- **Problem:** Tables not created
+- **Solution:** Use `db.create_all()` in your main.py, not complex migrations for beginners
+
+### Virtual Environment Issues
+- **Problem:** Package not found
+- **Solution:** Always activate your virtual environment first
+- **Command:** `source venv/bin/activate` (Linux/Mac) or `venv\Scripts\activate` (Windows)
+
 
 ## ✅ Deliverable
 
@@ -193,3 +215,4 @@ A secure and robust backend system with:
 - Frontend integration complete
 - Clean, documented code
 - All tests passing
+

@@ -6,12 +6,12 @@ Implement the authentication backend using Flask, and integrate it with the fron
 
 ## 📚 Learning Outcomes
 
-- Implement user authentication in Flask
-- Set up JWT token-based authentication
-- Create secure password hashing
-- Implement user registration and login endpoints
-- Connect frontend authentication UI with backend
-- Handle authentication errors and responses
+- Implement user authentication in Flask  
+- Set up JWT token-based authentication  
+- Create secure password hashing  
+- Implement user registration and login endpoints  
+- Connect frontend authentication UI with backend  
+- Handle authentication errors and responses  
 
 ## 🚀 Getting Started
 
@@ -39,7 +39,7 @@ git checkout -b day-2-authentication
 #### Backend Environment (Reactivate if needed)
 
 ```bash
-cd app/backend
+cd backend
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
@@ -56,7 +56,7 @@ pip install Flask-SQLAlchemy Flask-Migrate Werkzeug PyJWT Flask-JWT-Extended Fla
 Ensure your frontend already has dependencies installed from Day 1:
 
 ```bash
-cd app/frontend
+cd frontend
 npm install
 ```
 
@@ -64,7 +64,8 @@ npm install
 
 #### Database Setup and User Model
 
-## Prerequisites
+
+## Prerequisites 
 
 ### 1. **Download MySQL Server**
 
@@ -103,6 +104,7 @@ npm install
 - Create a `User` model with fields: `id`, `username`, `email`, and `password_hash`.
 - Use `generate_password_hash` and `check_password_hash` from `werkzeug.security`.
 
+
 ## ⚙️ Database Configuration
 
 By default, the backend connects to MySQL using the credentials in `app/backend/config.py`.
@@ -131,13 +133,6 @@ By default, the backend connects to MySQL using the credentials in `app/backend/
   USE prok_db;
   exit
 
-  # To setup and update the Database
-  export FLASK_APP="__init__:create_app"
-  flask db init
-  flask db migrate -m "Initial migration: Create User table"
-  flask db upgrade
-```
-
 #### Registration Endpoint (POST `/api/signup`)
 
 - **Purpose:** Allow new users to register
@@ -164,11 +159,10 @@ By default, the backend connects to MySQL using the credentials in `app/backend/
 
 ```bash
   # To run backend
-  cd app/backend
-  export FLASK_APP=.
   flask run
   # The backend API will be available at: http://localhost:5000
-```
+  ```
+
 
 Certainly! Here’s a **Postman API Testing Guide** in README format, ready to copy-paste into your documentation:
 
@@ -227,13 +221,13 @@ This guide will help you test your API endpoints using [Postman](https://www.pos
 ### 6. **Check the Response**
 
 - View the response status and message in the lower section of Postman.
-  - Example success:
+  - Example success:  
     ```json
     {
       "message": "User created successfully"
     }
     ```
-  - Example error:
+  - Example error:  
     ```json
     {
       "message": "Username or email already exists"
@@ -282,7 +276,7 @@ This guide will help you test your API endpoints using [Postman](https://www.pos
 - Attach token to protected API requests
 
 ```js
-localStorage.setItem("token", token);
+localStorage.setItem("token", token)
 ```
 
 ### Security Features
@@ -306,7 +300,7 @@ npm run dev
 
 Application available at:
 
-- Frontend: [http://localhost:3000](http://localhost:3000)
+- Frontend: [http://localhost:3000](http://localhost:3000)  
 - Backend API: [http://localhost:5000](http://localhost:5000)
 
 ### Testing
@@ -356,7 +350,8 @@ git push origin main
 
 A fully functional authentication system:
 
-- Secure user auth with JWT in Flask backend
-- Integrated frontend login with proper token handling
-- Error messaging and form feedback
+- Secure user auth with JWT in Flask backend  
+- Integrated frontend login with proper token handling  
+- Error messaging and form feedback  
 - All tests passing and code documented
+
