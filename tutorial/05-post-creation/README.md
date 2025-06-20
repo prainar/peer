@@ -52,15 +52,6 @@ Ensure your Day 4 Profile Backend is complete and working. You should understand
         npm install
         ```
 
-3.  **Database Setup (IMPORTANT STEP)**
-
-    - **Reset Database to Clean State:**
-      ```bash
-      cd app/backend
-      python dev_reset_db.py
-      ```
-      > **Why?** This removes any sample data and ensures a clean database for testing post creation.
-
 4.  **Frontend Implementation**
 
     - **Create Post Creation Form:**
