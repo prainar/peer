@@ -26,7 +26,7 @@ Ensure your Day 9 Feed Interactions is complete and tested. You should understan
     ```bash
     # First, ensure you are on your 'master' branch and it's up-to-date
     git checkout master
-    git pull origin master  # Get any potential updates from your own fork's master
+    git pull origin master  # Get any potential updates from your own repository's master
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-10-navigation-system
@@ -105,7 +105,7 @@ Ensure your Day 9 Feed Interactions is complete and tested. You should understan
     git commit -m "Day 10: Implement comprehensive navigation system"
     ```
 
-2.  **Push Your Changes to Your Fork**
+2.  **Push Your Changes to Your Repository**
 
     ```bash
     git push -u origin day-10-navigation-system

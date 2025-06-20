@@ -26,7 +26,7 @@ Ensure your Day 8 Basic Feed is complete and tested. You should understand React
     ```bash
     # First, ensure you are on your 'master' branch and it's up-to-date
     git checkout master
-    git pull origin master # Get any potential updates from your own fork's master
+    git pull origin master # Get any potential updates from your own repository's master
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-9-feed-interactions
@@ -116,7 +116,7 @@ Ensure your Day 8 Basic Feed is complete and tested. You should understand React
     git commit -m "Day 9: Implement feed interactions and real-time updates"
     ```
 
-2.  **Push Your Changes to Your Fork**
+2.  **Push Your Changes to Your Repository**
 
     ```bash
     git push -u origin day-9-feed-interactions

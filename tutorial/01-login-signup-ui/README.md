@@ -26,30 +26,33 @@ Set up the development environment and create the initial project structure for 
 ```bash
 # First, ensure you are on your 'master' branch and it's up-to-date
 git checkout master
-git pull origin master  # Get any potential updates from your own fork's master
+git pull origin master  # Get any potential updates from your own repository's master
 
 # Now, create and switch to a new branch for your assignment/feature
 # Choose a descriptive name, e.g., 'assignment-1-login-form' or 'feature-user-profile'
 git checkout -b your-assignment-branch-name
 ```
 
-> **What's happening?** You're creating an independent line of development. The master branch in your fork should ideally remain a clean copy of the original template. Your new branch is where you'll make all your assignment-specific changes.
+> **What's happening?** You're creating an independent line of development. The master branch in your repository should ideally remain a clean copy of the original template. Your new branch is where you'll make all your assignment-specific changes.
 
 2.**Install Dependencies**
 
 ```bash
 # Install frontend dependencies
-cd app/frontend (one Terminal)
+cd frontend (one Terminal)
 npm install
 
+# Install backend dependencies
+cd ../backend (Another Terminal)
+# Create and activate a Python virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
+pip install -r requirements.txt
 ```
 
 3.**Frontend Implementation**
 
-```bash
-# Say Copilot to implement the following and paste this content into Copilot. 
-# Add all the screenshots to Copilot and ask it to give the same model.
-```
 **Login Page/Component:**
 _ **Inputs:** Fields for `username`, (or `email`) and `password`.
 _ **Action:** A "Login" button to submit credentials.
@@ -67,14 +70,19 @@ _ **Validation:** Basic client-side validation to ensure required fields are not
   4.**Run the Application**
 
   ```bash
-  # Start the frontend development server
-  cd app/frontend
+  # Start the backend server (in one terminal)
+  cd backend
+  flask run
+
+  # Start the frontend development server (in another terminal)
+  cd frontend
   npm run dev
   ```
 
   The application will be available at:
 
   - Frontend: http://localhost:3000
+  - Backend API: http://localhost:5000
 
     5.**Testing**
 
@@ -105,18 +113,18 @@ git commit -m "Assignment X: Brief description of changes"
 - `git add .`: Moves your modified or new files into the staging area (a waiting room for your changes)
 - `git commit -m "Your message"`: Takes a snapshot of the changes in your staging area and saves them permanently in your branch's history
 
-  2.**Push Your Changes to Your Fork**
+  2.**Push Your Changes to Your Repository**
 
 Once you're ready to save your work online or submit your assignment:
 
 ```bash
-# Push your branch to YOUR remote fork
+# Push your branch to YOUR remote repository
 # The first time you push a new branch, use '-u' to link your local branch
 # to its remote counterpart. For subsequent pushes, 'git push' is often enough
 git push -u origin your-assignment-branch-name
 ```
 
-> **Note:** This uploads your local branch to your origin (your personal fork)
+> **Note:** This uploads your local branch to your origin (your personal repository)
 
 3.**Merge After Assignment Completion**
 
@@ -126,7 +134,7 @@ After your assignment is complete and submitted:
 git checkout master           # Switch to your local master
 git pull origin master        # Ensure your local master is up-to-date with your remote master
 git merge assignment-1-feature # Merge the feature branch into your master
-git push origin master        # Push the updated master to your fork online
+git push origin master        # Push the updated master to your repository online
 ```
 
 ## Preview

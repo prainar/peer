@@ -26,7 +26,7 @@ Ensure your Day 7 First Deployment is complete and tested. You should understand
     ```bash
     # First, ensure you are on your 'master' branch and it's up-to-date
     git checkout master
-    git pull origin master # Get any potential updates from your own fork's master
+    git pull origin master # Get any potential updates from your own repository's master
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-8-basic-feed
@@ -110,7 +110,7 @@ Ensure your Day 7 First Deployment is complete and tested. You should understand
     git commit -m "Day 8: Implement basic feed structure and display"
     ```
 
-2.  **Push Your Changes to Your Fork**
+2.  **Push Your Changes to Your Repository**
 
     ```bash
     git push -u origin day-8-basic-feed

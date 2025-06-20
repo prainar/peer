@@ -26,7 +26,7 @@ Ensure your Day 12 Second Deployment is complete and tested. You should understa
     ```bash
     # First, ensure you are on your 'master' branch and it's up-to-date
     git checkout master
-    git pull origin master  # Get any potential updates from your own fork's master
+    git pull origin master  # Get any potential updates from your own repository's master
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-13-messaging-ui
@@ -113,7 +113,7 @@ Ensure your Day 12 Second Deployment is complete and tested. You should understa
     git commit -m "Day 13: Implement messaging UI with real-time features"
     ```
 
-2.  **Push Your Changes to Your Fork**
+2.  **Push Your Changes to Your Repository**
 
     ```bash
     git push -u origin day-13-messaging-ui

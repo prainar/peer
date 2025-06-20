@@ -24,9 +24,9 @@ Ensure your Day 4 Profile Backend is complete and working. You should understand
     > **IMPORTANT:** Always create a new branch for each distinct piece of work.
 
     ```bash
-    # First, ensure you are on your 'main' branch and it's up-to-date
-    git checkout main
-    git pull origin main  # Get any potential updates from your own fork's main
+    # First, ensure you are on your 'master' branch and it's up-to-date
+    git checkout master
+    git pull origin master  # Get any potential updates from your own repository's master
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-5-post-creation
@@ -51,6 +51,15 @@ Ensure your Day 4 Profile Backend is complete and working. You should understand
         cd app/frontend
         npm install
         ```
+
+3.  **Database Setup (IMPORTANT STEP)**
+
+    - **Reset Database to Clean State:**
+      ```bash
+      cd app/backend
+      python dev_reset_db.py
+      ```
+      > **Why?** This removes any sample data and ensures a clean database for testing post creation.
 
 4.  **Frontend Implementation**
 
@@ -264,7 +273,7 @@ CORS(app, origins=['http://localhost:5173'], methods=['GET', 'POST', 'PUT', 'DEL
     git commit -m "Day 5: Implement post creation UI and backend logic"
     ```
 
-2.  **Push Your Changes to Your Fork**
+2.  **Push Your Changes to Your Repository**
 
     ```bash
     git push -u origin day-5-post-creation
@@ -273,10 +282,10 @@ CORS(app, origins=['http://localhost:5173'], methods=['GET', 'POST', 'PUT', 'DEL
 3.  **Merge After Completion**
 
     ```bash
-    git checkout main
-    git pull origin main
+    git checkout master
+    git pull origin master
     git merge day-5-post-creation
-    git push origin main
+    git push origin master
     ```
 
 ## 🧪 Testing Checklist

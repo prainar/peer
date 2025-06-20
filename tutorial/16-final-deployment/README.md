@@ -138,7 +138,7 @@ Ensure Day 15 (Final Integration) is complete and all modules are working togeth
     git commit -m "Day 16: Deploy complete application to production"
     ```
 
-2.  **Push Your Changes to Your Fork**
+2.  **Push Your Changes to Your Repository**
 
     ```bash
     git push -u origin day-16-final-deployment

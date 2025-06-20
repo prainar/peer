@@ -26,7 +26,7 @@ Ensure your Day 2 authentication is complete and working. You should have a good
     ```bash
     # First, ensure you are on your 'master' branch and it's up-to-date
     git checkout master
-    git pull origin master  # Get any potential updates from your own fork's master
+    git pull origin master  # Get any potential updates from your own repository's master
 
     # Now, create and switch to a new branch for this day's assignment/feature
     git checkout -b day-3-profile-ui
@@ -38,8 +38,8 @@ Ensure your Day 2 authentication is complete and working. You should have a good
 
     - **Frontend Dependencies:**
       ```bash
-      cd app/frontend
-      npm install react-hook-form yup @hookform/resolvers
+      cd frontend
+      npm install react-dropzone axios
       ```
 
 3.  **Profile View Implementation**
@@ -95,12 +95,8 @@ Ensure your Day 2 authentication is complete and working. You should have a good
 
     ```bash
     # Start the frontend development server
-    cd app/frontend
+    cd frontend
     npm run dev
-
-    cd app/backend
-    export FLASK_APP=.
-    flask run
     ```
 
     The application will be available at:
@@ -124,7 +120,7 @@ Ensure your Day 2 authentication is complete and working. You should have a good
     git commit -m "Day 3: Implement profile view and edit UI"
     ```
 
-2.  **Push Your Changes to Your Fork**
+2.  **Push Your Changes to Your Repository**
 
     ```bash
     git push -u origin day-3-profile-ui
@@ -143,8 +139,6 @@ Ensure your Day 2 authentication is complete and working. You should have a good
 
 ![Profile Desktop View](profile-desk.png)
 ![Profile Mobile View](profile-mobile.png)
-![Profile Edit Desktop View](profile-edit-desk.png)
-![Profile Edit Mobile View](profile-edit-mobile.png)
 
 ## ✅ Deliverable
 
