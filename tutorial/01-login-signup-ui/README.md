@@ -151,3 +151,45 @@ git push origin master        # Push the updated master to your repository onlin
 A working project setup with login/signup UI, properly version controlled with Git.
 
 ---
+
+
+
+## 🛠️ Common Errors & Solutions
+
+#### 1. Tailwind CSS styles are not applying.
+
+If your Tailwind classes (like `bg-blue-500` or `text-center`) have no effect, check the following:
+
+- **Is your Vite server running?** Make sure you have `npm run dev` running in a terminal.
+- **Is `tailwind.config.js` configured correctly?** The `content` section must point to your component files:
+  ```javascript
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}", // This line is crucial
+  ],
+  ```
+- **Are the Tailwind directives in `src/index.css`?** This file must contain:
+  ```css
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  ```
+- **Did you restart the server?** After changing `tailwind.config.js` or `postcss.config.js`, you must stop and restart the Vite server (`npm run dev`).
+
+#### 2. The `npx tailwindcss init -p` command fails.
+
+- Make sure you are in the correct directory (`frontend`).
+- Verify that you have installed the required dependencies by running:
+  ```bash
+  npm install -D tailwindcss postcss autoprefixer
+  ```
+
+#### 3. CSS is not updating when I save a file.
+
+- Ensure the Vite development server is still running in your terminal.
+- Check the browser's DevTools console for any error messages.
+- Try a hard refresh in your browser (Ctrl+F5 or Cmd+Shift+R) to clear any cached files.
+
+---
+
+
