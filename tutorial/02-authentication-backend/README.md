@@ -46,10 +46,18 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 #### Install Backend Dependencies
 
 ```bash
-pip install Flask-SQLAlchemy Flask-Migrate Werkzeug PyJWT Flask-JWT-Extended Flask-CORS Flask-Limiter email-validator
+pip install Flask Flask-SQLAlchemy Flask-Migrate Flask-JWT-Extended Flask-CORS python-dotenv mysqlclient
 ```
 
 > These libraries will help manage your database, secure passwords, and enable token-based authentication with cross-origin support.
+
+**Optional Development Dependencies:**
+
+```bash
+pip install pytest black flake8
+```
+
+> These are for testing and code formatting (optional for development).
 
 #### Frontend Preparation
 
