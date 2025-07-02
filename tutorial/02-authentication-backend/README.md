@@ -60,10 +60,6 @@ cd frontend
 npm install
 ```
 
-### Backend Implementation
-
-#### Database Setup and User Model
-
 ## Prerequisites
 
 ### 1. **Download MySQL Server**
@@ -100,9 +96,6 @@ npm install
 
 ---
 
-- Create a `User` model with fields: `id`, `username`, `email`, and `password_hash`.
-- Use `generate_password_hash` and `check_password_hash` from `werkzeug.security`.
-
 ## ⚙️ Database Configuration
 
 By default, the backend connects to MySQL using the credentials in `app/backend/config.py`.
@@ -122,14 +115,47 @@ By default, the backend connects to MySQL using the credentials in `app/backend/
 
 ---
 
-````bash
-  cd app/backend
-  # To create Database in MySQL
-  mysql -u root -p
-  # Enter your password, then in the MySQL shell:
-  CREATE DATABASE prok_db;
-  USE prok_db;
-  exit
+## 🗄️ Phase 1: Database and Models Implementation
+
+### Database Setup
+
+```bash
+cd app/backend
+# To create Database in MySQL
+mysql -u root -p
+# Enter your password, then in the MySQL shell:
+CREATE DATABASE prok_db;
+USE prok_db;
+exit
+```
+
+### User Model Implementation
+
+### Give the following to AI(Cursor-AI chat) and ask to generate code for that.
+
+- Create a `User` model with fields: `id`, `username`, `email`, and `password_hash`
+- Use `generate_password_hash` and `check_password_hash` from `werkzeug.security`
+- Add validation rules for username and email uniqueness
+- Implement password complexity requirements
+
+### Create Tables
+
+```bash
+# Initialize Flask-Migrate (first time only)
+flask db init
+
+# Create initial migration
+flask db migrate -m "Initial migration"
+
+# Apply migration to create tables
+flask db upgrade
+```
+
+---
+
+## 🔌 Phase 2: API Implementation
+
+### Authentication Endpoints
 
 #### Registration Endpoint (POST `/api/signup`)
 
@@ -155,119 +181,29 @@ By default, the backend connects to MySQL using the credentials in `app/backend/
   - `200 OK` – success with token
   - `401 Unauthorized` – incorrect credentials
 
-```bash
-  # To run backend
-  flask run
-  # The backend API will be available at: http://localhost:5000
-````
+### Security Features
 
-Certainly! Here's a **Postman API Testing Guide** in README format, ready to copy-paste into your documentation:
-
----
-
-## 🚦 API Testing with Postman
-
-This guide will help you test your API endpoints using [Postman](https://www.postman.com/).
+- Enforce minimum password complexity
+- Add basic rate limiting on auth endpoints
+- Set up CORS between frontend and backend
+- Sanitize all user inputs
 
 ---
 
-### 1. **Open Postman**
+## 🔗 Phase 3: Frontend Integration
 
-- Download and install Postman if you don't have it: [Download Postman](https://www.postman.com/downloads/)
-
----
-
-### 2. **Create a New Request**
-
-- Click **"New"** → **"HTTP Request"**.
-
----
-
-### 3. **Set Request Type and URL**
-
-- Select the HTTP method (e.g., **POST**, **GET**).
-- Enter your API endpoint URL, for example:
-  ```
-  http://localhost:5000/api/signup
-  ```
-
----
-
-### 4. **Set the Request Body**
-
-- Click the **"Body"** tab.
-- Select **"raw"**.
-- Choose **"JSON"** from the dropdown menu.
-- Enter your JSON data. For example, to register a user:
-  ```json
-  {
-    "username": "testuser",
-    "email": "testuser@example.com",
-    "password": "TestPassword123"
-  }
-  ```
-
----
-
-### 5. **Send the Request**
-
-- Click the **"Send"** button.
-
----
-
-### 6. **Check the Response**
-
-- View the response status and message in the lower section of Postman.
-  - Example success:
-    ```json
-    {
-      "message": "User created successfully"
-    }
-    ```
-  - Example error:
-    ```json
-    {
-      "message": "Username or email already exists"
-    }
-    ```
-
----
-
-### 7. **Test the Login Endpoint**
-
-- Change the URL to:
-  ```
-  http://localhost:5000/api/login
-  ```
-- Use this JSON body:
-  ```json
-  {
-    "username": "testuser",
-    "password": "TestPassword123"
-  }
-  ```
-- Click **"Send"** and check for a token in the response.
-
----
-
-**You're now ready to test any API endpoint with Postman!**
-
----
-
-### Frontend Integration
-
-#### Connect Login Form to Backend
+### Connect Login Form to Backend
 
 - Send POST request to `/api/login` with form data
 - Use `fetch` or `axios` to make request
 - Display loading or error states
 
-#### Handle Authentication Responses
+### Handle Authentication Responses
 
 - Show success or error messages based on backend response
 - Use `useState` to manage feedback and message UI
 
-#### Token Storage and Usage
+### Token Storage and Usage
 
 - Store JWT token in `localStorage`
 - Attach token to protected API requests
@@ -276,14 +212,9 @@ This guide will help you test your API endpoints using [Postman](https://www.pos
 localStorage.setItem("token", token);
 ```
 
-### Security Features
+---
 
-- Enforce minimum password complexity
-- Add basic rate limiting on auth endpoints
-- Set up CORS between frontend and backend
-- Sanitize all user inputs
-
-### Run the Application
+## 🚀 Run the Application
 
 ```bash
 # Backend
@@ -300,7 +231,11 @@ Application available at:
 - Frontend: [http://localhost:3000](http://localhost:3000)
 - Backend API: [http://localhost:5000](http://localhost:5000)
 
-### Testing
+---
+
+## 🧪 Testing
+
+### Manual Testing
 
 - Test registration with new and duplicate data
 - Test login with valid/invalid credentials
@@ -308,11 +243,92 @@ Application available at:
 - Access protected routes with/without token
 - Verify frontend error messages display properly
 
+### API Testing with Postman
+
+This guide will help you test your API endpoints using [Postman](https://www.postman.com/).
+
+#### 1. **Install and Open Postman**
+
+```bash
+# Download and install Postman
+# For Linux:
+wget https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz  # Download Postman installer
+sudo tar -xzf postman.tar.gz -C /opt                              # Extract to /opt directory
+sudo ln -s /opt/Postman/Postman /usr/bin/postman                  # Create shortcut in PATH
+
+
+# Open Postman
+postman
+```
+
+#### 2. **Create a New Request**
+
+- Click **"New"** → **"HTTP Request"**.
+
+#### 3. **Set Request Type and URL**
+
+- Select the HTTP method (e.g., **POST**, **GET**).
+- Enter your API endpoint URL, for example:
+  ```
+  http://localhost:5000/api/signup
+  ```
+
+#### 4. **Set the Request Body**
+
+- Click the **"Body"** tab.
+- Select **"raw"**.
+- Choose **"JSON"** from the dropdown menu.
+- Enter your JSON data. For example, to register a user:
+  ```json
+  {
+    "username": "testuser",
+    "email": "testuser@example.com",
+    "password": "TestPassword123"
+  }
+  ```
+
+#### 5. **Send the Request**
+
+- Click the **"Send"** button.
+
+#### 6. **Check the Response**
+
+- View the response status and message in the lower section of Postman.
+  - Example success:
+    ```json
+    {
+      "message": "User created successfully"
+    }
+    ```
+  - Example error:
+    ```json
+    {
+      "message": "Username or email already exists"
+    }
+    ```
+
+#### 7. **Test the Login Endpoint**
+
+- Change the URL to:
+  ```
+  http://localhost:5000/api/login
+  ```
+- Use this JSON body:
+  ```json
+  {
+    "username": "testuser",
+    "password": "TestPassword123"
+  }
+  ```
+- Click **"Send"** and check for a token in the response.
+
+**You're now ready to test any API endpoint with Postman!**
+
 ---
 
-### Git Workflow
+## 🔄 Git Workflow
 
-1. **Develop and Save Your Progress**
+### 1. **Develop and Save Your Progress**
 
 ```bash
 git status
@@ -322,20 +338,20 @@ git commit -m "Day 2: Implement authentication backend and frontend integration"
 
 > Use clear commit messages that explain the key changes you've made.
 
-2. **Push Your Changes to Your Repository**
+### 2. **Push Your Changes to Your Repository**
 
 ```bash
-git push -u origin day-2-authentication-backend
+git push -u origin day-2-authentication
 ```
 
 > Uploads your branch to your repository.
 
-3. **Merge After Assignment Completion**
+### 3. **Merge After Assignment Completion**
 
 ```bash
 git checkout master
 git pull origin master
-git merge day-2-authentication-backend
+git merge day-2-authentication
 git push origin master
 ```
 
