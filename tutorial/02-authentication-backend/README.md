@@ -190,6 +190,89 @@ flask db upgrade
 
 ---
 
+## 🧪 API Testing with Postman
+
+This guide will help you test your API endpoints using [Postman](https://www.postman.com/).
+
+### 1. **Install and Open Postman**
+
+```bash
+# Download and install Postman
+# For Linux:
+wget https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz  # Download Postman installer
+sudo tar -xzf postman.tar.gz -C /opt                              # Extract to /opt directory
+sudo ln -s /opt/Postman/Postman /usr/bin/postman                  # Create shortcut in PATH
+
+
+# Open Postman
+postman
+```
+
+### 2. **Create a New Request**
+
+- Click **"New"** → **"HTTP Request"**.
+
+### 3. **Set Request Type and URL**
+
+- Select the HTTP method (e.g., **POST**, **GET**).
+- Enter your API endpoint URL, for example:
+  ```
+  http://localhost:5000/api/signup
+  ```
+
+### 4. **Set the Request Body**
+
+- Click the **"Body"** tab.
+- Select **"raw"**.
+- Choose **"JSON"** from the dropdown menu.
+- Enter your JSON data. For example, to register a user:
+  ```json
+  {
+    "username": "testuser",
+    "email": "testuser@example.com",
+    "password": "TestPassword123"
+  }
+  ```
+
+### 5. **Send the Request**
+
+- Click the **"Send"** button.
+
+### 6. **Check the Response**
+
+- View the response status and message in the lower section of Postman.
+  - Example success:
+    ```json
+    {
+      "message": "User created successfully"
+    }
+    ```
+  - Example error:
+    ```json
+    {
+      "message": "Username or email already exists"
+    }
+    ```
+
+### 7. **Test the Login Endpoint**
+
+- Change the URL to:
+  ```
+  http://localhost:5000/api/login
+  ```
+- Use this JSON body:
+  ```json
+  {
+    "username": "testuser",
+    "password": "TestPassword123"
+  }
+  ```
+- Click **"Send"** and check for a token in the response.
+
+**You're now ready to test any API endpoint with Postman!**
+
+---
+
 ## 🔗 Phase 3: Frontend Integration
 
 ### Connect Login Form to Backend
@@ -233,96 +316,15 @@ Application available at:
 
 ---
 
-## 🧪 Testing
+## 🧪 Manual Testing
 
-### Manual Testing
+### Test Registration and Login
 
 - Test registration with new and duplicate data
 - Test login with valid/invalid credentials
 - Confirm JWT token is returned and stored
 - Access protected routes with/without token
 - Verify frontend error messages display properly
-
-### API Testing with Postman
-
-This guide will help you test your API endpoints using [Postman](https://www.postman.com/).
-
-#### 1. **Install and Open Postman**
-
-```bash
-# Download and install Postman
-# For Linux:
-wget https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz  # Download Postman installer
-sudo tar -xzf postman.tar.gz -C /opt                              # Extract to /opt directory
-sudo ln -s /opt/Postman/Postman /usr/bin/postman                  # Create shortcut in PATH
-
-
-# Open Postman
-postman
-```
-
-#### 2. **Create a New Request**
-
-- Click **"New"** → **"HTTP Request"**.
-
-#### 3. **Set Request Type and URL**
-
-- Select the HTTP method (e.g., **POST**, **GET**).
-- Enter your API endpoint URL, for example:
-  ```
-  http://localhost:5000/api/signup
-  ```
-
-#### 4. **Set the Request Body**
-
-- Click the **"Body"** tab.
-- Select **"raw"**.
-- Choose **"JSON"** from the dropdown menu.
-- Enter your JSON data. For example, to register a user:
-  ```json
-  {
-    "username": "testuser",
-    "email": "testuser@example.com",
-    "password": "TestPassword123"
-  }
-  ```
-
-#### 5. **Send the Request**
-
-- Click the **"Send"** button.
-
-#### 6. **Check the Response**
-
-- View the response status and message in the lower section of Postman.
-  - Example success:
-    ```json
-    {
-      "message": "User created successfully"
-    }
-    ```
-  - Example error:
-    ```json
-    {
-      "message": "Username or email already exists"
-    }
-    ```
-
-#### 7. **Test the Login Endpoint**
-
-- Change the URL to:
-  ```
-  http://localhost:5000/api/login
-  ```
-- Use this JSON body:
-  ```json
-  {
-    "username": "testuser",
-    "password": "TestPassword123"
-  }
-  ```
-- Click **"Send"** and check for a token in the response.
-
-**You're now ready to test any API endpoint with Postman!**
 
 ---
 
