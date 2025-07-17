@@ -1,81 +1,98 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import peerLogo from '../../assets/peer.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    if (!form.email || !form.password) {
+      setError('Please fill in all fields.');
+      return;
+    }
+    // Here you would typically send the data to your backend
+    // For now, just redirect to dashboard or home
+    navigate('/dashboard');
+  };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row font-sans">
-      {/* Left Panel */}
-      <div className="hidden md:flex flex-col justify-center items-center bg-blue-700 w-1/2 p-12 text-white">
-        <div className="bg-white rounded-lg flex items-center justify-center mb-6" style={{ width: 64, height: 64 }}>
-          <img src={peerLogo} alt="Peer Logo" className="h-12 w-12" />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-4">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-2 shadow-lg" style={{ backgroundColor: '#8B4513' }}>
+            <span className="text-white text-4xl font-extrabold">P</span>
+          </div>
+          <span className="text-2xl font-bold text-gray-900 tracking-wide">peer</span>
         </div>
-        <h1 className="text-4xl font-bold mb-2">Welcome back!</h1>
-        <p className="text-lg font-medium">Connect and grow your professional network on Peer.</p>
-      </div>
-      {/* Right Panel (Form) */}
-      <div className="flex flex-1 flex-col justify-center items-center bg-gray-50">
-        <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-          <div className="flex flex-col items-center mb-6 md:hidden">
-            <div className="bg-white rounded-lg flex items-center justify-center mb-2" style={{ width: 48, height: 48 }}>
-              <img src={peerLogo} alt="Peer Logo" className="h-8 w-8" />
-            </div>
-            <h1 className="text-2xl font-bold text-blue-700">Welcome back!</h1>
+        <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">Sign in to your account</h2>
+        <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={form.email}
+              onChange={handleChange}
+              className="appearance-none rounded w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brown-700 focus:border-brown-700"
+              placeholder="you@example.com"
+            />
           </div>
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">Sign in to Peer</h2>
-          <form className="mt-8 space-y-6">
-            <div className="rounded-md shadow-sm -space-y-px">
-              <div>
-                <label htmlFor="email-address" className="sr-only">Email address</label>
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-600 focus:border-blue-600 focus:z-10 sm:text-base font-sans"
-                  placeholder="Email address"
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="password" className="sr-only">Password</label>
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-600 focus:border-blue-600 focus:z-10 sm:text-base font-sans"
-                  placeholder="Password"
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 px-3 flex items-center text-sm text-blue-700 hover:underline focus:outline-none"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  tabIndex={-1}
-                >
-                  {showPassword ? 'Hide' : 'Show'}
-                </button>
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <Link to="/forgot-password" className="text-blue-700 hover:underline text-sm font-medium">Forgot password?</Link>
-            </div>
-            <div>
-              <button
-                type="submit"
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-base font-semibold rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 transition font-sans"
-              >
-                Sign in
-              </button>
-            </div>
-          </form>
-          <div className="text-center mt-6">
-            <span className="text-gray-600">New to Peer? </span>
-            <Link to="/signup" className="text-blue-700 hover:underline font-medium">Join now</Link>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              value={form.password}
+              onChange={handleChange}
+              className="appearance-none rounded w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brown-700 focus:border-brown-700"
+              placeholder="••••••••"
+            />
           </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember_me"
+                name="remember_me"
+                type="checkbox"
+                className="h-4 w-4 text-brown-700 focus:ring-brown-700 border-gray-300 rounded"
+              />
+              <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
+                Remember me
+              </label>
+            </div>
+            <div className="text-sm">
+              <a href="#" className="font-medium text-brown-700 hover:text-brown-800">Forgot your password?</a>
+            </div>
+          </div>
+          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
+          <button
+            type="submit"
+            style={{ backgroundColor: '#8B4513', color: 'white' }}
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-semibold text-lg hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-offset-2"
+          >
+            Sign in
+          </button>
+        </form>
+        <div className="text-center mt-4">
+          <span className="text-sm text-gray-600">Don't have an account? </span>
+          <a href="/signup" className="font-medium text-brown-700 hover:text-brown-800">Sign up</a>
         </div>
       </div>
     </div>
