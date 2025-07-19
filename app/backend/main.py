@@ -22,7 +22,13 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Initialize extensions
-CORS(app, origins=["*"], supports_credentials=False, allow_headers=["Content-Type", "Authorization"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+CORS(app, 
+     origins=["*"], 
+     supports_credentials=False, 
+     allow_headers=["*"], 
+     methods=["*"], 
+     expose_headers=["*"],
+     max_age=3600)
 db.init_app(app)
 jwt = JWTManager(app)
 limiter = Limiter(
@@ -34,6 +40,14 @@ limiter = Limiter(
 # Register blueprints
 app.register_blueprint(auth_bp)
 app.register_blueprint(profile_bp)
+
+# Add CORS headers to all responses
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 
 def setup_database():
