@@ -42,5 +42,5 @@ class Achievement(db.Model):
 class ProfilePhoto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), nullable=False)
-    url = db.Column(db.String(255), nullable=False)
+    url = db.Column(db.Text, nullable=False)  # Changed to TEXT to handle large base64 images
     uploaded_at = db.Column(db.DateTime, server_default=db.func.now())
