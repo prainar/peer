@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authApi } from './api';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
@@ -10,25 +11,47 @@ const Signup: React.FC = () => {
     confirmPassword: '',
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
+    
     if (!form.username || !form.email || !form.password || !form.confirmPassword) {
       setError('Please fill in all fields.');
+      setIsLoading(false);
       return;
     }
     if (form.password !== form.confirmPassword) {
       setError('Passwords do not match.');
+      setIsLoading(false);
       return;
     }
-    // Here you would typically send the data to your backend
-    // For now, just redirect to login
-    navigate('/login');
+
+    try {
+      const response = await authApi.signup({
+        username: form.username,
+        email: form.email,
+        password: form.password
+      });
+
+      if (response.message === 'User created') {
+        // Registration successful, redirect to login
+        navigate('/login');
+      } else {
+        setError(response.message || 'Registration failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      setError('Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -102,10 +125,11 @@ const Signup: React.FC = () => {
           {error && <div className="text-red-500 text-sm text-center">{error}</div>}
           <button
             type="submit"
+            disabled={isLoading}
             style={{ backgroundColor: '#8B4513', color: 'white' }}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-semibold text-lg hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-offset-2"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-semibold text-lg hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Sign up
+            {isLoading ? 'Creating account...' : 'Sign up'}
           </button>
         </form>
         <div className="text-center mt-4">

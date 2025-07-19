@@ -1,17 +1,11 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from models.user import User, db
 from flask_jwt_extended import create_access_token
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash
 
 auth_bp = Blueprint('auth', __name__)
- 
-# Rate limiter instance (should be created in main.py, but for demo, create here if not already)
-limiter = Limiter(get_remote_address)
 
 @auth_bp.route('/api/signup', methods=['POST'])
-@limiter.limit("5 per minute")
 def signup():
     data = request.get_json()
     username = data.get('username')
@@ -33,7 +27,6 @@ def signup():
     return jsonify({"message": "User created"}), 201
 
 @auth_bp.route('/api/login', methods=['POST'])
-@limiter.limit("10 per minute")
 def login():
     data = request.get_json()
     username = data.get('username')

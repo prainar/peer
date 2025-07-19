@@ -193,11 +193,11 @@ const ProfileEdit: React.FC = () => {
           <div className="space-y-4">
             <h2 className="text-lg font-semibold">Profile Picture</h2>
             <div className="flex items-center space-x-6">
-              <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center border-4 border-white shadow-lg">
+              <div className="w-24 h-24 rounded-full flex items-center justify-center border-4 border-white shadow-lg" style={{ backgroundColor: '#8B4513' }}>
                 {imagePreview ? (
                   <img src={imagePreview} alt="Profile" className="w-full h-full rounded-full object-cover" />
                 ) : (
-                  <span className="text-2xl font-bold text-gray-600">
+                  <span className="text-2xl font-bold text-white">
                     {getInitials(formData.user.name)}
                   </span>
                 )}
@@ -246,9 +246,10 @@ const ProfileEdit: React.FC = () => {
                   type="text"
                   value={formData.user.name}
                   onChange={(e) => handleInputChange('user', 'name', e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
                     touched.name && errors.name ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                 />
                 {touched.name && errors.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -420,7 +421,8 @@ const ProfileEdit: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 text-white rounded-md hover:brightness-90 transition-colors focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ backgroundColor: '#8B4513', '--tw-ring-color': '#8B4513' } as React.CSSProperties}
             >
               {isSubmitting ? 'Saving...' : 'Save Changes'}
             </button>

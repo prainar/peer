@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authApi } from './api';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -8,21 +9,44 @@ const Login: React.FC = () => {
     password: '',
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
+    
     if (!form.email || !form.password) {
       setError('Please fill in all fields.');
+      setIsLoading(false);
       return;
     }
-    // Here you would typically send the data to your backend
-    // For now, just redirect to dashboard or home
-    navigate('/dashboard');
+
+    try {
+      const response = await authApi.login({
+        email: form.email,
+        password: form.password
+      });
+
+      if (response.token) {
+        // Store the token
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        // Redirect to dashboard
+        navigate('/dashboard');
+      } else {
+        setError(response.message || 'Login failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Login failed. Please check your credentials and try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -84,10 +108,11 @@ const Login: React.FC = () => {
           {error && <div className="text-red-500 text-sm text-center">{error}</div>}
           <button
             type="submit"
+            disabled={isLoading}
             style={{ backgroundColor: '#8B4513', color: 'white' }}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-semibold text-lg hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-offset-2"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-semibold text-lg hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Sign in
+            {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
         <div className="text-center mt-4">

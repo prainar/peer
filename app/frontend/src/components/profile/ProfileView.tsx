@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // Mock data for demonstration
 const mockProfileData = {
@@ -86,12 +87,20 @@ const ProfileView: React.FC = () => {
     education: true,
     activity: true
   });
+  const [photos, setPhotos] = useState<string[]>([]);
+  const userId = profileData.user.id;
 
   useEffect(() => {
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
     }, 1000);
+  }, []);
+
+  // Fetch photos from backend (mock for now)
+  useEffect(() => {
+    // Replace with API call in production
+    setPhotos([]);
   }, []);
 
   const toggleSection = (section: string) => {
@@ -111,6 +120,28 @@ const ProfileView: React.FC = () => {
 
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const formData = new FormData();
+    formData.append('photo', e.target.files[0]);
+    formData.append('user_id', userId.toString());
+    try {
+      const res = await axios.post('/profile/photo', formData);
+      setPhotos(res.data.photos);
+    } catch (err) {
+      alert('Photo upload failed');
+    }
+  };
+
+  const handlePhotoDelete = async (photoId: string) => {
+    try {
+      const res = await axios.delete(`/profile/photo/${photoId}?user_id=${userId}`);
+      setPhotos(res.data.photos);
+    } catch (err) {
+      alert('Photo delete failed');
+    }
   };
 
   if (loading) {
@@ -133,14 +164,14 @@ const ProfileView: React.FC = () => {
       <div className="bg-white rounded-lg shadow mb-6">
         <div className="relative">
           {/* Cover Image Placeholder */}
-          <div className="h-48 bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-lg"></div>
+          <div className="h-48 rounded-t-lg" style={{ background: 'linear-gradient(135deg, #8B4513 0%, #6d3410 100%)' }}></div>
           
           {/* Avatar and Basic Info */}
           <div className="relative px-6 pb-6">
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between">
               <div className="flex items-end space-x-4 -mt-16">
-                <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center border-4 border-white shadow-lg">
-                  <span className="text-4xl font-bold text-gray-600">
+                <div className="w-32 h-32 rounded-full flex items-center justify-center border-4 border-white shadow-lg" style={{ backgroundColor: '#8B4513' }}>
+                  <span className="text-4xl font-bold text-white">
                     {getInitials(profileData.user.name)}
                   </span>
                 </div>
@@ -159,7 +190,8 @@ const ProfileView: React.FC = () => {
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-blue-600 transition-colors"
+                    className="text-gray-600 transition-colors"
+                    style={{ '--tw-text-opacity': '1', color: 'rgb(139 69 19 / var(--tw-text-opacity))' } as React.CSSProperties}
                   >
                     <span className="capitalize">{platform}</span>
                   </a>
@@ -267,6 +299,23 @@ const ProfileView: React.FC = () => {
               </div>
             )}
           </div>
+
+          {/* Profile Photos Section */}
+          <div className="bg-white rounded-lg shadow mb-6 p-6">
+            <h2 className="text-xl font-bold mb-2">Profile Photos</h2>
+            <div className="flex space-x-4 mb-2">
+              {photos.map(photo => (
+                <div key={photo} className="relative">
+                  <img src={`/uploads/profile_photos/${photo}`} alt="Profile" className="w-24 h-24 object-cover rounded" />
+                  <button onClick={() => handlePhotoDelete(photo)} className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1">✕</button>
+                </div>
+              ))}
+              <label className="w-24 h-24 flex items-center justify-center border-2 border-dashed rounded cursor-pointer">
+                <span className="text-gray-500">+</span>
+                <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+              </label>
+            </div>
+          </div>
         </div>
 
         {/* Sidebar */}
@@ -324,4 +373,4 @@ const ProfileView: React.FC = () => {
   );
 };
 
-export default ProfileView; 
+export default ProfileView;
