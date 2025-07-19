@@ -502,10 +502,10 @@ const ProfileEdit: React.FC = () => {
               >
                 Add Experience
               </button>
-            </div>
+          </div>
 
             {/* Experience list */}
-            <div className="space-y-4">
+          <div className="space-y-4">
               {profileData.profile.experience.map((exp) => (
                 <div key={exp.id} className="border border-gray-200 rounded-md p-4">
                   {editingExperience === exp.id ? (
@@ -535,7 +535,7 @@ const ProfileEdit: React.FC = () => {
                           className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
                           style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                         />
-                        <input
+                  <input
                           type="text"
                           value={editingExperienceData.end_date}
                           onChange={(e) => setEditingExperienceData(prev => ({ ...prev, end_date: e.target.value }))}
@@ -619,8 +619,8 @@ const ProfileEdit: React.FC = () => {
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
                   style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                 />
-                <input
-                  type="text"
+              <input
+                type="text"
                   value={newAchievement.date}
                   onChange={(e) => setNewAchievement(prev => ({ ...prev, date: e.target.value }))}
                   placeholder="Date (e.g., 2023)"

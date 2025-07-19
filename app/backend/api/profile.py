@@ -9,7 +9,7 @@ profile_bp = Blueprint('profile', __name__)
 @jwt_required()
 def get_profile():
     """Get user profile"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     user = User.query.get(user_id)
     
     if not user:
@@ -72,7 +72,7 @@ def get_profile():
 @jwt_required()
 def update_profile():
     """Update user profile"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
     
     profile = Profile.query.filter_by(user_id=user_id).first()
@@ -96,7 +96,7 @@ def update_profile():
 @jwt_required()
 def add_skill():
     """Add a skill to user profile"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
     
     profile = Profile.query.filter_by(user_id=user_id).first()
@@ -116,7 +116,7 @@ def add_skill():
 @jwt_required()
 def remove_skill(skill_id):
     """Remove a skill from user profile"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     
     skill = Skill.query.join(Profile).filter(Skill.id == skill_id, Profile.user_id == user_id).first()
     if not skill:
@@ -131,7 +131,7 @@ def remove_skill(skill_id):
 @jwt_required()
 def add_experience():
     """Add experience to user profile"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
     
     profile = Profile.query.filter_by(user_id=user_id).first()
@@ -168,7 +168,7 @@ def add_experience():
 @jwt_required()
 def remove_experience(exp_id):
     """Remove experience from user profile"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     
     experience = Experience.query.join(Profile).filter(Experience.id == exp_id, Profile.user_id == user_id).first()
     if not experience:
@@ -183,7 +183,7 @@ def remove_experience(exp_id):
 @jwt_required()
 def add_achievement():
     """Add achievement to user profile"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
     
     profile = Profile.query.filter_by(user_id=user_id).first()
@@ -218,7 +218,7 @@ def add_achievement():
 @jwt_required()
 def remove_achievement(achievement_id):
     """Remove achievement from user profile"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     
     achievement = Achievement.query.join(Profile).filter(Achievement.id == achievement_id, Profile.user_id == user_id).first()
     if not achievement:
@@ -233,7 +233,7 @@ def remove_achievement(achievement_id):
 @jwt_required()
 def upload_profile_photo():
     """Upload profile photo"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
     
     profile = Profile.query.filter_by(user_id=user_id).first()
@@ -268,7 +268,7 @@ def upload_profile_photo():
 @jwt_required()
 def remove_profile_photo():
     """Remove profile photo"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     
     profile = Profile.query.filter_by(user_id=user_id).first()
     if not profile:
