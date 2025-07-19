@@ -20,7 +20,6 @@ const Dashboard: React.FC = () => {
   const [profileData, setProfileData] = useState({
     bio: '',
     location: '',
-    skills: [] as Array<{id: number, name: string}>,
     experience: [] as Array<{id: number, title: string, company: string, start_date: string, end_date?: string, description: string}>,
     achievements: [] as Array<{id: number, title: string, description: string, date?: string}>
   });
@@ -28,7 +27,6 @@ const Dashboard: React.FC = () => {
     bio: '',
     location: '',
     fullName: '',
-    skills: [] as string[],
     experience: [] as Array<{title: string, company: string, duration: string, description: string}>,
     achievements: [] as Array<{title: string, description: string, date: string}>
   });
@@ -194,12 +192,10 @@ const Dashboard: React.FC = () => {
   ]);
 
   // Modal states
-  const [showSkillModal, setShowSkillModal] = useState(false);
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [showAchievementModal, setShowAchievementModal] = useState(false);
   
   // Form data states
-  const [newSkill, setNewSkill] = useState('');
   const [newExperience, setNewExperience] = useState({
     title: '',
     company: '',
@@ -225,13 +221,12 @@ const Dashboard: React.FC = () => {
       setIsLoading(true);
       const response = await profileApi.getProfile();
       if (response.profile) {
-        setProfileData({
-          bio: response.profile.bio || '',
-          location: response.profile.location || '',
-          skills: response.profile.skills || [],
-          experience: response.profile.experience || [],
-          achievements: response.profile.achievements || []
-        });
+              setProfileData({
+        bio: response.profile.bio || '',
+        location: response.profile.location || '',
+        experience: response.profile.experience || [],
+        achievements: response.profile.achievements || []
+      });
 
         // Update dashboard profile data with real profile information
         setDashboardProfileData({
@@ -512,7 +507,7 @@ const Dashboard: React.FC = () => {
       bio: profileData.bio,
       location: profileData.location,
       fullName: dashboardProfileData.fullName,
-      skills: profileData.skills.map(s => s.name),
+
       experience: profileData.experience.map(exp => ({
         title: exp.title,
         company: exp.company,
@@ -566,15 +561,6 @@ const Dashboard: React.FC = () => {
   };
 
   // Modal functions
-  const openSkillModal = () => {
-    setNewSkill('');
-    setShowSkillModal(true);
-  };
-
-  const closeSkillModal = () => {
-    setShowSkillModal(false);
-    setNewSkill('');
-  };
 
   const openExperienceModal = () => {
     setNewExperience({
@@ -616,39 +602,7 @@ const Dashboard: React.FC = () => {
     });
   };
 
-  const addSkill = async () => {
-    if (newSkill.trim() && !tempProfileData.skills.includes(newSkill.trim())) {
-      try {
-        const response = await profileApi.addSkill(newSkill.trim());
-        if (response.skill) {
-          setTempProfileData({
-            ...tempProfileData,
-            skills: [...tempProfileData.skills, newSkill.trim()]
-          });
-          closeSkillModal();
-        }
-      } catch (error) {
-        console.error('Error adding skill:', error);
-        alert('Error adding skill. Please try again.');
-      }
-    }
-  };
 
-  const removeSkill = async (index: number) => {
-    const skillToRemove = profileData.skills[index];
-    if (skillToRemove) {
-      try {
-        await profileApi.removeSkill(skillToRemove.id);
-        setTempProfileData({
-          ...tempProfileData,
-          skills: tempProfileData.skills.filter((_, i) => i !== index)
-        });
-      } catch (error) {
-        console.error('Error removing skill:', error);
-        alert('Error removing skill. Please try again.');
-      }
-    }
-  };
 
   const addExperience = async () => {
     if (newExperience.title && newExperience.company && newExperience.start_date) {
@@ -1232,43 +1186,7 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Skills Section */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Skills</h3>
-                {isEditingProfile && (
-                  <button
-                    onClick={openSkillModal}
-                    className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
-                    disabled={isLoading}
-                  >
-                    + Add Skill
-                  </button>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {(isEditingProfile ? tempProfileData.skills : profileData.skills.map(s => s.name)).map((skill, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm flex items-center"
-                  >
-                    {skill}
-                    {isEditingProfile && (
-                      <button
-                        onClick={() => removeSkill(index)}
-                        className="ml-2 text-blue-600 hover:text-blue-800"
-                        disabled={isLoading}
-                      >
-                        ×
-                      </button>
-                    )}
-                  </span>
-                ))}
-                {!isEditingProfile && profileData.skills.length === 0 && (
-                  <p className="text-gray-500">No skills added yet.</p>
-                )}
-              </div>
-            </div>
+
 
             {/* Experience Section */}
             <div className="bg-white rounded-lg shadow p-6">
@@ -1500,39 +1418,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Skill Modal */}
-      {showSkillModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-            <h3 className="text-lg font-semibold mb-4">Add New Skill</h3>
-            <input
-              type="text"
-              value={newSkill}
-              onChange={(e) => setNewSkill(e.target.value)}
-              placeholder="Enter skill name"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:border-transparent mb-4"
-              style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
-              onKeyPress={(e) => e.key === 'Enter' && addSkill()}
-            />
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={closeSkillModal}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={addSkill}
-                className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
-                style={{ backgroundColor: '#8B4513' }}
-                disabled={!newSkill.trim()}
-              >
-                Add Skill
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* Experience Modal */}
       {showExperienceModal && (

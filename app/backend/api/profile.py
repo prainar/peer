@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.user import User, db
-from models.profile import Profile, Skill, Experience, Education, Achievement, ProfilePhoto
+from models.profile import Profile, Experience, Education, Achievement, ProfilePhoto
 
 profile_bp = Blueprint('profile', __name__)
 
@@ -23,7 +23,6 @@ def get_profile():
         db.session.commit()
     
     # Get related data
-    skills = Skill.query.filter_by(profile_id=profile.id).all()
     experiences = Experience.query.filter_by(profile_id=profile.id).all()
     education = Education.query.filter_by(profile_id=profile.id).all()
     achievements = Achievement.query.filter_by(profile_id=profile.id).all()
@@ -35,7 +34,7 @@ def get_profile():
             "full_name": profile.full_name,
             "bio": profile.bio,
             "location": profile.location,
-            "skills": [{"id": s.id, "name": s.name} for s in skills],
+
             "experience": [{
                 "id": e.id,
                 "title": e.title,
@@ -92,40 +91,7 @@ def update_profile():
     
     return jsonify({"message": "Profile updated successfully"}), 200
 
-@profile_bp.route('/api/profile/skills', methods=['POST'])
-@jwt_required()
-def add_skill():
-    """Add a skill to user profile"""
-    user_id = int(get_jwt_identity())
-    data = request.get_json()
-    
-    profile = Profile.query.filter_by(user_id=user_id).first()
-    if not profile:
-        user = User.query.get(user_id)
-        profile = Profile(user_id=user_id, full_name=user.username)
-        db.session.add(profile)
-        db.session.commit()
-    
-    skill = Skill(profile_id=profile.id, name=data['name'])
-    db.session.add(skill)
-    db.session.commit()
-    
-    return jsonify({"message": "Skill added successfully", "skill": {"id": skill.id, "name": skill.name}}), 201
 
-@profile_bp.route('/api/profile/skills/<int:skill_id>', methods=['DELETE'])
-@jwt_required()
-def remove_skill(skill_id):
-    """Remove a skill from user profile"""
-    user_id = int(get_jwt_identity())
-    
-    skill = Skill.query.join(Profile).filter(Skill.id == skill_id, Profile.user_id == user_id).first()
-    if not skill:
-        return jsonify({"message": "Skill not found"}), 404
-    
-    db.session.delete(skill)
-    db.session.commit()
-    
-    return jsonify({"message": "Skill removed successfully"}), 200
 
 @profile_bp.route('/api/profile/experience', methods=['POST'])
 @jwt_required()
