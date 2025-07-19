@@ -1,46 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { profileApi } from './api';
 
-// Mock data for demonstration
-const mockProfileData = {
+interface Skill {
+  id: number;
+  name: string;
+}
+
+interface Experience {
+  id: number;
+  title: string;
+  company: string;
+  start_date: string;
+  end_date?: string;
+  description: string;
+}
+
+interface Achievement {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  image_url?: string;
+}
+
+interface ProfileData {
+  profile: {
+    id: number;
+    full_name: string;
+    bio: string;
+    location: string;
+    skills: Skill[];
+    experience: Experience[];
+    education: any[];
+    achievements: Achievement[];
+    photos: any[];
+  };
   user: {
-    name: 'John Doe',
-    title: 'Senior Software Engineer',
-    location: 'San Francisco, CA',
-    bio: 'Passionate software engineer with 5+ years of experience in full-stack development. Specialized in React, Node.js, and cloud technologies.',
-    email: 'john.doe@example.com',
-    phone: '+1 (555) 123-4567',
-    website: 'https://johndoe.dev',
-    socialLinks: {
-      linkedin: 'https://linkedin.com/in/johndoe',
-      github: 'https://github.com/johndoe',
-      twitter: 'https://twitter.com/johndoe'
-    }
-  },
-  skills: ['JavaScript', 'React', 'Node.js', 'Python', 'AWS', 'Docker'],
-  experience: [
-    {
-      id: 1,
-      title: 'Senior Software Engineer',
-      company: 'TechCorp',
-      location: 'San Francisco, CA',
-      startDate: '2022-01',
-      endDate: 'Present',
-      description: 'Leading development of scalable web applications using React and Node.js.'
-    }
-  ],
-  education: [
-    {
-      id: 1,
-      degree: 'Bachelor of Science in Computer Science',
-      school: 'University of California, Berkeley',
-      location: 'Berkeley, CA',
-      startYear: 2016,
-      endYear: 2020,
-      gpa: '3.8'
-    }
-  ]
-};
+    id: number;
+    username: string;
+    email: string;
+  };
+}
 
 interface FormErrors {
   [key: string]: string;
@@ -48,386 +49,692 @@ interface FormErrors {
 
 const ProfileEdit: React.FC = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState(mockProfileData);
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isDragOver, setIsDragOver] = useState(false);
+  
+  // Form states
+  const [basicInfo, setBasicInfo] = useState({
+    full_name: '',
+    bio: '',
+    location: ''
+  });
+  
+  // Skills management
+  const [newSkill, setNewSkill] = useState('');
+  const [editingSkill, setEditingSkill] = useState<number | null>(null);
+  const [editingSkillName, setEditingSkillName] = useState('');
+  
+  // Experience management
+  const [newExperience, setNewExperience] = useState({
+    title: '',
+    company: '',
+    start_date: '',
+    end_date: '',
+    description: ''
+  });
+  const [editingExperience, setEditingExperience] = useState<number | null>(null);
+  const [editingExperienceData, setEditingExperienceData] = useState({
+    title: '',
+    company: '',
+    start_date: '',
+    end_date: '',
+    description: ''
+  });
+  
+  // Achievement management
+  const [newAchievement, setNewAchievement] = useState({
+    title: '',
+    description: '',
+    date: ''
+  });
+  const [editingAchievement, setEditingAchievement] = useState<number | null>(null);
+  const [editingAchievementData, setEditingAchievementData] = useState({
+    title: '',
+    description: '',
+    date: ''
+  });
 
-  const validateField = (name: string, value: any): string => {
-    switch (name) {
-      case 'name':
-        return value.trim().length < 2 ? 'Name must be at least 2 characters' : '';
-      case 'email':
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return !emailRegex.test(value) ? 'Please enter a valid email address' : '';
-      case 'phone':
-        const phoneRegex = /^\+?[\d\s\-\(\)]+$/;
-        return !phoneRegex.test(value) ? 'Please enter a valid phone number' : '';
-      case 'website':
-        if (value && !value.startsWith('http')) {
-          return 'Website must start with http:// or https://';
-        }
-        return '';
-      case 'bio':
-        return value.trim().length < 10 ? 'Bio must be at least 10 characters' : '';
-      default:
-        return '';
+  // Load profile data
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
+    try {
+      const data = await profileApi.getProfile();
+      setProfileData(data);
+      setBasicInfo({
+        full_name: data.profile.full_name || '',
+        bio: data.profile.bio || '',
+        location: data.profile.location || ''
+      });
+    } catch (error) {
+      console.error('Error loading profile:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleInputChange = (section: string, field: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [section]: {
-        ...prev[section as keyof typeof prev],
-        [field]: value
-      }
-    }));
-
-    // Validate field
-    const error = validateField(field, value);
-    setErrors(prev => ({
-      ...prev,
-      [field]: error
-    }));
-
-    // Mark field as touched
-    setTouched(prev => ({
-      ...prev,
-      [field]: true
-    }));
+  // Basic info handlers
+  const handleBasicInfoChange = (field: string, value: string) => {
+    setBasicInfo(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleImageUpload = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setImagePreview(e.target?.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      const file = files[0];
-      if (file.type.startsWith('image/')) {
-        handleImageUpload(file);
-      }
+  const handleBasicInfoSave = async () => {
+    setSaving(true);
+    try {
+      await profileApi.updateProfile(basicInfo);
+      await loadProfile(); // Reload to get updated data
+    } catch (error) {
+      console.error('Error updating basic info:', error);
+    } finally {
+      setSaving(false);
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      handleImageUpload(file);
-    }
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-    
-    // Validate required fields
-    const requiredFields = ['name', 'email', 'title', 'location'];
-    requiredFields.forEach(field => {
-      const value = formData.user[field as keyof typeof formData.user];
-      const error = validateField(field, value);
-      if (error) {
-        newErrors[field] = error;
-      }
-    });
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
+  // Skills handlers
+  const handleAddSkill = async () => {
+    if (!newSkill.trim()) return;
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Navigate back to profile view
-      navigate('/profile');
+      await profileApi.addSkill({ name: newSkill.trim() });
+      setNewSkill('');
+      await loadProfile();
     } catch (error) {
-      console.error('Error updating profile:', error);
-    } finally {
-      setIsSubmitting(false);
+      console.error('Error adding skill:', error);
     }
   };
 
-  const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  const handleEditSkill = (skill: Skill) => {
+    setEditingSkill(skill.id);
+    setEditingSkillName(skill.name);
   };
+
+  const handleSaveSkillEdit = async () => {
+    if (!editingSkill || !editingSkillName.trim()) return;
+    
+    try {
+      // Remove old skill and add new one
+      await profileApi.removeSkill(editingSkill);
+      await profileApi.addSkill({ name: editingSkillName.trim() });
+      setEditingSkill(null);
+      setEditingSkillName('');
+      await loadProfile();
+    } catch (error) {
+      console.error('Error updating skill:', error);
+    }
+  };
+
+  const handleDeleteSkill = async (skillId: number) => {
+    try {
+      await profileApi.removeSkill(skillId);
+      await loadProfile();
+    } catch (error) {
+      console.error('Error deleting skill:', error);
+    }
+  };
+
+  // Experience handlers
+  const handleAddExperience = async () => {
+    if (!newExperience.title || !newExperience.company || !newExperience.start_date) return;
+    
+    try {
+      await profileApi.addExperience(newExperience);
+      setNewExperience({
+        title: '',
+        company: '',
+        start_date: '',
+        end_date: '',
+        description: ''
+      });
+      await loadProfile();
+    } catch (error) {
+      console.error('Error adding experience:', error);
+    }
+  };
+
+  const handleEditExperience = (exp: Experience) => {
+    setEditingExperience(exp.id);
+    setEditingExperienceData({
+      title: exp.title,
+      company: exp.company,
+      start_date: exp.start_date,
+      end_date: exp.end_date || '',
+      description: exp.description
+    });
+  };
+
+  const handleSaveExperienceEdit = async () => {
+    if (!editingExperience) return;
+    
+    try {
+      // Remove old experience and add new one
+      await profileApi.removeExperience(editingExperience);
+      await profileApi.addExperience(editingExperienceData);
+      setEditingExperience(null);
+      setEditingExperienceData({
+        title: '',
+        company: '',
+        start_date: '',
+        end_date: '',
+        description: ''
+      });
+      await loadProfile();
+    } catch (error) {
+      console.error('Error updating experience:', error);
+    }
+  };
+
+  const handleDeleteExperience = async (expId: number) => {
+    try {
+      await profileApi.removeExperience(expId);
+      await loadProfile();
+    } catch (error) {
+      console.error('Error deleting experience:', error);
+    }
+  };
+
+  // Achievement handlers
+  const handleAddAchievement = async () => {
+    if (!newAchievement.title || !newAchievement.description) return;
+    
+    try {
+      await profileApi.addAchievement(newAchievement);
+      setNewAchievement({
+        title: '',
+        description: '',
+        date: ''
+      });
+      await loadProfile();
+    } catch (error) {
+      console.error('Error adding achievement:', error);
+    }
+  };
+
+  const handleEditAchievement = (achievement: Achievement) => {
+    setEditingAchievement(achievement.id);
+    setEditingAchievementData({
+      title: achievement.title,
+      description: achievement.description,
+      date: achievement.date
+    });
+  };
+
+  const handleSaveAchievementEdit = async () => {
+    if (!editingAchievement) return;
+    
+    try {
+      // Remove old achievement and add new one
+      await profileApi.removeAchievement(editingAchievement);
+      await profileApi.addAchievement(editingAchievementData);
+      setEditingAchievement(null);
+      setEditingAchievementData({
+        title: '',
+        description: '',
+        date: ''
+      });
+      await loadProfile();
+    } catch (error) {
+      console.error('Error updating achievement:', error);
+    }
+  };
+
+  const handleDeleteAchievement = async (achievementId: number) => {
+    try {
+      await profileApi.removeAchievement(achievementId);
+      await loadProfile();
+    } catch (error) {
+      console.error('Error deleting achievement:', error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto p-4">
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+            <div className="space-y-3">
+              <div className="h-4 bg-gray-200 rounded"></div>
+              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!profileData) {
+    return (
+      <div className="max-w-4xl mx-auto p-4">
+        <div className="bg-white rounded-lg shadow p-6">
+          <p className="text-red-500">Failed to load profile data</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="bg-white rounded-lg shadow">
         <div className="px-6 py-4 border-b">
-          <h1 className="text-2xl font-bold">Edit Profile</h1>
+          <h1 className="text-2xl font-bold" style={{ color: '#8B4513' }}>Edit Profile</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-8">
-          {/* Profile Picture Section */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Profile Picture</h2>
-            <div className="flex items-center space-x-6">
-              <div className="w-24 h-24 rounded-full flex items-center justify-center border-4 border-white shadow-lg" style={{ backgroundColor: '#8B4513' }}>
-                {imagePreview ? (
-                  <img src={imagePreview} alt="Profile" className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  <span className="text-2xl font-bold text-white">
-                    {getInitials(formData.user.name)}
-                  </span>
-                )}
-              </div>
-              
-              <div className="flex-1">
-                <div
-                  className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                    isDragOver ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
-                  }`}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                >
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                    id="image-upload"
-                  />
-                  <label htmlFor="image-upload" className="cursor-pointer">
-                    <div className="space-y-2">
-                      <div className="text-4xl">📷</div>
-                      <p className="text-gray-600">
-                        Drag and drop an image here, or{' '}
-                        <span className="text-blue-600 hover:text-blue-800">click to browse</span>
-                      </p>
-                      <p className="text-sm text-gray-500">JPG, PNG, GIF up to 5MB</p>
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-
+        <div className="p-6 space-y-8">
           {/* Basic Information */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Basic Information</h2>
+            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>Basic Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                 <input
                   type="text"
-                  value={formData.user.name}
-                  onChange={(e) => handleInputChange('user', 'name', e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                    touched.name && errors.name ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  value={basicInfo.full_name}
+                  onChange={(e) => handleBasicInfoChange('full_name', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
                   style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                 />
-                {touched.name && errors.name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-                )}
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Job Title *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                 <input
                   type="text"
-                  value={formData.user.title}
-                  onChange={(e) => handleInputChange('user', 'title', e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    touched.title && errors.title ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  value={basicInfo.location}
+                  onChange={(e) => handleBasicInfoChange('location', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                  style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                 />
-                {touched.title && errors.title && (
-                  <p className="text-red-500 text-sm mt-1">{errors.title}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Location *
-                </label>
-                <input
-                  type="text"
-                  value={formData.user.location}
-                  onChange={(e) => handleInputChange('user', 'location', e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    touched.location && errors.location ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {touched.location && errors.location && (
-                  <p className="text-red-500 text-sm mt-1">{errors.location}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  value={formData.user.email}
-                  onChange={(e) => handleInputChange('user', 'email', e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    touched.email && errors.email ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {touched.email && errors.email && (
-                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  value={formData.user.phone}
-                  onChange={(e) => handleInputChange('user', 'phone', e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    touched.phone && errors.phone ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {touched.phone && errors.phone && (
-                  <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Website
-                </label>
-                <input
-                  type="url"
-                  value={formData.user.website}
-                  onChange={(e) => handleInputChange('user', 'website', e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    touched.website && errors.website ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {touched.website && errors.website && (
-                  <p className="text-red-500 text-sm mt-1">{errors.website}</p>
-                )}
               </div>
             </div>
-          </div>
-
-          {/* Bio Section */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold">About</h2>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Bio *
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
               <textarea
-                value={formData.user.bio}
-                onChange={(e) => handleInputChange('user', 'bio', e.target.value)}
+                value={basicInfo.bio}
+                onChange={(e) => handleBasicInfoChange('bio', e.target.value)}
                 rows={4}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  touched.bio && errors.bio ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                 placeholder="Tell us about yourself..."
               />
-              {touched.bio && errors.bio && (
-                <p className="text-red-500 text-sm mt-1">{errors.bio}</p>
-              )}
             </div>
+            <button
+              onClick={handleBasicInfoSave}
+              disabled={saving}
+              className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ backgroundColor: '#8B4513', '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+            >
+              {saving ? 'Saving...' : 'Save Basic Info'}
+            </button>
           </div>
 
-          {/* Social Links */}
+          {/* Skills Section */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Social Links</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {Object.entries(formData.user.socialLinks).map(([platform, url]) => (
-                <div key={platform}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1 capitalize">
-                    {platform}
-                  </label>
-                  <input
-                    type="url"
-                    value={url}
-                    onChange={(e) => handleInputChange('user', 'socialLinks', {
-                      ...formData.user.socialLinks,
-                      [platform]: e.target.value
-                    })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder={`https://${platform}.com/username`}
-                  />
+            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>Skills</h2>
+            
+            {/* Add new skill */}
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                placeholder="Add a new skill..."
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                onKeyPress={(e) => e.key === 'Enter' && handleAddSkill()}
+              />
+              <button
+                onClick={handleAddSkill}
+                className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
+                style={{ backgroundColor: '#8B4513' }}
+              >
+                Add
+              </button>
+            </div>
+
+            {/* Skills list */}
+            <div className="space-y-2">
+              {profileData.profile.skills.map((skill) => (
+                <div key={skill.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                  {editingSkill === skill.id ? (
+                    <div className="flex gap-2 flex-1">
+                      <input
+                        type="text"
+                        value={editingSkillName}
+                        onChange={(e) => setEditingSkillName(e.target.value)}
+                        className="flex-1 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2"
+                        style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                      />
+                      <button
+                        onClick={handleSaveSkillEdit}
+                        className="px-3 py-1 text-white text-sm rounded"
+                        style={{ backgroundColor: '#8B4513' }}
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingSkill(null)}
+                        className="px-3 py-1 text-gray-600 text-sm border border-gray-300 rounded hover:bg-gray-50"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <span className="font-medium">{skill.name}</span>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEditSkill(skill)}
+                          className="px-3 py-1 text-blue-600 text-sm border border-blue-300 rounded hover:bg-blue-50"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteSkill(skill.id)}
+                          className="px-3 py-1 text-red-600 text-sm border border-red-300 rounded hover:bg-red-50"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Skills Section */}
+          {/* Experience Section */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Skills</h2>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Skills (comma-separated)
-              </label>
-              <input
-                type="text"
-                value={formData.skills.join(', ')}
-                onChange={(e) => {
-                  const skills = e.target.value.split(',').map(s => s.trim()).filter(s => s);
-                  setFormData(prev => ({ ...prev, skills }));
-                }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="JavaScript, React, Node.js, Python..."
+            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>Experience</h2>
+            
+            {/* Add new experience */}
+            <div className="bg-gray-50 p-4 rounded-md space-y-3">
+              <h3 className="font-medium">Add New Experience</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  value={newExperience.title}
+                  onChange={(e) => setNewExperience(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="Job Title"
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                  style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                />
+                <input
+                  type="text"
+                  value={newExperience.company}
+                  onChange={(e) => setNewExperience(prev => ({ ...prev, company: e.target.value }))}
+                  placeholder="Company"
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                  style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                />
+                <input
+                  type="text"
+                  value={newExperience.start_date}
+                  onChange={(e) => setNewExperience(prev => ({ ...prev, start_date: e.target.value }))}
+                  placeholder="Start Date (e.g., 2020-01)"
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                  style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                />
+                <input
+                  type="text"
+                  value={newExperience.end_date}
+                  onChange={(e) => setNewExperience(prev => ({ ...prev, end_date: e.target.value }))}
+                  placeholder="End Date (e.g., 2023-01 or Present)"
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                  style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                />
+              </div>
+              <textarea
+                value={newExperience.description}
+                onChange={(e) => setNewExperience(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Description"
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
               />
+              <button
+                onClick={handleAddExperience}
+                className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
+                style={{ backgroundColor: '#8B4513' }}
+              >
+                Add Experience
+              </button>
+            </div>
+
+            {/* Experience list */}
+            <div className="space-y-4">
+              {profileData.profile.experience.map((exp) => (
+                <div key={exp.id} className="border border-gray-200 rounded-md p-4">
+                  {editingExperience === exp.id ? (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <input
+                          type="text"
+                          value={editingExperienceData.title}
+                          onChange={(e) => setEditingExperienceData(prev => ({ ...prev, title: e.target.value }))}
+                          placeholder="Job Title"
+                          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                          style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                        />
+                        <input
+                          type="text"
+                          value={editingExperienceData.company}
+                          onChange={(e) => setEditingExperienceData(prev => ({ ...prev, company: e.target.value }))}
+                          placeholder="Company"
+                          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                          style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                        />
+                        <input
+                          type="text"
+                          value={editingExperienceData.start_date}
+                          onChange={(e) => setEditingExperienceData(prev => ({ ...prev, start_date: e.target.value }))}
+                          placeholder="Start Date"
+                          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                          style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                        />
+                        <input
+                          type="text"
+                          value={editingExperienceData.end_date}
+                          onChange={(e) => setEditingExperienceData(prev => ({ ...prev, end_date: e.target.value }))}
+                          placeholder="End Date"
+                          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                          style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                        />
+                      </div>
+                      <textarea
+                        value={editingExperienceData.description}
+                        onChange={(e) => setEditingExperienceData(prev => ({ ...prev, description: e.target.value }))}
+                        placeholder="Description"
+                        rows={3}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                        style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={handleSaveExperienceEdit}
+                          className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
+                          style={{ backgroundColor: '#8B4513' }}
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditingExperience(null)}
+                          className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-semibold">{exp.title}</h3>
+                          <p className="text-gray-600">{exp.company}</p>
+                          <p className="text-sm text-gray-500">
+                            {exp.start_date} - {exp.end_date || 'Present'}
+                          </p>
+                          {exp.description && (
+                            <p className="text-gray-700 mt-2">{exp.description}</p>
+                          )}
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditExperience(exp)}
+                            className="px-3 py-1 text-blue-600 text-sm border border-blue-300 rounded hover:bg-blue-50"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteExperience(exp.id)}
+                            className="px-3 py-1 text-red-600 text-sm border border-red-300 rounded hover:bg-red-50"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Submit Buttons */}
+          {/* Achievements Section */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>Achievements</h2>
+            
+            {/* Add new achievement */}
+            <div className="bg-gray-50 p-4 rounded-md space-y-3">
+              <h3 className="font-medium">Add New Achievement</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  value={newAchievement.title}
+                  onChange={(e) => setNewAchievement(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="Achievement Title"
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                  style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                />
+                <input
+                  type="text"
+                  value={newAchievement.date}
+                  onChange={(e) => setNewAchievement(prev => ({ ...prev, date: e.target.value }))}
+                  placeholder="Date (e.g., 2023)"
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                  style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                />
+              </div>
+              <textarea
+                value={newAchievement.description}
+                onChange={(e) => setNewAchievement(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Description"
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+              />
+              <button
+                onClick={handleAddAchievement}
+                className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
+                style={{ backgroundColor: '#8B4513' }}
+              >
+                Add Achievement
+              </button>
+            </div>
+
+            {/* Achievements list */}
+            <div className="space-y-4">
+              {profileData.profile.achievements.map((achievement) => (
+                <div key={achievement.id} className="border border-gray-200 rounded-md p-4">
+                  {editingAchievement === achievement.id ? (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <input
+                          type="text"
+                          value={editingAchievementData.title}
+                          onChange={(e) => setEditingAchievementData(prev => ({ ...prev, title: e.target.value }))}
+                          placeholder="Achievement Title"
+                          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                          style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                        />
+                        <input
+                          type="text"
+                          value={editingAchievementData.date}
+                          onChange={(e) => setEditingAchievementData(prev => ({ ...prev, date: e.target.value }))}
+                          placeholder="Date"
+                          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                          style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                        />
+                      </div>
+                      <textarea
+                        value={editingAchievementData.description}
+                        onChange={(e) => setEditingAchievementData(prev => ({ ...prev, description: e.target.value }))}
+                        placeholder="Description"
+                        rows={3}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                        style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={handleSaveAchievementEdit}
+                          className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
+                          style={{ backgroundColor: '#8B4513' }}
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditingAchievement(null)}
+                          className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-semibold">{achievement.title}</h3>
+                          <p className="text-sm text-gray-500">{achievement.date}</p>
+                          {achievement.description && (
+                            <p className="text-gray-700 mt-2">{achievement.description}</p>
+                          )}
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditAchievement(achievement)}
+                            className="px-3 py-1 text-blue-600 text-sm border border-blue-300 rounded hover:bg-blue-50"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteAchievement(achievement.id)}
+                            className="px-3 py-1 text-red-600 text-sm border border-red-300 rounded hover:bg-red-50"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation */}
           <div className="flex justify-end space-x-4 pt-6 border-t">
             <button
-              type="button"
               onClick={() => navigate('/profile')}
-              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2"
             >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-6 py-2 text-white rounded-md hover:brightness-90 transition-colors focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ backgroundColor: '#8B4513', '--tw-ring-color': '#8B4513' } as React.CSSProperties}
-            >
-              {isSubmitting ? 'Saving...' : 'Save Changes'}
+              Back to Profile
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
