@@ -22,7 +22,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Initialize extensions
-CORS(app)
+CORS(app, origins=["*"], supports_credentials=False, allow_headers=["Content-Type", "Authorization"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 db.init_app(app)
 jwt = JWTManager(app)
 limiter = Limiter(
