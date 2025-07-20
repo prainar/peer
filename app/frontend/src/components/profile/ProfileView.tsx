@@ -1,107 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { profileApi } from './api';
 
-// Mock data for demonstration
-const mockProfileData = {
+interface Experience {
+  id: number;
+  title: string;
+  company: string;
+  start_date: string;
+  end_date?: string;
+  description: string;
+}
+
+interface Achievement {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  image_url?: string;
+}
+
+interface ProfileData {
+  profile: {
+    id: number;
+    full_name: string;
+    bio: string;
+    location: string;
+    experience: Experience[];
+    education: any[];
+    achievements: Achievement[];
+    photos: any[];
+  };
   user: {
-    id: 1,
-    name: 'John Doe',
-    title: 'Senior Software Engineer',
-    location: 'San Francisco, CA',
-    avatar: null, // Will use initials
-    bio: 'Passionate software engineer with 5+ years of experience in full-stack development. Specialized in React, Node.js, and cloud technologies. Always eager to learn new technologies and solve complex problems.',
-    email: 'john.doe@example.com',
-    phone: '+1 (555) 123-4567',
-    website: 'https://johndoe.dev',
-    socialLinks: {
-      linkedin: 'https://linkedin.com/in/johndoe',
-      github: 'https://github.com/johndoe',
-      twitter: 'https://twitter.com/johndoe'
-    }
-  },
-  skills: ['JavaScript', 'React', 'Node.js', 'Python', 'AWS', 'Docker', 'MongoDB', 'PostgreSQL'],
-  experience: [
-    {
-      id: 1,
-      title: 'Senior Software Engineer',
-      company: 'TechCorp',
-      location: 'San Francisco, CA',
-      startDate: '2022-01',
-      endDate: 'Present',
-      description: 'Leading development of scalable web applications using React and Node.js. Mentoring junior developers and implementing best practices.'
-    },
-    {
-      id: 2,
-      title: 'Software Engineer',
-      company: 'StartupXYZ',
-      location: 'New York, NY',
-      startDate: '2020-03',
-      endDate: '2021-12',
-      description: 'Built and maintained multiple web applications. Collaborated with cross-functional teams to deliver high-quality products.'
-    }
-  ],
-  education: [
-    {
-      id: 1,
-      degree: 'Bachelor of Science in Computer Science',
-      school: 'University of California, Berkeley',
-      location: 'Berkeley, CA',
-      startYear: 2016,
-      endYear: 2020,
-      gpa: '3.8'
-    }
-  ],
-  activity: [
-    {
-      id: 1,
-      type: 'post',
-      content: 'Excited to share that I\'ve started a new position as Senior Software Engineer at TechCorp!',
-      timestamp: '2024-01-15T10:30:00Z',
-      likes: 45,
-      comments: 12
-    },
-    {
-      id: 2,
-      type: 'connection',
-      content: 'Connected with Jane Smith',
-      timestamp: '2024-01-14T15:20:00Z'
-    },
-    {
-      id: 3,
-      type: 'post',
-      content: 'Just completed a major project using React and Node.js. The team did an amazing job!',
-      timestamp: '2024-01-10T09:15:00Z',
-      likes: 23,
-      comments: 8
-    }
-  ],
-  connections: 500,
-  mutualConnections: 45
-};
+    id: number;
+    username: string;
+    email: string;
+  };
+}
 
 const ProfileView: React.FC = () => {
-  const [profileData, setProfileData] = useState(mockProfileData);
+  const navigate = useNavigate();
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [expandedSections, setExpandedSections] = useState({
     experience: true,
-    education: true,
-    activity: true
+    achievements: true,
+    photos: true
   });
-  const [photos, setPhotos] = useState<string[]>([]);
-  const userId = profileData.user.id;
 
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
+    try {
+      const data = await profileApi.getProfile();
+      setProfileData(data);
+    } catch (error) {
+      console.error('Error loading profile:', error);
+    } finally {
       setLoading(false);
-    }, 1000);
-  }, []);
-
-  // Fetch photos from backend (mock for now)
-  useEffect(() => {
-    // Replace with API call in production
-    setPhotos([]);
-  }, []);
+    }
+  };
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
@@ -110,38 +69,8 @@ const ProfileView: React.FC = () => {
     }));
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  };
-
-  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    const formData = new FormData();
-    formData.append('photo', e.target.files[0]);
-    formData.append('user_id', userId.toString());
-    try {
-      const res = await axios.post('/profile/photo', formData);
-      setPhotos(res.data.photos);
-    } catch (err) {
-      alert('Photo upload failed');
-    }
-  };
-
-  const handlePhotoDelete = async (photoId: string) => {
-    try {
-      const res = await axios.delete(`/profile/photo/${photoId}?user_id=${userId}`);
-      setPhotos(res.data.photos);
-    } catch (err) {
-      alert('Photo delete failed');
-    }
   };
 
   if (loading) {
@@ -153,6 +82,16 @@ const ProfileView: React.FC = () => {
             <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
             <div className="h-4 bg-gray-200 rounded w-2/3"></div>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!profileData) {
+    return (
+      <div className="max-w-4xl mx-auto p-4">
+        <div className="bg-white rounded-lg shadow p-6">
+          <p className="text-red-500">Failed to load profile data</p>
         </div>
       </div>
     );
@@ -170,32 +109,37 @@ const ProfileView: React.FC = () => {
           <div className="relative px-6 pb-6">
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between">
               <div className="flex items-end space-x-4 -mt-16">
-                <div className="w-32 h-32 rounded-full flex items-center justify-center border-4 border-white shadow-lg" style={{ backgroundColor: '#8B4513' }}>
-                  <span className="text-4xl font-bold text-white">
-                    {getInitials(profileData.user.name)}
-                  </span>
-                </div>
+                {profileData.profile.photos.length > 0 ? (
+                  <div className="relative">
+                    <img
+                      src={profileData.profile.photos[0].url}
+                      alt="Profile Picture"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-32 h-32 rounded-full flex items-center justify-center border-4 border-white shadow-lg" style={{ backgroundColor: '#8B4513' }}>
+                    <span className="text-4xl font-bold text-white">
+                      {getInitials(profileData.profile.full_name || profileData.user.username)}
+                    </span>
+                  </div>
+                )}
                 <div className="mb-4">
-                  <h1 className="text-3xl font-bold text-gray-900">{profileData.user.name}</h1>
-                  <p className="text-xl text-gray-600">{profileData.user.title}</p>
-                  <p className="text-gray-500">📍 {profileData.user.location}</p>
+                  <h1 className="text-3xl font-bold text-gray-900">{profileData.profile.full_name || profileData.user.username}</h1>
+                  <p className="text-xl text-gray-600">{profileData.user.email}</p>
+                  <p className="text-gray-500">📍 {profileData.profile.location || 'Location not set'}</p>
                 </div>
               </div>
               
-              {/* Social Links */}
+              {/* Edit Profile Button */}
               <div className="flex space-x-3 mt-4 sm:mt-0">
-                {Object.entries(profileData.user.socialLinks).map(([platform, url]) => (
-                  <a
-                    key={platform}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 transition-colors"
-                    style={{ '--tw-text-opacity': '1', color: 'rgb(139 69 19 / var(--tw-text-opacity))' } as React.CSSProperties}
-                  >
-                    <span className="capitalize">{platform}</span>
-                  </a>
-                ))}
+                <button
+                  onClick={() => navigate('/profile/edit')}
+                  className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
+                  style={{ backgroundColor: '#8B4513' }}
+                >
+                  Edit Profile
+                </button>
               </div>
             </div>
           </div>
@@ -203,168 +147,154 @@ const ProfileView: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content */}
+        {/* Left Column */}
         <div className="lg:col-span-2 space-y-6">
           {/* About Section */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">About</h2>
-            <p className="text-gray-700 leading-relaxed">{profileData.user.bio}</p>
-          </div>
+          {profileData.profile.bio && (
+            <div className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-xl font-semibold mb-4" style={{ color: '#8B4513' }}>About</h2>
+              <p className="text-gray-700 leading-relaxed">{profileData.profile.bio}</p>
+            </div>
+          )}
 
           {/* Experience Section */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Experience</h2>
-              <button
-                onClick={() => toggleSection('experience')}
-                className="lg:hidden text-blue-600 hover:text-blue-800"
-              >
-                {expandedSections.experience ? 'Collapse' : 'Expand'}
-              </button>
+          <div className="bg-white rounded-lg shadow">
+            <div className="p-6 border-b">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold" style={{ color: '#8B4513' }}>Experience</h2>
+                <button
+                  onClick={() => toggleSection('experience')}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  {expandedSections.experience ? '▼' : '▶'}
+                </button>
+              </div>
             </div>
             
             {expandedSections.experience && (
-              <div className="space-y-6">
-                {profileData.experience.map((exp) => (
-                  <div key={exp.id} className="border-l-4 border-blue-500 pl-4">
-                    <h3 className="font-semibold text-lg">{exp.title}</h3>
-                    <p className="text-blue-600 font-medium">{exp.company}</p>
-                    <p className="text-gray-500 text-sm">{exp.location}</p>
-                    <p className="text-gray-500 text-sm">
-                      {new Date(exp.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} - 
-                      {exp.endDate === 'Present' ? ' Present' : ` ${new Date(exp.endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`}
-                    </p>
-                    <p className="text-gray-700 mt-2">{exp.description}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Education Section */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Education</h2>
-              <button
-                onClick={() => toggleSection('education')}
-                className="lg:hidden text-blue-600 hover:text-blue-800"
-              >
-                {expandedSections.education ? 'Collapse' : 'Expand'}
-              </button>
-            </div>
-            
-            {expandedSections.education && (
-              <div className="space-y-4">
-                {profileData.education.map((edu) => (
-                  <div key={edu.id} className="border-l-4 border-green-500 pl-4">
-                    <h3 className="font-semibold text-lg">{edu.degree}</h3>
-                    <p className="text-green-600 font-medium">{edu.school}</p>
-                    <p className="text-gray-500 text-sm">{edu.location}</p>
-                    <p className="text-gray-500 text-sm">{edu.startYear} - {edu.endYear}</p>
-                    {edu.gpa && <p className="text-gray-500 text-sm">GPA: {edu.gpa}</p>}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Activity Section */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Recent Activity</h2>
-              <button
-                onClick={() => toggleSection('activity')}
-                className="lg:hidden text-blue-600 hover:text-blue-800"
-              >
-                {expandedSections.activity ? 'Collapse' : 'Expand'}
-              </button>
-            </div>
-            
-            {expandedSections.activity && (
-              <div className="space-y-4">
-                {profileData.activity.map((activity) => (
-                  <div key={activity.id} className="border-l-4 border-purple-500 pl-4">
-                    <p className="text-gray-700">{activity.content}</p>
-                    <p className="text-gray-500 text-sm mt-1">
-                      {formatDate(activity.timestamp)}
-                    </p>
-                    {activity.likes && (
-                      <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
-                        <span>👍 {activity.likes}</span>
-                        <span>💬 {activity.comments}</span>
+              <div className="p-6">
+                {profileData.profile.experience.length > 0 ? (
+                  <div className="space-y-6">
+                    {profileData.profile.experience.map((exp) => (
+                      <div key={exp.id} className="border-l-4 pl-4" style={{ borderColor: '#8B4513' }}>
+                        <h3 className="font-semibold text-lg">{exp.title}</h3>
+                        <p className="text-gray-600">{exp.company}</p>
+                        <p className="text-sm text-gray-500">
+                          {exp.start_date} - {exp.end_date || 'Present'}
+                        </p>
+                        {exp.description && (
+                          <p className="text-gray-700 mt-2">{exp.description}</p>
+                        )}
                       </div>
-                    )}
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <p className="text-gray-500 italic">No experience added yet.</p>
+                )}
               </div>
             )}
           </div>
 
-          {/* Profile Photos Section */}
-          <div className="bg-white rounded-lg shadow mb-6 p-6">
-            <h2 className="text-xl font-bold mb-2">Profile Photos</h2>
-            <div className="flex space-x-4 mb-2">
-              {photos.map(photo => (
-                <div key={photo} className="relative">
-                  <img src={`/uploads/profile_photos/${photo}`} alt="Profile" className="w-24 h-24 object-cover rounded" />
-                  <button onClick={() => handlePhotoDelete(photo)} className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1">✕</button>
-                </div>
-              ))}
-              <label className="w-24 h-24 flex items-center justify-center border-2 border-dashed rounded cursor-pointer">
-                <span className="text-gray-500">+</span>
-                <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
-              </label>
+          {/* Achievements Section */}
+          <div className="bg-white rounded-lg shadow">
+            <div className="p-6 border-b">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold" style={{ color: '#8B4513' }}>Achievements</h2>
+                <button
+                  onClick={() => toggleSection('achievements')}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  {expandedSections.achievements ? '▼' : '▶'}
+                </button>
+              </div>
             </div>
+            
+            {expandedSections.achievements && (
+              <div className="p-6">
+                {profileData.profile.achievements.length > 0 ? (
+                  <div className="space-y-4">
+                    {profileData.profile.achievements.map((achievement) => (
+                      <div key={achievement.id} className="border border-gray-200 rounded-lg p-4">
+                        <h3 className="font-semibold">{achievement.title}</h3>
+                        <p className="text-sm text-gray-500">{achievement.date}</p>
+                        {achievement.description && (
+                          <p className="text-gray-700 mt-2">{achievement.description}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 italic">No achievements added yet.</p>
+                )}
+              </div>
+            )}
           </div>
+
+          {/* Photos Section */}
+          {profileData.profile.photos.length > 1 && (
+            <div className="bg-white rounded-lg shadow">
+              <div className="p-6 border-b">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold" style={{ color: '#8B4513' }}>📸 Additional Photos</h2>
+                  <button
+                    onClick={() => toggleSection('photos')}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    {expandedSections.photos ? '▼' : '▶'}
+                  </button>
+                </div>
+              </div>
+              
+              {expandedSections.photos && (
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {profileData.profile.photos.slice(1).map((photo) => (
+                      <div key={photo.id} className="border border-gray-200 rounded-lg overflow-hidden">
+                        <img
+                          src={photo.url}
+                          alt="Profile Photo"
+                          className="w-full h-48 object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Sidebar */}
+        {/* Right Column */}
         <div className="space-y-6">
-          {/* Contact Information */}
+          {/* Contact Info */}
           <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold mb-4">Contact Information</h3>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <span className="text-gray-500">📧</span>
-                <a href={`mailto:${profileData.user.email}`} className="text-blue-600 hover:underline">
-                  {profileData.user.email}
-                </a>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-gray-500">📱</span>
-                <span>{profileData.user.phone}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-gray-500">🌐</span>
-                <a href={profileData.user.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  {profileData.user.website}
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Skills */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold mb-4">Skills</h3>
-            <div className="flex flex-wrap gap-2">
-              {profileData.skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Connections */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold mb-4">Connections</h3>
+            <h2 className="text-xl font-semibold mb-4" style={{ color: '#8B4513' }}>Contact</h2>
             <div className="space-y-2">
-              <p className="text-2xl font-bold text-blue-600">{profileData.connections}</p>
-              <p className="text-gray-600">Total connections</p>
-              <p className="text-sm text-gray-500">{profileData.mutualConnections} mutual connections</p>
+              <p className="text-gray-700">
+                <span className="font-medium">Email:</span> {profileData.user.email}
+              </p>
+              <p className="text-gray-700">
+                <span className="font-medium">Username:</span> {profileData.user.username}
+              </p>
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-semibold mb-4" style={{ color: '#8B4513' }}>Profile Stats</h2>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Experience Entries:</span>
+                <span className="font-semibold">{profileData.profile.experience.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Achievements:</span>
+                <span className="font-semibold">{profileData.profile.achievements.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Photos:</span>
+                <span className="font-semibold">{profileData.profile.photos.length}</span>
+              </div>
             </div>
           </div>
         </div>
