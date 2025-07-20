@@ -44,27 +44,7 @@ export const profileApi = {
     return response.json();
   },
 
-  addSkill: async (skillData: { name: string }) => {
-    const response = await fetch(`${API_URL}/profile/skills`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify(skillData),
-    });
-    return response.json();
-  },
 
-  removeSkill: async (skillId: number) => {
-    const response = await fetch(`${API_URL}/profile/skills/${skillId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-    return response.json();
-  },
 
   addExperience: async (experienceData: { title: string; company: string; start_date: string; end_date?: string; description: string }) => {
     const response = await fetch(`${API_URL}/profile/experience`, {

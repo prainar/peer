@@ -2,19 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { profileApi } from '../profile/api';
-import { postsApi } from '../posts/api';
-
-interface Post {
-  id: number;
-  content: string;
-  image_url?: string;
-  user_id: number;
-  created_at: string;
-  user: {
-    id: number;
-    name: string;
-  };
-}
+import PostCreate from '../posts/PostCreate';
+import PostList from '../posts/PostList';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -33,7 +22,6 @@ const Dashboard: React.FC = () => {
   const [profileData, setProfileData] = useState({
     bio: '',
     location: '',
-    skills: [] as Array<{id: number, name: string}>,
     experience: [] as Array<{id: number, title: string, company: string, start_date: string, end_date?: string, description: string}>,
     achievements: [] as Array<{id: number, title: string, description: string, date?: string}>
   });
@@ -41,35 +29,13 @@ const Dashboard: React.FC = () => {
     bio: '',
     location: '',
     fullName: '',
-    skills: [] as string[],
     experience: [] as Array<{title: string, company: string, duration: string, description: string}>,
     achievements: [] as Array<{title: string, description: string, date: string}>
   });
 
-  // Posts state
-  const [userPosts, setUserPosts] = useState<Post[]>([]);
-  const [newPost, setNewPost] = useState<File | null>(null);
-  const [postContent, setPostContent] = useState('');
-  const [uploadingPost, setUploadingPost] = useState(false);
-  const [showPostForm, setShowPostForm] = useState(false);
-  const [expandedSections, setExpandedSections] = useState({
-    experience: true,
-    achievements: true,
-    photos: true,
-    posts: true
-  });
-
-  // Post editing state
-  const [editingPost, setEditingPost] = useState<Post | null>(null);
-  const [editPostContent, setEditPostContent] = useState('');
-  const [editPostImage, setEditPostImage] = useState<File | null>(null);
-  const [showEditPostModal, setShowEditPostModal] = useState(false);
-  const [updatingPost, setUpdatingPost] = useState(false);
-  const [deletingPost, setDeletingPost] = useState<number | null>(null);
-
   // Shared profile state for dashboard sidebar
   const [dashboardProfileData, setDashboardProfileData] = useState({
-    fullName: user?.name || 'John Doe',
+    fullName: user?.username || 'John Doe',
     title: 'Software Engineer',
     company: 'TechCorp',
     location: 'San Francisco, CA',
@@ -228,12 +194,10 @@ const Dashboard: React.FC = () => {
   ]);
 
   // Modal states
-  const [showSkillModal, setShowSkillModal] = useState(false);
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [showAchievementModal, setShowAchievementModal] = useState(false);
   
   // Form data states
-  const [newSkill, setNewSkill] = useState('');
   const [newExperience, setNewExperience] = useState({
     title: '',
     company: '',
@@ -251,7 +215,6 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     if (activeTab === 'profile') {
       loadProfileData();
-      loadUserPosts();
     }
   }, [activeTab]);
 
@@ -260,17 +223,16 @@ const Dashboard: React.FC = () => {
       setIsLoading(true);
       const response = await profileApi.getProfile();
       if (response.profile) {
-        setProfileData({
-          bio: response.profile.bio || '',
-          location: response.profile.location || '',
-          skills: response.profile.skills || [],
-          experience: response.profile.experience || [],
-          achievements: response.profile.achievements || []
-        });
+              setProfileData({
+        bio: response.profile.bio || '',
+        location: response.profile.location || '',
+        experience: response.profile.experience || [],
+        achievements: response.profile.achievements || []
+      });
 
         // Update dashboard profile data with real profile information
         setDashboardProfileData({
-          fullName: response.profile.full_name || user?.name || 'John Doe',
+          fullName: response.profile.full_name || user?.username || 'John Doe',
           title: response.profile.experience && response.profile.experience.length > 0 
             ? response.profile.experience[0].title 
             : 'Software Engineer',
@@ -291,167 +253,6 @@ const Dashboard: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const loadUserPosts = async () => {
-    try {
-      const response = await postsApi.getUserPosts(1); // Using a default user ID since we don't have it in the User type
-      if (response.posts) {
-        setUserPosts(response.posts);
-      }
-    } catch (error) {
-      console.error('Error loading user posts:', error);
-    }
-  };
-
-  const uploadPost = async () => {
-    if (!postContent.trim() && !newPost) return;
-    
-    try {
-      setUploadingPost(true);
-      let postData: any = {};
-      
-      if (postContent.trim()) {
-        postData.content = postContent;
-      }
-      
-      if (newPost) {
-        // Convert file to base64
-        const reader = new FileReader();
-        reader.onload = async () => {
-          const base64 = reader.result as string;
-          postData.image_url = base64;
-          
-          try {
-            const response = await postsApi.createPhotoPost(postData);
-            if (response.success) {
-              setPostContent('');
-              setNewPost(null);
-              setShowPostForm(false);
-              loadUserPosts();
-              setShowSuccessMessage(true);
-              setSuccessMessage('Post created successfully!');
-              setTimeout(() => setShowSuccessMessage(false), 3000);
-            }
-          } catch (error) {
-            console.error('Error creating photo post:', error);
-          } finally {
-            setUploadingPost(false);
-          }
-        };
-        reader.readAsDataURL(newPost);
-      } else {
-        // Text-only post
-        const response = await postsApi.createPost(postData);
-        if (response.success) {
-          setPostContent('');
-          setShowPostForm(false);
-          loadUserPosts();
-          setShowSuccessMessage(true);
-          setSuccessMessage('Post created successfully!');
-          setTimeout(() => setShowSuccessMessage(false), 3000);
-        }
-      }
-    } catch (error) {
-      console.error('Error creating post:', error);
-    } finally {
-      setUploadingPost(false);
-    }
-  };
-
-  const startEditPost = (post: Post) => {
-    setEditingPost(post);
-    setEditPostContent(post.content || '');
-    setEditPostImage(null);
-    setShowEditPostModal(true);
-  };
-
-  const updatePost = async () => {
-    if (!editingPost) return;
-    
-    try {
-      setUpdatingPost(true);
-      let postData: any = {};
-      
-      if (editPostContent.trim()) {
-        postData.content = editPostContent;
-      }
-      
-      if (editPostImage) {
-        // Convert file to base64
-        const reader = new FileReader();
-        reader.onload = async () => {
-          const base64 = reader.result as string;
-          postData.image_url = base64;
-          
-          try {
-            const response = await postsApi.updatePost(editingPost.id, postData);
-            if (response.message) {
-              setShowEditPostModal(false);
-              setEditingPost(null);
-              setEditPostContent('');
-              setEditPostImage(null);
-              loadUserPosts();
-              setShowSuccessMessage(true);
-              setSuccessMessage('Post updated successfully!');
-              setTimeout(() => setShowSuccessMessage(false), 3000);
-            }
-          } catch (error) {
-            console.error('Error updating photo post:', error);
-          } finally {
-            setUpdatingPost(false);
-          }
-        };
-        reader.readAsDataURL(editPostImage);
-      } else {
-        // Text-only update or keep existing image
-        if (editingPost.image_url) {
-          postData.image_url = editingPost.image_url;
-        }
-        
-        const response = await postsApi.updatePost(editingPost.id, postData);
-        if (response.message) {
-          setShowEditPostModal(false);
-          setEditingPost(null);
-          setEditPostContent('');
-          setEditPostImage(null);
-          loadUserPosts();
-          setShowSuccessMessage(true);
-          setSuccessMessage('Post updated successfully!');
-          setTimeout(() => setShowSuccessMessage(false), 3000);
-        }
-      }
-    } catch (error) {
-      console.error('Error updating post:', error);
-    } finally {
-      setUpdatingPost(false);
-    }
-  };
-
-  const deletePost = async (postId: number) => {
-    if (!confirm('Are you sure you want to delete this post?')) return;
-    
-    try {
-      setDeletingPost(postId);
-      const response = await postsApi.deletePost(postId);
-      if (response.message) {
-        loadUserPosts();
-        setShowSuccessMessage(true);
-        setSuccessMessage('Post deleted successfully!');
-        setTimeout(() => setShowSuccessMessage(false), 3000);
-      }
-    } catch (error) {
-      console.error('Error deleting post:', error);
-    } finally {
-      setDeletingPost(null);
-    }
-  };
-
-  const cancelEditPost = () => {
-    setShowEditPostModal(false);
-    setEditingPost(null);
-    setEditPostContent('');
-    setEditPostImage(null);
   };
 
   const handlePhotoUpload = (file: File) => {
@@ -708,7 +509,7 @@ const Dashboard: React.FC = () => {
       bio: profileData.bio,
       location: profileData.location,
       fullName: dashboardProfileData.fullName,
-      skills: profileData.skills.map(s => s.name),
+
       experience: profileData.experience.map(exp => ({
         title: exp.title,
         company: exp.company,
@@ -762,15 +563,6 @@ const Dashboard: React.FC = () => {
   };
 
   // Modal functions
-  const openSkillModal = () => {
-    setNewSkill('');
-    setShowSkillModal(true);
-  };
-
-  const closeSkillModal = () => {
-    setShowSkillModal(false);
-    setNewSkill('');
-  };
 
   const openExperienceModal = () => {
     setNewExperience({
@@ -812,39 +604,7 @@ const Dashboard: React.FC = () => {
     });
   };
 
-  const addSkill = async () => {
-    if (newSkill.trim() && !tempProfileData.skills.includes(newSkill.trim())) {
-      try {
-        const response = await profileApi.addSkill(newSkill.trim());
-        if (response.skill) {
-          setTempProfileData({
-            ...tempProfileData,
-            skills: [...tempProfileData.skills, newSkill.trim()]
-          });
-          closeSkillModal();
-        }
-      } catch (error) {
-        console.error('Error adding skill:', error);
-        alert('Error adding skill. Please try again.');
-      }
-    }
-  };
 
-  const removeSkill = async (index: number) => {
-    const skillToRemove = profileData.skills[index];
-    if (skillToRemove) {
-      try {
-        await profileApi.removeSkill(skillToRemove.id);
-        setTempProfileData({
-          ...tempProfileData,
-          skills: tempProfileData.skills.filter((_, i) => i !== index)
-        });
-      } catch (error) {
-        console.error('Error removing skill:', error);
-        alert('Error removing skill. Please try again.');
-      }
-    }
-  };
 
   const addExperience = async () => {
     if (newExperience.title && newExperience.company && newExperience.start_date) {
@@ -1075,6 +835,29 @@ const Dashboard: React.FC = () => {
                 </div>
               )}
             </div>
+          </div>
+        );
+      
+      case 'post':
+        return (
+          <div className="space-y-4">
+            {/* Success Message */}
+            {showSuccessMessage && (
+              <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xl">✅</span>
+                  <span>{successMessage}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Import and use PostCreate and PostList components */}
+            <PostCreate onPostCreated={() => {
+              setShowSuccessMessage(true);
+              setSuccessMessage('Post created successfully!');
+              setTimeout(() => setShowSuccessMessage(false), 3000);
+            }} />
+            <PostList refreshTrigger={Date.now()} />
           </div>
         );
       
@@ -1428,43 +1211,7 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Skills Section */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Skills</h3>
-                {isEditingProfile && (
-                  <button
-                    onClick={openSkillModal}
-                    className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
-                    disabled={isLoading}
-                  >
-                    + Add Skill
-                  </button>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {(isEditingProfile ? tempProfileData.skills : profileData.skills.map(s => s.name)).map((skill, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm flex items-center"
-                  >
-                    {skill}
-                    {isEditingProfile && (
-                      <button
-                        onClick={() => removeSkill(index)}
-                        className="ml-2 text-blue-600 hover:text-blue-800"
-                        disabled={isLoading}
-                      >
-                        ×
-                      </button>
-                    )}
-                  </span>
-                ))}
-                {!isEditingProfile && profileData.skills.length === 0 && (
-                  <p className="text-gray-500">No skills added yet.</p>
-                )}
-              </div>
-            </div>
+
 
             {/* Experience Section */}
             <div className="bg-white rounded-lg shadow p-6">
@@ -1557,71 +1304,6 @@ const Dashboard: React.FC = () => {
                 )}
               </div>
             </div>
-
-            {/* Posts Section */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Posts</h3>
-                {isEditingProfile && (
-                  <button
-                    onClick={() => setShowPostForm(true)}
-                    className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
-                    disabled={isLoading}
-                  >
-                    + New Post
-                  </button>
-                )}
-              </div>
-                             <div className="space-y-4">
-                 {userPosts.map((post) => (
-                   <div key={post.id} className="bg-gray-50 rounded-lg p-4">
-                     <div className="flex items-center justify-between mb-3">
-                       <div className="flex items-center space-x-3">
-                         <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                           <span className="text-gray-600 font-semibold">{post.user.name.charAt(0)}</span>
-                         </div>
-                         <div>
-                           <p className="font-semibold text-gray-900">{post.user.name}</p>
-                           <p className="text-sm text-gray-500">{post.created_at}</p>
-                         </div>
-                       </div>
-                       {isEditingProfile && (
-                         <div className="flex space-x-2">
-                           <button
-                             onClick={() => startEditPost(post)}
-                             className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-                             title="Edit Post"
-                           >
-                             ✏️
-                           </button>
-                           <button
-                             onClick={() => deletePost(post.id)}
-                             className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                             title="Delete Post"
-                             disabled={deletingPost === post.id}
-                           >
-                             {deletingPost === post.id ? (
-                               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
-                             ) : (
-                               '🗑️'
-                             )}
-                           </button>
-                         </div>
-                       )}
-                     </div>
-                     <p className="text-gray-700 mb-3">{post.content}</p>
-                     {post.image_url && (
-                       <img src={post.image_url} alt="Post" className="w-full rounded-md object-cover h-40 my-3" />
-                     )}
-                   </div>
-                 ))}
-                {userPosts.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    <p>No posts yet. Be the first to share something!</p>
-                  </div>
-                )}
-              </div>
-            </div>
           </div>
         );
       
@@ -1685,11 +1367,11 @@ const Dashboard: React.FC = () => {
             <div className="mb-8">
               <div className="rounded-lg p-6 flex items-center space-x-6 shadow" style={{ backgroundColor: '#fdf8f6' }}>
                 <div className="w-20 h-20 rounded-full border-4 border-white shadow-lg flex items-center justify-center text-white text-3xl font-bold" style={{ backgroundColor: '#8B4513' }}>
-                  {user?.name?.charAt(0).toUpperCase() || 'U'}
+                  {user?.username?.charAt(0).toUpperCase() || 'U'}
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold mb-1" style={{ color: '#8B4513' }}>
-                    Welcome{user?.name ? `, ${user.name}` : ''}!
+                    Welcome{user?.username ? `, ${user.username}` : ''}!
                   </h1>
                   <p style={{ color: '#6d3410' }}>We're glad to see you on your dashboard. Here you can manage your profile, posts, jobs, and more.</p>
                 </div>
@@ -1742,6 +1424,15 @@ const Dashboard: React.FC = () => {
                   </li>
                   <li>
                     <button
+                      onClick={() => setActiveTab('post')}
+                      className={`w-full text-left px-3 py-2 rounded transition-colors ${activeTab === 'post' ? 'text-white font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}
+                      style={{ backgroundColor: activeTab === 'post' ? '#8B4513' : 'transparent' }}
+                    >
+                      📝 Post
+                    </button>
+                  </li>
+                  <li>
+                    <button
                       onClick={() => setActiveTab('profile')}
                       className={`w-full text-left px-3 py-2 rounded transition-colors ${activeTab === 'profile' ? 'text-white font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}
                       style={{ backgroundColor: activeTab === 'profile' ? '#8B4513' : 'transparent' }}
@@ -1761,39 +1452,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Skill Modal */}
-      {showSkillModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-            <h3 className="text-lg font-semibold mb-4">Add New Skill</h3>
-            <input
-              type="text"
-              value={newSkill}
-              onChange={(e) => setNewSkill(e.target.value)}
-              placeholder="Enter skill name"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:border-transparent mb-4"
-              style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
-              onKeyPress={(e) => e.key === 'Enter' && addSkill()}
-            />
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={closeSkillModal}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={addSkill}
-                className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
-                style={{ backgroundColor: '#8B4513' }}
-                disabled={!newSkill.trim()}
-              >
-                Add Skill
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* Experience Modal */}
       {showExperienceModal && (
@@ -1985,107 +1644,6 @@ const Dashboard: React.FC = () => {
                   </>
                 ) : (
                   'Update Photo'
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* New Post Form Modal */}
-      {showPostForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-            <h3 className="text-lg font-semibold mb-4">New Post</h3>
-            <textarea
-              value={postContent}
-              onChange={(e) => setPostContent(e.target.value)}
-              placeholder="What's on your mind?"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none mb-4"
-              rows={4}
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setNewPost(e.target.files?.[0] || null)}
-              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-            <div className="flex justify-end space-x-2 mt-4">
-              <button
-                onClick={() => setShowPostForm(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={uploadPost}
-                className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
-                style={{ backgroundColor: '#8B4513' }}
-                disabled={!postContent.trim() && !newPost}
-              >
-                {uploadingPost ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Uploading...
-                  </>
-                ) : (
-                  'Post'
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Edit Post Modal */}
-      {showEditPostModal && editingPost && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-            <h3 className="text-lg font-semibold mb-4">Edit Post</h3>
-            <textarea
-              value={editPostContent}
-              onChange={(e) => setEditPostContent(e.target.value)}
-              placeholder="Edit your post..."
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none mb-4"
-              rows={4}
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setEditPostImage(e.target.files?.[0] || null)}
-              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-            <div className="flex justify-end space-x-2 mt-4">
-              <button
-                onClick={cancelEditPost}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={updatePost}
-                className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
-                style={{ backgroundColor: '#8B4513' }}
-                disabled={!editPostContent.trim() && !editPostImage}
-              >
-                {updatingPost ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Updating...
-                  </>
-                ) : (
-                  'Save Changes'
-                )}
-              </button>
-              <button
-                onClick={() => deletePost(editingPost.id)}
-                className="px-4 py-2 text-red-600 rounded-md hover:bg-red-50 transition-colors"
-                disabled={deletingPost !== editingPost.id}
-              >
-                {deletingPost === editingPost.id ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600 mr-2"></div>
-                ) : (
-                  'Delete Post'
                 )}
               </button>
             </div>

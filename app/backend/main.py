@@ -1,21 +1,37 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from config import Config
-from models.user import User, db
-from models.post import Post
-from models.profile import Profile
-from models.job import Job
-from models.message import Message
+from dotenv import load_dotenv
+import os
 
-# Initialize Flask app
+# Load environment variables
+load_dotenv()
+
+# Import models and db
+from models.user import User, db
+from models.profile import Profile, Skill, Experience, Education, Achievement, ProfilePhoto
+from models.post import Post, PostLike
+
+# Import blueprints
+from api.auth import auth_bp
+from api.profile import profile_bp
+from api.posts import posts_bp
+
+# Create Flask app
 app = Flask(__name__)
 app.config.from_object(Config)
 
 # Initialize extensions
-CORS(app, origins=['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'], supports_credentials=True)
+CORS(app, 
+     origins=["*"], 
+     supports_credentials=False, 
+     allow_headers=["*"], 
+     methods=["*"], 
+     expose_headers=["*"],
+     max_age=3600)
 db.init_app(app)
 jwt = JWTManager(app)
 limiter = Limiter(
@@ -24,28 +40,40 @@ limiter = Limiter(
     default_limits=["200 per day", "50 per hour"]
 )
 
-# Import and register blueprints
-from api.auth import auth_bp
-from api.profile import profile_bp
-from api.posts import posts_bp
-from api.jobs import jobs_bp
-from api.messaging import messaging_bp
-
+# Register blueprints
 app.register_blueprint(auth_bp)
 app.register_blueprint(profile_bp)
 app.register_blueprint(posts_bp)
-app.register_blueprint(jobs_bp)
-app.register_blueprint(messaging_bp)
+
+# Route to serve uploaded images
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    """Serve uploaded files"""
+    return send_from_directory('uploads', filename)
+
+# Add CORS headers to all responses
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
+
 
 def setup_database():
-    """Create database tables"""
+    """Setup database tables"""
     with app.app_context():
-        try:
-            db.create_all()
-            print("✅ Database tables created successfully!")
-        except Exception as e:
-            print(f"❌ Error creating database tables: {e}")
+        db.create_all()
+        print("✅ Database tables created successfully!")
+
+# Create a function to initialize the app
+def create_app():
+    """Application factory function"""
+    return app
 
 if __name__ == '__main__':
+    # Setup database tables
     setup_database()
-    app.run(debug=True, host='127.0.0.1', port=5000) 
+    
+    # Run the app
+    app.run(debug=True) 

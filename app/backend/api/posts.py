@@ -1,237 +1,199 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models.post import Post, db
-from models.user import User
-from datetime import datetime
-import base64
+from models.user import User, db
+from models.post import Post, PostLike
+import os
+import uuid
+from werkzeug.utils import secure_filename
 
 posts_bp = Blueprint('posts', __name__)
 
-@posts_bp.route('/api/posts', methods=['GET'])
-@jwt_required()
-def get_posts():
-    """Get all posts"""
-    posts = Post.query.order_by(Post.created_at.desc()).all()
-    
-    # Get user data for each post
-    result_posts = []
-    for post in posts:
-        user = User.query.get(post.user_id)
-        # Convert LargeBinary to base64 string for frontend
-        image_url = None
-        if post.image_url:
-            try:
-                image_url = f"data:image/jpeg;base64,{base64.b64encode(post.image_url).decode('utf-8')}"
-            except:
-                image_url = None
-        
-        result_posts.append({
-            "id": post.id,
-            "content": post.content,
-            "image_url": image_url,
-            "user_id": post.user_id,
-            "user": {
-                "id": user.id,
-                "username": user.username,
-                "name": user.username  # Add name field for frontend compatibility
-            },
-            "created_at": post.created_at.isoformat(),
-            "updated_at": post.updated_at.isoformat() if post.updated_at else None
-        })
-    
-    return jsonify({
-        "success": True,
-        "posts": result_posts
-    }), 200
+# Configure upload settings
+UPLOAD_FOLDER = 'uploads/post_photos'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-@posts_bp.route('/api/posts/user/<int:user_id>', methods=['GET'])
-@jwt_required()
-def get_user_posts(user_id):
-    """Get posts by specific user"""
-    posts = Post.query.filter_by(user_id=user_id).order_by(Post.created_at.desc()).all()
-    
-    result_posts = []
-    for post in posts:
-        user = User.query.get(post.user_id)
-        image_url = None
-        if post.image_url:
-            try:
-                image_url = f"data:image/jpeg;base64,{base64.b64encode(post.image_url).decode('utf-8')}"
-            except:
-                image_url = None
-        
-        result_posts.append({
-            "id": post.id,
-            "content": post.content,
-            "image_url": image_url,
-            "user_id": post.user_id,
-            "user": {
-                "id": user.id,
-                "username": user.username,
-                "name": user.username
-            },
-            "created_at": post.created_at.isoformat(),
-            "updated_at": post.updated_at.isoformat() if post.updated_at else None
-        })
-    
-    return jsonify({
-        "success": True,
-        "posts": result_posts
-    }), 200
+# Create upload directory if it doesn't exist
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @posts_bp.route('/api/posts', methods=['POST'])
 @jwt_required()
 def create_post():
     """Create a new post"""
-    current_user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
     
-    if not data or not data.get('content'):
-        return jsonify({"success": False, "message": "Content is required"}), 400
+    if not data or 'content' not in data:
+        return jsonify({"message": "Content is required"}), 400
     
-    # Handle image_url if provided
-    image_url = None
-    if data.get('image_url'):
-        try:
-            # Remove data URL prefix and decode base64
-            if data['image_url'].startswith('data:image'):
-                # Extract base64 data
-                base64_data = data['image_url'].split(',')[1]
-                image_url = base64.b64decode(base64_data)
-        except Exception as e:
-            return jsonify({"success": False, "message": f"Invalid image data: {str(e)}"}), 400
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
     
     post = Post(
-        user_id=current_user_id,
+        user_id=user_id,
         content=data['content'],
-        image_url=image_url,
-        post_type='photo' if image_url else 'text'
+        image_url=data.get('image_url')
     )
+    db.session.add(post)
+    db.session.commit()
     
-    try:
-        db.session.add(post)
-        db.session.commit()
-        
-        # Get user data for response
-        user = User.query.get(current_user_id)
-        response_image_url = None
-        if post.image_url:
-            try:
-                response_image_url = f"data:image/jpeg;base64,{base64.b64encode(post.image_url).decode('utf-8')}"
-            except:
-                response_image_url = None
-        
-        return jsonify({
-            "success": True,
-            "message": "Post created successfully",
-            "post": {
-                "id": post.id,
-                "content": post.content,
-                "image_url": response_image_url,
-                "user_id": post.user_id,
-                "user": {
-                    "id": user.id,
-                    "username": user.username,
-                    "name": user.username
-                },
-                "created_at": post.created_at.isoformat(),
-                "updated_at": post.updated_at.isoformat() if post.updated_at else None
-            }
-        }), 201
-        
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"success": False, "message": f"Error creating post: {str(e)}"}), 500
+    return jsonify({
+        "message": "Post created successfully",
+        "post": {
+            "id": post.id,
+            "content": post.content,
+            "image_url": post.image_url,
+            "created_at": post.created_at.isoformat(),
+            "user": {
+                "id": user.id,
+                "username": user.username
+            },
+            "likes_count": 0,
+            "liked_by_user": False
+        }
+    }), 201
 
-@posts_bp.route('/api/posts/photo', methods=['POST'])
+@posts_bp.route('/api/posts', methods=['GET'])
 @jwt_required()
-def create_photo_post():
-    """Create a photo post"""
-    return create_post()
+def get_posts():
+    """Get all posts"""
+    user_id = int(get_jwt_identity())
+    
+    posts = Post.query.order_by(Post.created_at.desc()).all()
+    
+    posts_data = []
+    for post in posts:
+        user = User.query.get(post.user_id)
+        likes_count = PostLike.query.filter_by(post_id=post.id).count()
+        liked_by_user = PostLike.query.filter_by(post_id=post.id, user_id=user_id).first() is not None
+        
+        posts_data.append({
+            "id": post.id,
+            "content": post.content,
+            "image_url": post.image_url,
+            "created_at": post.created_at.isoformat(),
+            "user": {
+                "id": user.id,
+                "username": user.username
+            },
+            "likes_count": likes_count,
+            "liked_by_user": liked_by_user
+        })
+    
+    return jsonify({"posts": posts_data}), 200
 
-@posts_bp.route('/api/posts/<int:post_id>', methods=['PUT'])
+@posts_bp.route('/api/posts/user/<int:user_id>', methods=['GET'])
 @jwt_required()
-def update_post(post_id):
-    """Update a post"""
-    current_user_id = get_jwt_identity()
-    data = request.get_json()
+def get_user_posts(user_id):
+    """Get posts by specific user"""
+    current_user_id = int(get_jwt_identity())
+    
+    posts = Post.query.filter_by(user_id=user_id).order_by(Post.created_at.desc()).all()
+    
+    posts_data = []
+    for post in posts:
+        user = User.query.get(post.user_id)
+        likes_count = PostLike.query.filter_by(post_id=post.id).count()
+        liked_by_user = PostLike.query.filter_by(post_id=post.id, user_id=current_user_id).first() is not None
+        
+        posts_data.append({
+            "id": post.id,
+            "content": post.content,
+            "image_url": post.image_url,
+            "created_at": post.created_at.isoformat(),
+            "user": {
+                "id": user.id,
+                "username": user.username
+            },
+            "likes_count": likes_count,
+            "liked_by_user": liked_by_user
+        })
+    
+    return jsonify({"posts": posts_data}), 200
+
+@posts_bp.route('/api/posts/<int:post_id>/like', methods=['POST'])
+@jwt_required()
+def like_post(post_id):
+    """Like or unlike a post"""
+    user_id = int(get_jwt_identity())
     
     post = Post.query.get(post_id)
     if not post:
-        return jsonify({"success": False, "message": "Post not found"}), 404
+        return jsonify({"message": "Post not found"}), 404
     
-    if post.user_id != current_user_id:
-        return jsonify({"success": False, "message": "Unauthorized"}), 403
+    existing_like = PostLike.query.filter_by(post_id=post_id, user_id=user_id).first()
     
-    # Update content if provided
-    if data.get('content'):
-        post.content = data['content']
+    if existing_like:
+        # Unlike
+        db.session.delete(existing_like)
+        action = "unliked"
+    else:
+        # Like
+        like = PostLike(post_id=post_id, user_id=user_id)
+        db.session.add(like)
+        action = "liked"
     
-    # Update image if provided
-    if data.get('image_url'):
-        try:
-            if data['image_url'].startswith('data:image'):
-                base64_data = data['image_url'].split(',')[1]
-                post.image_url = base64.b64decode(base64_data)
-            else:
-                post.image_url = None
-        except Exception as e:
-            return jsonify({"success": False, "message": f"Invalid image data: {str(e)}"}), 400
+    db.session.commit()
     
-    post.updated_at = datetime.utcnow()
+    likes_count = PostLike.query.filter_by(post_id=post_id).count()
     
-    try:
-        db.session.commit()
-        
-        # Get user data for response
-        user = User.query.get(current_user_id)
-        response_image_url = None
-        if post.image_url:
-            try:
-                response_image_url = f"data:image/jpeg;base64,{base64.b64encode(post.image_url).decode('utf-8')}"
-            except:
-                response_image_url = None
-        
-        return jsonify({
-            "success": True,
-            "message": "Post updated successfully",
-            "post": {
-                "id": post.id,
-                "content": post.content,
-                "image_url": response_image_url,
-                "user_id": post.user_id,
-                "user": {
-                    "id": user.id,
-                    "username": user.username,
-                    "name": user.username
-                },
-                "created_at": post.created_at.isoformat(),
-                "updated_at": post.updated_at.isoformat() if post.updated_at else None
-            }
-        }), 200
-        
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"success": False, "message": f"Error updating post: {str(e)}"}), 500
+    return jsonify({
+        "message": f"Post {action} successfully",
+        "likes_count": likes_count,
+        "liked_by_user": action == "liked"
+    }), 200
 
 @posts_bp.route('/api/posts/<int:post_id>', methods=['DELETE'])
 @jwt_required()
 def delete_post(post_id):
     """Delete a post"""
-    current_user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     
-    post = Post.query.get(post_id)
+    post = Post.query.filter_by(id=post_id, user_id=user_id).first()
     if not post:
-        return jsonify({"success": False, "message": "Post not found"}), 404
+        return jsonify({"message": "Post not found or unauthorized"}), 404
     
-    if post.user_id != current_user_id:
-        return jsonify({"success": False, "message": "Unauthorized"}), 403
+    # Delete associated likes first
+    PostLike.query.filter_by(post_id=post_id).delete()
     
-    try:
-        db.session.delete(post)
-        db.session.commit()
-        return jsonify({"success": True, "message": "Post deleted successfully"}), 200
+    # Delete the post
+    db.session.delete(post)
+    db.session.commit()
+    
+    return jsonify({"message": "Post deleted successfully"}), 200
+
+@posts_bp.route('/api/posts/photo', methods=['POST'])
+@jwt_required()
+def upload_post_photo():
+    """Upload photo for a post"""
+    user_id = int(get_jwt_identity())
+    
+    if 'photo' not in request.files:
+        return jsonify({"message": "No photo provided"}), 400
+    
+    file = request.files['photo']
+    if file.filename == '':
+        return jsonify({"message": "No file selected"}), 400
+    
+    if file and allowed_file(file.filename):
+        # Generate unique filename
+        filename = secure_filename(file.filename)
+        unique_filename = f"{user_id}_{uuid.uuid4().hex}_{filename}"
+        file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
         
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"success": False, "message": f"Error deleting post: {str(e)}"}), 500 
+        # Save the file
+        file.save(file_path)
+        
+        # Return the URL that can be accessed
+        photo_url = f"/uploads/post_photos/{unique_filename}"
+        
+        return jsonify({
+            "message": "Photo uploaded successfully",
+            "photo_url": photo_url
+        }), 201
+    else:
+        return jsonify({"message": "Invalid file type. Allowed: png, jpg, jpeg, gif"}), 400 

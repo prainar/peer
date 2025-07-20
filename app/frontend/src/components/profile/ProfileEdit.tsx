@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { profileApi } from './api';
 
+interface Skill {
+  id: number;
+  name: string;
+}
+
 interface Experience {
   id: number;
   title: string;
@@ -25,6 +30,7 @@ interface ProfileData {
     full_name: string;
     bio: string;
     location: string;
+    skills: Skill[];
     experience: Experience[];
     education: any[];
     achievements: Achievement[];
@@ -54,6 +60,11 @@ const ProfileEdit: React.FC = () => {
     bio: '',
     location: ''
   });
+  
+  // Skills management
+  const [newSkill, setNewSkill] = useState('');
+  const [editingSkill, setEditingSkill] = useState<number | null>(null);
+  const [editingSkillName, setEditingSkillName] = useState('');
   
   // Experience management
   const [newExperience, setNewExperience] = useState({
@@ -85,14 +96,6 @@ const ProfileEdit: React.FC = () => {
     date: ''
   });
 
-  // Photo management
-  const [newPhoto, setNewPhoto] = useState<File | null>(null);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
-
-  // Profile picture management
-  const [newProfilePicture, setNewProfilePicture] = useState<File | null>(null);
-  const [uploadingProfilePicture, setUploadingProfilePicture] = useState(false);
-
   // Load profile data
   useEffect(() => {
     loadProfile();
@@ -123,11 +126,53 @@ const ProfileEdit: React.FC = () => {
     setSaving(true);
     try {
       await profileApi.updateProfile(basicInfo);
-      await loadProfile();
+      await loadProfile(); // Reload to get updated data
     } catch (error) {
       console.error('Error updating basic info:', error);
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Skills handlers
+  const handleAddSkill = async () => {
+    if (!newSkill.trim()) return;
+    
+    try {
+      await profileApi.addSkill({ name: newSkill.trim() });
+      setNewSkill('');
+      await loadProfile();
+    } catch (error) {
+      console.error('Error adding skill:', error);
+    }
+  };
+
+  const handleEditSkill = (skill: Skill) => {
+    setEditingSkill(skill.id);
+    setEditingSkillName(skill.name);
+  };
+
+  const handleSaveSkillEdit = async () => {
+    if (!editingSkill || !editingSkillName.trim()) return;
+    
+    try {
+      // Remove old skill and add new one
+      await profileApi.removeSkill(editingSkill);
+      await profileApi.addSkill({ name: editingSkillName.trim() });
+      setEditingSkill(null);
+      setEditingSkillName('');
+      await loadProfile();
+    } catch (error) {
+      console.error('Error updating skill:', error);
+    }
+  };
+
+  const handleDeleteSkill = async (skillId: number) => {
+    try {
+      await profileApi.removeSkill(skillId);
+      await loadProfile();
+    } catch (error) {
+      console.error('Error deleting skill:', error);
     }
   };
 
@@ -193,7 +238,7 @@ const ProfileEdit: React.FC = () => {
 
   // Achievement handlers
   const handleAddAchievement = async () => {
-    if (!newAchievement.title || !newAchievement.date) return;
+    if (!newAchievement.title || !newAchievement.description) return;
     
     try {
       await profileApi.addAchievement(newAchievement);
@@ -245,94 +290,17 @@ const ProfileEdit: React.FC = () => {
     }
   };
 
-  // Photo handlers
-  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setNewPhoto(file);
-    }
-  };
-
-  const handleUploadPhoto = async () => {
-    if (!newPhoto) return;
-    
-    setUploadingPhoto(true);
-    try {
-      // Convert file to base64
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64 = e.target?.result as string;
-        await profileApi.uploadProfilePhoto(base64);
-        setNewPhoto(null);
-        await loadProfile();
-      };
-      reader.readAsDataURL(newPhoto);
-    } catch (error) {
-      console.error('Error uploading photo:', error);
-    } finally {
-      setUploadingPhoto(false);
-    }
-  };
-
-  const handleRemovePhoto = async (photoId: number) => {
-    try {
-      await profileApi.removeProfilePhoto();
-      await loadProfile();
-    } catch (error) {
-      console.error('Error removing photo:', error);
-    }
-  };
-
-  // Profile picture handlers
-  const handleProfilePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setNewProfilePicture(file);
-    }
-  };
-
-  const handleUploadProfilePicture = async () => {
-    if (!newProfilePicture) return;
-    
-    setUploadingProfilePicture(true);
-    try {
-      // Convert file to base64
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64 = e.target?.result as string;
-        await profileApi.uploadProfilePhoto(base64);
-        setNewProfilePicture(null);
-        await loadProfile();
-      };
-      reader.readAsDataURL(newProfilePicture);
-    } catch (error) {
-      console.error('Error uploading profile picture:', error);
-    } finally {
-      setUploadingProfilePicture(false);
-    }
-  };
-
-  const handleRemoveProfilePicture = async () => {
-    try {
-      await profileApi.removeProfilePhoto();
-      await loadProfile();
-    } catch (error) {
-      console.error('Error removing profile picture:', error);
-    }
-  };
-
-  const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  };
-
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto p-4">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+            <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+            <div className="space-y-3">
+              <div className="h-4 bg-gray-200 rounded"></div>
+              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -353,14 +321,13 @@ const ProfileEdit: React.FC = () => {
     <div className="max-w-4xl mx-auto p-4">
       <div className="bg-white rounded-lg shadow">
         <div className="px-6 py-4 border-b">
-          <h1 className="text-2xl font-bold">Edit Profile</h1>
+          <h1 className="text-2xl font-bold" style={{ color: '#8B4513' }}>Edit Profile</h1>
         </div>
 
         <div className="p-6 space-y-8">
-          {/* Basic Information Section */}
+          {/* Basic Information */}
           <div className="space-y-4">
             <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>Basic Information</h2>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -372,7 +339,6 @@ const ProfileEdit: React.FC = () => {
                   style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                 <input
@@ -384,7 +350,6 @@ const ProfileEdit: React.FC = () => {
                 />
               </div>
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
               <textarea
@@ -396,7 +361,6 @@ const ProfileEdit: React.FC = () => {
                 placeholder="Tell us about yourself..."
               />
             </div>
-
             <button
               onClick={handleBasicInfoSave}
               disabled={saving}
@@ -407,181 +371,84 @@ const ProfileEdit: React.FC = () => {
             </button>
           </div>
 
-          {/* Profile Picture Section */}
+          {/* Skills Section */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>Profile Picture</h2>
+            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>Skills</h2>
             
-            <div className="bg-gray-50 p-4 rounded-md space-y-3">
-              <div className="flex items-center space-x-4">
-                {/* Current Profile Picture */}
-                <div className="flex-shrink-0">
-                  {profileData.profile.photos.length > 0 ? (
-                    <div className="relative">
-                      <img
-                        src={profileData.profile.photos[0].url}
-                        alt="Profile Picture"
-                        className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+            {/* Add new skill */}
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                placeholder="Add a new skill..."
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                onKeyPress={(e) => e.key === 'Enter' && handleAddSkill()}
+              />
+              <button
+                onClick={handleAddSkill}
+                className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
+                style={{ backgroundColor: '#8B4513' }}
+              >
+                Add
+              </button>
+            </div>
+
+            {/* Skills list */}
+            <div className="space-y-2">
+              {profileData.profile.skills.map((skill) => (
+                <div key={skill.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                  {editingSkill === skill.id ? (
+                    <div className="flex gap-2 flex-1">
+                      <input
+                        type="text"
+                        value={editingSkillName}
+                        onChange={(e) => setEditingSkillName(e.target.value)}
+                        className="flex-1 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2"
+                        style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                       />
                       <button
-                        onClick={handleRemoveProfilePicture}
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600"
+                        onClick={handleSaveSkillEdit}
+                        className="px-3 py-1 text-white text-sm rounded"
+                        style={{ backgroundColor: '#8B4513' }}
                       >
-                        ×
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingSkill(null)}
+                        className="px-3 py-1 text-gray-600 text-sm border border-gray-300 rounded hover:bg-gray-50"
+                      >
+                        Cancel
                       </button>
                     </div>
                   ) : (
-                    <div className="w-24 h-24 rounded-full flex items-center justify-center border-4 border-white shadow-lg" style={{ backgroundColor: '#8B4513' }}>
-                      <span className="text-2xl font-bold text-white">
-                        {getInitials(profileData.profile.full_name || profileData.user.username)}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Upload New Profile Picture */}
-                <div className="flex-1 space-y-3">
-                  <div className="space-y-2 p-4 bg-blue-50 border-2 border-dashed border-blue-300 rounded-lg">
-                    <div className="flex items-center space-x-2">
-                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                      <label className="block text-sm font-semibold text-blue-700">👤 Upload Profile Picture</label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleProfilePictureChange}
-                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:text-white file:bg-blue-600 hover:file:bg-blue-700"
-                        style={{ border: '2px solid #8B4513', borderRadius: '8px', padding: '8px', backgroundColor: 'white' }}
-                      />
-                      {newProfilePicture && (
+                    <>
+                      <span className="font-medium">{skill.name}</span>
+                      <div className="flex gap-2">
                         <button
-                          onClick={() => setNewProfilePicture(null)}
-                          className="px-3 py-1 text-red-600 text-sm border border-red-300 rounded hover:bg-red-50 bg-white"
+                          onClick={() => handleEditSkill(skill)}
+                          className="px-3 py-1 text-blue-600 text-sm border border-blue-300 rounded hover:bg-blue-50"
                         >
-                          Remove
+                          Edit
                         </button>
-                      )}
-                    </div>
-                    {newProfilePicture && (
-                      <div className="mt-3 p-3 bg-white rounded-lg border">
-                        <p className="text-sm font-medium text-gray-700 mb-2">👤 Profile Picture Preview:</p>
-                        <img
-                          src={URL.createObjectURL(newProfilePicture)}
-                          alt="Preview"
-                          className="w-20 h-20 rounded-full object-cover border shadow-sm"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">{newProfilePicture.name}</p>
+                        <button
+                          onClick={() => handleDeleteSkill(skill.id)}
+                          className="px-3 py-1 text-red-600 text-sm border border-red-300 rounded hover:bg-red-50"
+                        >
+                          Delete
+                        </button>
                       </div>
-                    )}
-                    {!newProfilePicture && (
-                      <p className="text-xs text-gray-500 italic">Click "Choose File" to select a new profile picture</p>
-                    )}
-                    {newProfilePicture && (
-                      <button
-                        onClick={handleUploadProfilePicture}
-                        disabled={uploadingProfilePicture}
-                        className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors disabled:opacity-50"
-                        style={{ backgroundColor: '#8B4513' }}
-                      >
-                        {uploadingProfilePicture ? 'Uploading...' : 'Upload Profile Picture'}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Photos Section */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>📸 Additional Photos</h2>
-            
-            <div className="bg-gray-50 p-4 rounded-md space-y-3">
-              {/* Upload New Photo */}
-              <div className="space-y-2 p-4 bg-blue-50 border-2 border-dashed border-blue-300 rounded-lg">
-                <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <label className="block text-sm font-semibold text-blue-700">📸 Upload Additional Photo</label>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:text-white file:bg-blue-600 hover:file:bg-blue-700"
-                    style={{ border: '2px solid #8B4513', borderRadius: '8px', padding: '8px', backgroundColor: 'white' }}
-                  />
-                  {newPhoto && (
-                    <button
-                      onClick={() => setNewPhoto(null)}
-                      className="px-3 py-1 text-red-600 text-sm border border-red-300 rounded hover:bg-red-50 bg-white"
-                    >
-                      Remove
-                    </button>
+                    </>
                   )}
                 </div>
-                {newPhoto && (
-                  <div className="mt-3 p-3 bg-white rounded-lg border">
-                    <p className="text-sm font-medium text-gray-700 mb-2">📸 Photo Preview:</p>
-                    <img
-                      src={URL.createObjectURL(newPhoto)}
-                      alt="Preview"
-                      className="w-32 h-32 object-cover border shadow-sm rounded"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">{newPhoto.name}</p>
-                  </div>
-                )}
-                {!newPhoto && (
-                  <p className="text-xs text-gray-500 italic">Click "Choose File" to select a photo to upload</p>
-                )}
-                {newPhoto && (
-                  <button
-                    onClick={handleUploadPhoto}
-                    disabled={uploadingPhoto}
-                    className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors disabled:opacity-50"
-                    style={{ backgroundColor: '#8B4513' }}
-                  >
-                    {uploadingPhoto ? 'Uploading...' : 'Upload Photo'}
-                  </button>
-                )}
-              </div>
-
-              {/* Photos list */}
-              <div className="space-y-4">
-                {profileData.profile.photos.length > 1 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {profileData.profile.photos.slice(1).map((photo) => (
-                      <div key={photo.id} className="border border-gray-200 rounded-lg p-4">
-                        <div className="relative">
-                          <img
-                            src={photo.url}
-                            alt="Profile Photo"
-                            className="w-full h-48 object-cover rounded-md border shadow-sm"
-                          />
-                          <button
-                            onClick={() => handleRemovePhoto(photo.id)}
-                            className="absolute top-2 right-2 px-2 py-1 text-red-600 text-sm border border-red-300 rounded hover:bg-red-50 bg-white"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-gray-500 italic text-center py-8">No additional photos uploaded yet. Add your first photo above!</p>
-                )}
-              </div>
+              ))}
             </div>
           </div>
 
           {/* Experience Section */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>💼 Experience</h2>
+            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>Experience</h2>
             
             {/* Add new experience */}
             <div className="bg-gray-50 p-4 rounded-md space-y-3">
@@ -702,10 +569,10 @@ const ProfileEdit: React.FC = () => {
                       </div>
                     </div>
                   ) : (
-                    <div>
+                    <>
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-semibold text-lg">{exp.title}</h3>
+                          <h3 className="font-semibold">{exp.title}</h3>
                           <p className="text-gray-600">{exp.company}</p>
                           <p className="text-sm text-gray-500">
                             {exp.start_date} - {exp.end_date || 'Present'}
@@ -729,7 +596,7 @@ const ProfileEdit: React.FC = () => {
                           </button>
                         </div>
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
               ))}
@@ -738,7 +605,7 @@ const ProfileEdit: React.FC = () => {
 
           {/* Achievements Section */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>🏆 Achievements</h2>
+            <h2 className="text-lg font-semibold" style={{ color: '#8B4513' }}>Achievements</h2>
             
             {/* Add new achievement */}
             <div className="bg-gray-50 p-4 rounded-md space-y-3">
@@ -752,11 +619,11 @@ const ProfileEdit: React.FC = () => {
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
                   style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                 />
-                <input
-                  type="text"
+              <input
+                type="text"
                   value={newAchievement.date}
                   onChange={(e) => setNewAchievement(prev => ({ ...prev, date: e.target.value }))}
-                  placeholder="Date (e.g., 2023-12)"
+                  placeholder="Date (e.g., 2023)"
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
                   style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
                 />
@@ -827,10 +694,10 @@ const ProfileEdit: React.FC = () => {
                       </div>
                     </div>
                   ) : (
-                    <div>
+                    <>
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-semibold text-lg">{achievement.title}</h3>
+                          <h3 className="font-semibold">{achievement.title}</h3>
                           <p className="text-sm text-gray-500">{achievement.date}</p>
                           {achievement.description && (
                             <p className="text-gray-700 mt-2">{achievement.description}</p>
@@ -851,11 +718,21 @@ const ProfileEdit: React.FC = () => {
                           </button>
                         </div>
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex justify-end space-x-4 pt-6 border-t">
+            <button
+              onClick={() => navigate('/profile')}
+              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2"
+            >
+              Back to Profile
+            </button>
           </div>
         </div>
       </div>
