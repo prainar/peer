@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { profileApi } from './api';
+import { postsApi } from '../posts/api';
 
 interface Experience {
   id: number;
@@ -17,6 +18,18 @@ interface Achievement {
   description: string;
   date: string;
   image_url?: string;
+}
+
+interface Post {
+  id: number;
+  content: string;
+  image_url?: string;
+  user_id: number;
+  created_at: string;
+  user: {
+    id: number;
+    username: string;
+  };
 }
 
 interface ProfileData {
@@ -44,11 +57,18 @@ const ProfileView: React.FC = () => {
   const [expandedSections, setExpandedSections] = useState({
     experience: true,
     achievements: true,
-    photos: true
+    photos: true,
+    posts: true
   });
+  const [userPosts, setUserPosts] = useState<Post[]>([]);
+  const [newPost, setNewPost] = useState<File | null>(null);
+  const [postContent, setPostContent] = useState('');
+  const [uploadingPost, setUploadingPost] = useState(false);
+  const [showPostForm, setShowPostForm] = useState(false);
 
   useEffect(() => {
     loadProfile();
+    loadUserPosts();
   }, []);
 
   const loadProfile = async () => {
@@ -62,6 +82,69 @@ const ProfileView: React.FC = () => {
     }
   };
 
+  const loadUserPosts = async () => {
+    try {
+      const data = await profileApi.getProfile();
+      const posts = await postsApi.getUserPosts(data.user.id);
+      setUserPosts(posts.posts || []);
+    } catch (error) {
+      console.error('Error loading user posts:', error);
+    }
+  };
+
+  const handlePostUpload = async () => {
+    if (!newPost || !profileData) return;
+    
+    setUploadingPost(true);
+    try {
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64 = e.target?.result as string;
+        await postsApi.createPhotoPost({
+          content: postContent,
+          image_url: base64
+        });
+        setNewPost(null);
+        setPostContent('');
+        setShowPostForm(false);
+        await loadUserPosts();
+      };
+      reader.readAsDataURL(newPost);
+    } catch (error) {
+      console.error('Error uploading post:', error);
+    } finally {
+      setUploadingPost(false);
+    }
+  };
+
+  const handleTextPost = async () => {
+    if (!postContent.trim() || !profileData) return;
+    
+    setUploadingPost(true);
+    try {
+      await postsApi.createPost({
+        content: postContent
+      });
+      setPostContent('');
+      setShowPostForm(false);
+      await loadUserPosts();
+    } catch (error) {
+      console.error('Error creating text post:', error);
+    } finally {
+      setUploadingPost(false);
+    }
+  };
+
+  const handleDeletePost = async (postId: number) => {
+    try {
+      await postsApi.deletePost(postId);
+      await loadUserPosts();
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
+  };
+
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -71,6 +154,16 @@ const ProfileView: React.FC = () => {
 
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   if (loading) {
@@ -157,6 +250,150 @@ const ProfileView: React.FC = () => {
             </div>
           )}
 
+          {/* Posts Section */}
+          <div className="bg-white rounded-lg shadow">
+            <div className="p-6 border-b">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold" style={{ color: '#8B4513' }}>📝 My Posts</h2>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => setShowPostForm(!showPostForm)}
+                    className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors"
+                    style={{ backgroundColor: '#8B4513' }}
+                  >
+                    {showPostForm ? 'Cancel' : 'Create Post'}
+                  </button>
+                  <button
+                    onClick={() => toggleSection('posts')}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    {expandedSections.posts ? '▼' : '▶'}
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Post Creation Form */}
+            {showPostForm && (
+              <div className="p-6 border-b bg-gray-50">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">💬 What's on your mind?</label>
+                    <textarea
+                      value={postContent}
+                      onChange={(e) => setPostContent(e.target.value)}
+                      placeholder="Share your thoughts, updates, or experiences..."
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
+                      style={{ '--tw-ring-color': '#8B4513' } as React.CSSProperties}
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">📸 Add Photo (Optional)</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setNewPost(e.target.files?.[0] || null)}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:text-white file:bg-blue-600 hover:file:bg-blue-700"
+                      style={{ border: '2px solid #8B4513', borderRadius: '8px', padding: '8px', backgroundColor: 'white' }}
+                    />
+                  </div>
+                  
+                  {newPost && (
+                    <div className="p-3 bg-white rounded-lg border">
+                      <p className="text-sm font-medium text-gray-700 mb-2">📸 Photo Preview:</p>
+                      <img
+                        src={URL.createObjectURL(newPost)}
+                        alt="Preview"
+                        className="w-32 h-32 object-cover border shadow-sm rounded"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">{newPost.name}</p>
+                    </div>
+                  )}
+                  
+                  <div className="flex space-x-3">
+                    <button
+                      onClick={newPost ? handlePostUpload : handleTextPost}
+                      disabled={uploadingPost || (!postContent.trim() && !newPost)}
+                      className="px-4 py-2 text-white rounded-md hover:brightness-90 transition-colors disabled:opacity-50"
+                      style={{ backgroundColor: '#8B4513' }}
+                    >
+                      {uploadingPost ? 'Posting...' : 'Post'}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setNewPost(null);
+                        setPostContent('');
+                        setShowPostForm(false);
+                      }}
+                      className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Posts Feed */}
+            {expandedSections.posts && (
+              <div className="p-6">
+                {userPosts.length > 0 ? (
+                  <div className="space-y-6">
+                    {userPosts.map((post) => (
+                      <div key={post.id} className="border border-gray-200 rounded-lg p-4">
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex items-center space-x-3">
+                            {profileData.profile.photos.length > 0 ? (
+                              <img
+                                src={profileData.profile.photos[0].url}
+                                alt="Profile"
+                                className="w-10 h-10 rounded-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#8B4513' }}>
+                                <span className="text-sm font-bold text-white">
+                                  {getInitials(profileData.profile.full_name || profileData.user.username)}
+                                </span>
+                              </div>
+                            )}
+                            <div>
+                              <p className="font-semibold">{profileData.profile.full_name || profileData.user.username}</p>
+                              <p className="text-sm text-gray-500">{formatDate(post.created_at)}</p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => handleDeletePost(post.id)}
+                            className="text-red-600 hover:text-red-800 text-sm"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                        
+                        {post.content && (
+                          <p className="text-gray-700 mb-3">{post.content}</p>
+                        )}
+                        
+                        {post.image_url && (
+                          <div className="mb-3">
+                            <img
+                              src={post.image_url}
+                              alt="Post image"
+                              className="w-full max-w-md rounded-lg shadow-sm"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 italic text-center py-8">No posts yet. Create your first post above!</p>
+                )}
+              </div>
+            )}
+          </div>
+
           {/* Experience Section */}
           <div className="bg-white rounded-lg shadow">
             <div className="p-6 border-b">
@@ -235,7 +472,7 @@ const ProfileView: React.FC = () => {
             <div className="bg-white rounded-lg shadow">
               <div className="p-6 border-b">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold" style={{ color: '#8B4513' }}>📸 Additional Photos</h2>
+                  <h2 className="text-xl font-semibold" style={{ color: '#8B4513' }}>Additional Photos</h2>
                   <button
                     onClick={() => toggleSection('photos')}
                     className="text-gray-500 hover:text-gray-700"
@@ -294,6 +531,10 @@ const ProfileView: React.FC = () => {
               <div className="flex justify-between">
                 <span className="text-gray-600">Photos:</span>
                 <span className="font-semibold">{profileData.profile.photos.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Posts:</span>
+                <span className="font-semibold">{userPosts.length}</span>
               </div>
             </div>
           </div>

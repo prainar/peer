@@ -1,20 +1,54 @@
-const API_URL = 'http://localhost:5000';
+const API_URL = 'http://localhost:5000/api';
 
 export const postsApi = {
-  createPost: async (content: string) => {
+  getAllPosts: async () => {
+    const response = await fetch(`${API_URL}/posts`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    return response.json();
+  },
+
+  createPost: async (postData: { content?: string; image_url?: string }) => {
     const response = await fetch(`${API_URL}/posts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
-      body: JSON.stringify({ content }),
+      body: JSON.stringify(postData),
     });
     return response.json();
   },
 
-  getPosts: async () => {
-    const response = await fetch(`${API_URL}/posts`, {
+  createPhotoPost: async (postData: { content?: string; image_url: string }) => {
+    const response = await fetch(`${API_URL}/posts/photo`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(postData),
+    });
+    return response.json();
+  },
+
+  updatePost: async (postId: number, postData: { content?: string; image_url?: string }) => {
+    const response = await fetch(`${API_URL}/posts/${postId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(postData),
+    });
+    return response.json();
+  },
+
+  deletePost: async (postId: number) => {
+    const response = await fetch(`${API_URL}/posts/${postId}`, {
+      method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
@@ -22,9 +56,8 @@ export const postsApi = {
     return response.json();
   },
 
-  likePost: async (postId: number) => {
-    const response = await fetch(`${API_URL}/posts/${postId}/like`, {
-      method: 'POST',
+  getUserPosts: async (userId: number) => {
+    const response = await fetch(`${API_URL}/posts/user/${userId}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },

@@ -1,12 +1,21 @@
+from datetime import datetime
 from models.user import db
 
 class Profile(db.Model):
+    __tablename__ = 'profiles'
+    
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False)
-    full_name = db.Column(db.String(120), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     bio = db.Column(db.Text)
-    location = db.Column(db.String(120))
-    # Add relationships if needed
+    location = db.Column(db.String(100))
+    website = db.Column(db.String(200))
+    profile_photo = db.Column(db.LargeBinary)
+    achievements = db.Column(db.Text)  # JSON string of achievements
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<Profile {self.id}>'
 
 class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
