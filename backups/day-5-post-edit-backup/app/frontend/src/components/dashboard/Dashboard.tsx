@@ -4,37 +4,10 @@ import { useAuth } from '../../context/AuthContext';
 import { profileApi } from '../profile/api';
 import PostCreate from '../posts/PostCreate';
 import PostList from '../posts/PostList';
-import DashboardEffects from './DashboardEffects';
-import TestEffects from './TestEffects';
-
-interface User {
-  id: number;
-  email: string;
-  fullName: string;
-}
-
-interface ProfileData {
-  fullName: string;
-  title: string;
-  company: string;
-  location: string;
-  bio: string;
-  experience: Array<{
-    title: string;
-    company: string;
-    duration: string;
-    description: string;
-  }>;
-  achievements: Array<{
-    title: string;
-    description: string;
-    year: string;
-  }>;
-}
 
 const Dashboard: React.FC = () => {
-  const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('feed');
   // Photo upload state
   const [photo, setPhoto] = useState<string | null>(null);
@@ -116,8 +89,6 @@ const Dashboard: React.FC = () => {
 
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [showEffects, setShowEffects] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false); // New dark mode state
 
   // Messages state
   const [messages, setMessages] = useState([
@@ -735,7 +706,7 @@ const Dashboard: React.FC = () => {
       case 'feed':
         return (
           <div className="space-y-4">
-            <div className={`${showEffects ? 'bg-white/50 backdrop-blur-md' : 'bg-white'} rounded-lg shadow p-6`}>
+            <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
                   <span className="text-gray-600 font-semibold">JD</span>
@@ -746,12 +717,12 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
               <p className="mb-4">Excited to share that I've started a new position as Software Engineer at TechCorp!</p>
-              <div className={`${showEffects ? 'bg-gray-50/70 backdrop-blur-sm' : 'bg-gray-50'} rounded p-3`}>
+              <div className="bg-gray-50 rounded p-3">
                 <p className="text-sm text-gray-600">🎉 New beginnings are always exciting. Looking forward to this new chapter in my career!</p>
               </div>
             </div>
             
-            <div className={`${showEffects ? 'bg-white/50 backdrop-blur-md' : 'bg-white'} rounded-lg shadow p-6`}>
+            <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
                   <span className="text-gray-600 font-semibold">JS</span>
@@ -779,7 +750,7 @@ const Dashboard: React.FC = () => {
               </div>
             )}
 
-            <div className={`${showEffects ? 'bg-white/50 backdrop-blur-md' : 'bg-white'} rounded-lg shadow p-6`}>
+            <div className="bg-white rounded-lg shadow p-6">
               <h2 className="text-xl font-semibold mb-4">💼 Job Board</h2>
               
               {/* Jobs List */}
@@ -1090,13 +1061,13 @@ const Dashboard: React.FC = () => {
         return (
           <div className="space-y-6">
             {isLoading && (
-              <div className={`border border-blue-200 rounded-md p-4 ${showEffects ? 'bg-blue-50/70 backdrop-blur-sm' : 'bg-blue-50'}`}>
+              <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
                 <p className="text-blue-800">Loading profile data...</p>
               </div>
             )}
             
             {/* Profile Header with Enhanced Photo Upload */}
-            <div className={`${showEffects ? 'bg-white/50 backdrop-blur-md' : 'bg-white'} rounded-lg shadow p-6`}>
+            <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center space-x-6 mb-6">
                 <div className="relative group">
                   <div className="w-24 h-24 rounded-full border-4 border-white shadow-lg bg-gray-300 flex items-center justify-center text-gray-600 text-3xl font-semibold overflow-hidden transition-all duration-200">
@@ -1153,7 +1124,7 @@ const Dashboard: React.FC = () => {
                   <p className="text-sm text-gray-500 mb-3">{dashboardProfileData.location}</p>
                   
                   {/* Photo Upload Instructions */}
-                  <div className={`p-3 rounded-lg border border-blue-200 ${showEffects ? 'bg-blue-50/70 backdrop-blur-sm' : 'bg-blue-50'}`}>
+                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                     <p className="text-sm text-blue-700">
                       <strong>Profile Photo:</strong> Click the camera icon to upload a new photo, or hover over your current photo to edit or remove it.
                     </p>
@@ -1342,18 +1313,9 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen relative ${isDarkMode ? 'dark' : ''}`} style={{ 
-      backgroundColor: showEffects 
-        ? (isDarkMode ? 'rgba(17, 24, 39, 0.3)' : 'rgba(249, 250, 251, 0.3)')
-        : (isDarkMode ? 'rgba(17, 24, 39, 0.8)' : 'rgba(249, 250, 251, 0.8)')
-    }}>
-              {/* GPU Effects Background */}
-        {showEffects && <TestEffects darkMode={isDarkMode} />}
+    <div className="min-h-screen bg-gray-50">
       {/* Navigation Bar */}
-                                                 <nav className={`${showEffects 
-                           ? (isDarkMode ? 'bg-gray-800/60 backdrop-blur-md' : 'bg-white/60 backdrop-blur-md')
-                           : (isDarkMode ? 'bg-gray-800' : 'bg-white')
-                         } shadow-sm border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+      <nav className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
@@ -1364,32 +1326,6 @@ const Dashboard: React.FC = () => {
             </div>
             
             <div className="flex items-center space-x-4">
-              {/* Effects Toggle */}
-              <button
-                onClick={() => setShowEffects(!showEffects)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                  showEffects 
-                    ? 'bg-purple-600 text-white hover:bg-purple-700' 
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-                title={showEffects ? 'Disable GPU Effects' : 'Enable GPU Effects'}
-              >
-                {showEffects ? '✨ Effects ON' : '✨ Effects OFF'}
-              </button>
-              
-              {/* Dark Mode Toggle */}
-              <button
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                  isDarkMode 
-                    ? 'bg-gray-700 text-white hover:bg-gray-800' 
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-                title={isDarkMode ? 'Enable Light Mode' : 'Enable Dark Mode'}
-              >
-                {isDarkMode ? '🌙 Dark Mode' : '☀️ Light Mode'}
-              </button>
-              
               <button 
                 onClick={() => setActiveTab('notifications')}
                 className={`text-gray-600 hover:text-gray-900 relative transition-colors ${activeTab === 'notifications' ? 'font-semibold' : ''}`}
@@ -1429,22 +1365,15 @@ const Dashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {/* Professional Welcome Section */}
             <div className="mb-8">
-              <div className={`rounded-lg p-6 flex items-center space-x-6 shadow ${showEffects 
-                ? (isDarkMode ? 'bg-gray-800/50 backdrop-blur-md' : 'bg-white/50 backdrop-blur-md')
-                : ''
-              }`} style={{ 
-                backgroundColor: showEffects 
-                  ? 'transparent' 
-                  : (isDarkMode ? '#374151' : '#fdf8f6')
-              }}>
+              <div className="rounded-lg p-6 flex items-center space-x-6 shadow" style={{ backgroundColor: '#fdf8f6' }}>
                 <div className="w-20 h-20 rounded-full border-4 border-white shadow-lg flex items-center justify-center text-white text-3xl font-bold" style={{ backgroundColor: '#8B4513' }}>
                   {user?.username?.charAt(0).toUpperCase() || 'U'}
                 </div>
                 <div>
-                  <h1 className={`text-2xl font-bold mb-1 ${isDarkMode ? 'text-white' : ''}`} style={{ color: isDarkMode ? '#ffffff' : '#8B4513' }}>
+                  <h1 className="text-2xl font-bold mb-1" style={{ color: '#8B4513' }}>
                     Welcome{user?.username ? `, ${user.username}` : ''}!
                   </h1>
-                  <p className={isDarkMode ? 'text-gray-300' : ''} style={{ color: isDarkMode ? '#d1d5db' : '#6d3410' }}>We're glad to see you on your dashboard. Here you can manage your profile, posts, jobs, and more.</p>
+                  <p style={{ color: '#6d3410' }}>We're glad to see you on your dashboard. Here you can manage your profile, posts, jobs, and more.</p>
                 </div>
               </div>
             </div>
@@ -1454,10 +1383,7 @@ const Dashboard: React.FC = () => {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             {/* Navigation Menu */}
-            <div className={`${showEffects 
-              ? (isDarkMode ? 'bg-gray-800/40 backdrop-blur-md' : 'bg-white/40 backdrop-blur-md')
-              : (isDarkMode ? 'bg-gray-800/90 backdrop-blur-sm' : 'bg-white/90 backdrop-blur-sm')
-            } rounded-lg shadow`}>
+            <div className="bg-white rounded-lg shadow">
               <nav className="p-4">
                 <ul className="space-y-2">
                   <li>
