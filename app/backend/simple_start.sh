@@ -11,4 +11,4 @@ export FLASK_ENV=production
 PORT=${PORT:-10000}
 
 # Run the Flask application with Gunicorn
-gunicorn --bind 0.0.0.0:$PORT --workers 2 --worker-class sync --timeout 30 --keepalive 2 --max-requests 1000 --max-requests-jitter 100 --preload-app main:app 
+gunicorn --bind 0.0.0.0:$PORT --workers 2 --worker-class sync --timeout 30 --max-requests 1000 --max-requests-jitter 100 main:app 

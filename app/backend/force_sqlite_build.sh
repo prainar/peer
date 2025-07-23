@@ -129,6 +129,36 @@ conn.close()
 print('✅ Database tables created successfully!')
 "
 
+# Create initial users
+echo "👥 Creating initial users..."
+python3 -c "
+import sqlite3
+import os
+from werkzeug.security import generate_password_hash
+
+# Connect to database
+db_path = os.path.join(os.path.dirname(__file__), 'instance', 'app.db')
+conn = sqlite3.connect(db_path)
+cursor = conn.cursor()
+
+# Create test users
+users_data = [
+    ('akash', 'akash@example.com', generate_password_hash('password123')),
+    ('francis', 'francis@example.com', generate_password_hash('password123')),
+    ('scc', 'scc@example.com', generate_password_hash('password123'))
+]
+
+for username, email, password_hash in users_data:
+    cursor.execute('''
+        INSERT OR REPLACE INTO user (username, email, password_hash)
+        VALUES (?, ?, ?)
+    ''', (username, email, password_hash))
+
+conn.commit()
+conn.close()
+print('✅ Users created successfully!')
+"
+
 # Restore user data
 echo "📊 Restoring user data..."
 python3 restore_data.py
