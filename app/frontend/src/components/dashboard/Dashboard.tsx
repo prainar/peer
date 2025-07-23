@@ -4,41 +4,41 @@ import { useAuth } from '../../context/AuthContext';
 import { profileApi } from '../profile/api';
 import PostCreate from '../posts/PostCreate';
 import PostList from '../posts/PostList';
-import DashboardEffects from './DashboardEffects';
+// import DashboardEffects from './DashboardEffects'; // Unused import
 import TestEffects from './TestEffects';
 
-interface User {
-  id: number;
-  email: string;
-  fullName: string;
-}
+// interface User { // Unused interface
+//   id: number;
+//   email: string;
+//   fullName: string;
+// }
 
-interface ProfileData {
-  fullName: string;
-  title: string;
-  company: string;
-  location: string;
-  bio: string;
-  experience: Array<{
-    title: string;
-    company: string;
-    duration: string;
-    description: string;
-  }>;
-  achievements: Array<{
-    title: string;
-    description: string;
-    year: string;
-  }>;
-}
+// interface ProfileData { // Unused interface
+//   fullName: string;
+//   title: string;
+//   company: string;
+//   location: string;
+//   bio: string;
+//   experience: Array<{
+//     title: string;
+//     company: string;
+//     duration: string;
+//     description: string;
+//   }>;
+//   achievements: Array<{
+//     title: string;
+//     description: string;
+//     year: string;
+//   }>;
+// }
 
 const Dashboard: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth(); // Removed unused logout
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('feed');
   // Photo upload state
   const [photo, setPhoto] = useState<string | null>(null);
-  const [isDragOver, setIsDragOver] = useState(false);
+  // const [isDragOver, setIsDragOver] = useState(false); // Unused variable
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
@@ -62,7 +62,7 @@ const Dashboard: React.FC = () => {
 
   // Shared profile state for dashboard sidebar
   const [dashboardProfileData, setDashboardProfileData] = useState({
-    fullName: user?.username || 'John Doe',
+    fullName: user?.name || 'John Doe',
     title: 'Software Engineer',
     company: 'TechCorp',
     location: 'San Francisco, CA',
@@ -261,7 +261,7 @@ const Dashboard: React.FC = () => {
 
         // Update dashboard profile data with real profile information
         setDashboardProfileData({
-          fullName: response.profile.full_name || user?.username || 'John Doe',
+          fullName: response.profile.full_name || user?.name || 'John Doe',
           title: response.profile.experience && response.profile.experience.length > 0 
             ? response.profile.experience[0].title 
             : 'Software Engineer',
@@ -300,24 +300,24 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
+  // const handleDragOver = (e: React.DragEvent) => {
+  //   e.preventDefault();
+  //   setIsDragOver(true);
+  // };
 
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-  };
+  // const handleDragLeave = (e: React.DragEvent) => {
+  //   e.preventDefault();
+  //   setIsDragOver(false);
+  // };
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      handlePhotoUpload(file);
-    }
-  };
+  // const handleDrop = (e: React.DragEvent) => {
+  //   e.preventDefault();
+  //   setIsDragOver(false);
+  //   const file = e.dataTransfer.files[0];
+  //   if (file) {
+  //     handlePhotoUpload(file);
+  //   }
+  // };
 
   const updateProfilePhoto = async () => {
     if (!photoPreview) return;
@@ -694,7 +694,7 @@ const Dashboard: React.FC = () => {
         const response = await profileApi.addAchievement({
           title: newAchievement.title,
           description: newAchievement.description,
-          date: newAchievement.date || undefined
+          date: newAchievement.date || ''
         });
         if (response.achievement) {
           setTempProfileData({
@@ -1438,11 +1438,11 @@ const Dashboard: React.FC = () => {
                   : (isDarkMode ? '#374151' : '#fdf8f6')
               }}>
                 <div className="w-20 h-20 rounded-full border-4 border-white shadow-lg flex items-center justify-center text-white text-3xl font-bold" style={{ backgroundColor: '#8B4513' }}>
-                  {user?.username?.charAt(0).toUpperCase() || 'U'}
+                  {user?.name?.charAt(0).toUpperCase() || 'U'}
                 </div>
                 <div>
                   <h1 className={`text-2xl font-bold mb-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`} style={{ color: isDarkMode ? '#ffffff' : '#1f2937' }}>
-                    Welcome{user?.username ? `, ${user.username}` : ''}!
+                    Welcome{user?.name ? `, ${user.name}` : ''}!
                   </h1>
                   <p className={isDarkMode ? 'text-gray-300' : 'text-gray-700'} style={{ color: isDarkMode ? '#d1d5db' : '#374151' }}>We're glad to see you on your dashboard. Here you can manage your profile, posts, jobs, and more.</p>
                 </div>

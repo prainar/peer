@@ -10,7 +10,7 @@ const PostCreate: React.FC<PostCreateProps> = ({ onPostCreated }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPhotoUpload, setShowPhotoUpload] = useState(false);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  // const [photoFile, setPhotoFile] = useState<File | null>(null); // Unused variable
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,7 +29,7 @@ const PostCreate: React.FC<PostCreateProps> = ({ onPostCreated }) => {
       if (response.message) {
         setContent('');
         setImageUrl('');
-        setPhotoFile(null);
+        // setPhotoFile(null); // Commented out - variable not available
         setPhotoPreview(null);
         setShowPhotoUpload(false);
         
@@ -46,7 +46,7 @@ const PostCreate: React.FC<PostCreateProps> = ({ onPostCreated }) => {
   };
 
   const handlePhotoUpload = async (file: File) => {
-    setPhotoFile(file);
+    // setPhotoFile(file); // Commented out - variable not available
     
     // Create preview
     const reader = new FileReader();
@@ -76,7 +76,7 @@ const PostCreate: React.FC<PostCreateProps> = ({ onPostCreated }) => {
   };
 
   const removePhoto = () => {
-    setPhotoFile(null);
+    // setPhotoFile(null); // Commented out - variable not available
     setPhotoPreview(null);
     setImageUrl('');
     setShowPhotoUpload(false);
