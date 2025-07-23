@@ -6,6 +6,12 @@
 /login     /index.html   200
 /dashboard /index.html   200
 /profile   /index.html   200
+/profile/* /index.html   200
 /posts     /index.html   200
+/posts/*   /index.html   200
 /jobs      /index.html   200
-/messages  /index.html   200 
+/messages  /index.html   200
+/three-demo /index.html  200
+
+# Handle assets
+/assets/*  /assets/:splat  200 

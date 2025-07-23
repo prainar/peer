@@ -5,6 +5,40 @@
       "destination": "/index.html"
     }
   ],
+  "routes": [
+    {
+      "src": "/signup",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/login",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/profile(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/posts(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/jobs",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/messages",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/three-demo",
+      "dest": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

@@ -10,19 +10,29 @@ import JobList from '../components/job-board/JobList';
 import MessageList from '../components/messaging/MessageList';
 import Dashboard from '../components/dashboard/Dashboard';
 import ThreeDemo from '../components/ThreeDemo';
+import TestRoute from '../components/TestRoute';
+
+// Debug function to log route changes
+const debugRoute = (path: string) => {
+  console.log('🔗 Route accessed:', path);
+  return true;
+};
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Login />,
+    loader: () => debugRoute('/'),
   },
   {
     path: '/login',
     element: <Login />,
+    loader: () => debugRoute('/login'),
   },
   {
     path: '/signup',
     element: <Signup />,
+    loader: () => debugRoute('/signup'),
   },
   {
     path: '/dashboard',
@@ -55,5 +65,10 @@ export const router = createBrowserRouter([
   {
     path: '/three-demo',
     element: <ThreeDemo />,
+  },
+  {
+    path: '/test-route',
+    element: <TestRoute />,
+    loader: () => debugRoute('/test-route'),
   },
 ]); 
