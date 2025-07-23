@@ -12,6 +12,23 @@
 /jobs      /index.html   200
 /messages  /index.html   200
 /three-demo /index.html  200
+/test-route /index.html  200
 
-# Handle assets
-/assets/*  /assets/:splat  200 
+# Handle assets with proper caching
+/assets/*  /assets/:splat  200
+
+# Handle API routes (should not be redirected)
+/api/*     /api/:splat    200
+
+# Handle static files
+*.js       /index.html    200
+*.css      /index.html    200
+*.png      /index.html    200
+*.jpg      /index.html    200
+*.jpeg     /index.html    200
+*.gif      /index.html    200
+*.svg      /index.html    200
+*.ico      /index.html    200
+
+# Fallback for everything else
+/*         /index.html    200 

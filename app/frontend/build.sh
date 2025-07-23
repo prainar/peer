@@ -18,17 +18,13 @@ cp public/_redirects dist/
 echo "📋 Setting up static configuration..."
 cp static.json dist/
 
-# Copy vercel.json to dist folder
-echo "📋 Setting up Vercel configuration..."
-cp vercel.json dist/
-
 # Copy netlify.toml to dist folder
-echo "📋 Setting up Netlify configuration..."
+echo "📋 Setting up netlify configuration..."
 cp netlify.toml dist/
 
-# Create a comprehensive _redirects file
+# Create a comprehensive _redirects file in dist
 echo "📋 Creating comprehensive redirects..."
-cat > dist/_redirects << EOF
+cat > dist/_redirects << 'EOF'
 # Handle client-side routing for React Router
 /*    /index.html   200
 
@@ -45,13 +41,29 @@ cat > dist/_redirects << EOF
 /three-demo /index.html  200
 /test-route /index.html  200
 
-# Handle assets
+# Handle assets with proper caching
 /assets/*  /assets/:splat  200
+
+# Handle API routes (should not be redirected)
+/api/*     /api/:splat    200
+
+# Handle static files
+*.js       /index.html    200
+*.css      /index.html    200
+*.png      /index.html    200
+*.jpg      /index.html    200
+*.jpeg     /index.html    200
+*.gif      /index.html    200
+*.svg      /index.html    200
+*.ico      /index.html    200
+
+# Fallback for everything else
+/*         /index.html    200
 EOF
 
-# Create a simple index.html test
-echo "📋 Creating test file..."
-cat > dist/test.html << EOF
+# Create a simple index.html fallback for testing
+echo "📋 Creating test index.html..."
+cat > dist/test.html << 'EOF'
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,11 +71,15 @@ cat > dist/test.html << EOF
 </head>
 <body>
     <h1>Test Page Works!</h1>
-    <p>If you can see this, static file serving is working.</p>
-    <a href="/">Go to Home</a>
+    <p>If you can see this, the static hosting is working.</p>
+    <a href="/">Go to main app</a>
 </body>
 </html>
 EOF
+
+# Verify all files are present
+echo "📋 Verifying build output..."
+ls -la dist/
 
 echo "✅ Frontend build completed successfully!"
 echo "📁 Build output: dist/" 
