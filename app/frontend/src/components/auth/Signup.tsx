@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { authApi } from './api';
 
 const Signup: React.FC = () => {
@@ -134,7 +134,7 @@ const Signup: React.FC = () => {
         </form>
         <div className="text-center mt-4">
           <span className="text-sm text-gray-600">Already have an account? </span>
-          <a href="/login" className="font-medium text-brown-700 hover:text-brown-800">Sign in</a>
+          <Link to="/login" className="font-medium text-brown-700 hover:text-brown-800">Sign in</Link>
         </div>
       </div>
     </div>
