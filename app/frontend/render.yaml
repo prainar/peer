@@ -2,7 +2,7 @@ services:
   - type: web
     name: peer-frontend
     env: static
-    buildCommand: ./build.sh
+    buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     routes:
       - type: rewrite

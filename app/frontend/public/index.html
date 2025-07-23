@@ -16,9 +16,11 @@
     <!-- Fallback for client-side routing -->
     <script>
       // Handle direct navigation to routes
+      console.log('Loading React app for route:', window.location.pathname);
+      
+      // Ensure React Router can handle the route
       if (window.location.pathname !== '/' && !window.location.pathname.startsWith('/assets/')) {
-        // This ensures React Router can handle the route
-        console.log('Direct navigation to:', window.location.pathname);
+        console.log('Direct navigation detected:', window.location.pathname);
       }
     </script>
   </body>
