@@ -137,7 +137,7 @@ import os
 from werkzeug.security import generate_password_hash
 
 # Connect to database
-db_path = os.path.join(os.path.dirname(__file__), 'instance', 'app.db')
+db_path = 'instance/app.db'
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
