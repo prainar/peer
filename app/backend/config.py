@@ -10,7 +10,7 @@ class Config:
     if DATABASE_URL and DATABASE_URL.startswith('postgres://'):
         DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
     
-    SQLALCHEMY_DATABASE_URI = DATABASE_URL or 'sqlite:///' + os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance', 'app.db')
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL or 'sqlite:///instance/app.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # JWT

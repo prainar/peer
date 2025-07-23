@@ -29,6 +29,10 @@ with app.app_context():
     print('✅ Database tables created successfully!')
 "
 
+# Restore user data
+echo "📊 Restoring user data..."
+python3 restore_data.py
+
 # Set proper permissions
 echo "🔐 Setting proper permissions..."
 chmod -R 755 instance/
