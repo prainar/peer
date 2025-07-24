@@ -33,13 +33,15 @@ print(f"🔧 CORS Origins configured: {cors_origins}")
 print(f"🔧 CORS Headers configured: {cors_headers}")
 print(f"🔧 CORS Methods configured: {cors_methods}")
 
+# Initialize CORS with more explicit configuration
 CORS(app, 
      origins=cors_origins, 
      supports_credentials=cors_supports_credentials, 
      allow_headers=cors_headers, 
      methods=cors_methods,
      expose_headers=["*"],
-     max_age=3600)
+     max_age=3600,
+     automatic_options=True)
 db.init_app(app)
 jwt = JWTManager(app)
 limiter = Limiter(
@@ -62,20 +64,59 @@ def health_check():
     """Health check endpoint"""
     return {'status': 'healthy', 'message': 'Peer backend is running!'}
 
+# CORS preflight handler for all routes
+@app.route('/api/<path:path>', methods=['OPTIONS'])
+def handle_options(path):
+    """Handle CORS preflight requests"""
+    response = app.make_default_options_response()
+    origin = request.headers.get('Origin')
+    allowed_origins = app.config.get('CORS_ORIGINS', ["*"])
+    
+    if origin and origin in allowed_origins:
+        response.headers['Access-Control-Allow-Origin'] = origin
+    elif origin and 'localhost' in origin:
+        response.headers['Access-Control-Allow-Origin'] = origin
+    
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Credentials'] = 'false'
+    
+    print(f"🔧 OPTIONS request for /api/{path} from {origin}")
+    return response
+
 # Route to serve uploaded images
 @app.route('/uploads/<path:filename>')
 def uploaded_file(filename):
     """Serve uploaded files"""
     return send_from_directory('uploads', filename)
 
-# Debug CORS requests
+# Ensure CORS headers are properly set
 @app.after_request
 def after_request(response):
-    # Get the origin from the request for debugging
+    # Get the origin from the request
     origin = request.headers.get('Origin')
+    allowed_origins = app.config.get('CORS_ORIGINS', ["*"])
+    
     if origin:
         print(f"🌐 Request from origin: {origin}")
-        print(f"🔧 Response CORS headers: {dict(response.headers)}")
+        
+        # Check if the origin is in our allowed list
+        if origin in allowed_origins:
+            response.headers['Access-Control-Allow-Origin'] = origin
+            print(f"✅ CORS allowed for origin: {origin}")
+        elif origin and 'localhost' in origin:
+            # For development, allow localhost origins
+            response.headers['Access-Control-Allow-Origin'] = origin
+            print(f"✅ CORS allowed for localhost origin: {origin}")
+        else:
+            print(f"❌ CORS denied for origin: {origin}")
+    
+    # Ensure other CORS headers are set
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Credentials'] = 'false'
+    
+    print(f"🔧 Final CORS headers: {dict(response.headers)}")
     return response
 
 
