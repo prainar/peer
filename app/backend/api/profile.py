@@ -287,6 +287,17 @@ def upload_profile_photo():
             db.session.add(profile)
             db.session.commit()
         
+        # Ensure ProfilePhoto table exists
+        try:
+            # Check if table exists, if not create it
+            inspector = db.inspect(db.engine)
+            if 'profile_photo' not in inspector.get_table_names():
+                print("🔧 ProfilePhoto table missing, creating it...")
+                ProfilePhoto.__table__.create(db.engine, checkfirst=True)
+                print("✅ ProfilePhoto table created!")
+        except Exception as e:
+            print(f"⚠️  Error checking/creating ProfilePhoto table: {e}")
+        
         # Remove existing photos
         try:
             existing_photos = ProfilePhoto.query.filter_by(profile_id=profile.id).all()

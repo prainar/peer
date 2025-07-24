@@ -128,29 +128,45 @@ def setup_database():
             os.makedirs(instance_path, exist_ok=True)
             print(f"✅ Created instance directory: {instance_path}")
         
-        # Try to initialize database using init_db.py
-        import subprocess
-        import sys
+        # Import all models to ensure they're registered
+        from models.user import User
+        from models.post import Post, PostLike
+        from models.job import Job
+        from models.message import Message
+        from models.profile import Profile, Skill, Experience, Education, Achievement, ProfilePhoto
         
-        print("🔧 Running init_db.py...")
-        result = subprocess.run([sys.executable, 'init_db.py'], 
-                              capture_output=True, text=True, cwd=os.path.dirname(__file__))
-        print(f"🔧 init_db.py stdout: {result.stdout}")
-        print(f"🔧 init_db.py stderr: {result.stderr}")
+        print("🔧 Models imported successfully")
         
-        if result.returncode == 0:
-            print("✅ Database initialized using init_db.py")
-        else:
-            print("⚠️  init_db.py failed, trying SQLAlchemy fallback...")
-            with app.app_context():
+        # Create tables using SQLAlchemy
+        with app.app_context():
+            print("🔧 Creating database tables...")
+            db.create_all()
+            print("✅ Database tables created successfully!")
+            
+            # Verify specific tables exist
+            inspector = db.inspect(db.engine)
+            tables = inspector.get_table_names()
+            print(f"🔧 Available tables: {tables}")
+            
+            # Check for critical tables
+            critical_tables = ['user', 'profile', 'profile_photo', 'post', 'post_like', 'job', 'message']
+            missing_tables = [table for table in critical_tables if table not in tables]
+            
+            if missing_tables:
+                print(f"⚠️  Missing tables: {missing_tables}")
+                print("🔧 Attempting to create missing tables...")
                 db.create_all()
-                print("✅ Database tables created successfully using SQLAlchemy!")
-                
+                print("✅ Missing tables created!")
+            else:
+                print("✅ All critical tables exist!")
+        
         # Create test user if in production
         if os.environ.get('RENDER'):
             print("🚀 Production mode - creating test user...")
             try:
                 print("🔧 Running create_test_user.py...")
+                import subprocess
+                import sys
                 result = subprocess.run([sys.executable, 'create_test_user.py'], 
                                       capture_output=True, text=True, cwd=os.path.dirname(__file__))
                 print(f"🔧 create_test_user.py stdout: {result.stdout}")
@@ -164,7 +180,9 @@ def setup_database():
                 print(f"⚠️  Test user creation error: {e}")
                 
     except Exception as e:
-        print(f"⚠️  Database setup error: {e}")
+        print(f"🔴 Database setup error: {e}")
+        import traceback
+        print(f"🔴 Full traceback: {traceback.format_exc()}")
         print("✅ Continuing anyway - database might already exist")
 
 # Create a function to initialize the app
