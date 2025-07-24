@@ -16,9 +16,7 @@ from models.profile import Profile, Skill, Experience, Education, Achievement, P
 from models.post import Post, PostLike
 
 # Import blueprints
-from api.auth import auth_bp
-from api.profile import profile_bp
-from api.posts import posts_bp
+from api import auth_bp, profile_bp, posts_bp, feed_bp, jobs_bp, messaging_bp
 
 # Create Flask app
 app = Flask(__name__)
@@ -44,6 +42,9 @@ limiter = Limiter(
 app.register_blueprint(auth_bp)
 app.register_blueprint(profile_bp)
 app.register_blueprint(posts_bp)
+app.register_blueprint(feed_bp)
+app.register_blueprint(jobs_bp)
+app.register_blueprint(messaging_bp)
 
 # Health check endpoint
 @app.route('/')
