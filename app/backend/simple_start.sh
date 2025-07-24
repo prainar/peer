@@ -11,6 +11,10 @@ export FLASK_ENV=production
 echo "🗄️ Initializing database..."
 python3 init_db.py
 
+# Create test user if needed
+echo "👤 Creating test user..."
+python3 create_test_user.py
+
 # Get port from environment variable (Render sets this)
 PORT=${PORT:-10000}
 
