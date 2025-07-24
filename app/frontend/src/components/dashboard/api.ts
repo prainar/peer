@@ -1,6 +1,6 @@
 const API_URL = import.meta.env.PROD 
-  ? 'https://peer-backend-yfr4.onrender.com/api'
-  : 'http://localhost:5000/api';
+  ? 'https://peer-backend-yfr4.onrender.com'
+  : 'http://localhost:5000';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
