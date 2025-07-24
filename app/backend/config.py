@@ -6,7 +6,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     
     # Database - Force SQLite for this deployment
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///instance/app.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////home/prainart/per/app/backend/instance/app.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # JWT
