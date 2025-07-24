@@ -1,6 +1,4 @@
-const API_URL = import.meta.env.PROD 
-  ? 'https://peer-backend.onrender.com/api'
-  : 'http://localhost:5000/api';
+import { API_URL } from '../config/api';
 
 export const api = {
   // Auth endpoints
