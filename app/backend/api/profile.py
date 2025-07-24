@@ -22,11 +22,30 @@ def get_profile():
         db.session.add(profile)
         db.session.commit()
     
-    # Get related data
-    experiences = Experience.query.filter_by(profile_id=profile.id).all()
-    education = Education.query.filter_by(profile_id=profile.id).all()
-    achievements = Achievement.query.filter_by(profile_id=profile.id).all()
-    photos = ProfilePhoto.query.filter_by(profile_id=profile.id).all()
+    # Get related data (with error handling for missing tables)
+    try:
+        experiences = Experience.query.filter_by(profile_id=profile.id).all()
+    except Exception as e:
+        print(f"⚠️  Error loading experiences: {e}")
+        experiences = []
+    
+    try:
+        education = Education.query.filter_by(profile_id=profile.id).all()
+    except Exception as e:
+        print(f"⚠️  Error loading education: {e}")
+        education = []
+    
+    try:
+        achievements = Achievement.query.filter_by(profile_id=profile.id).all()
+    except Exception as e:
+        print(f"⚠️  Error loading achievements: {e}")
+        achievements = []
+    
+    try:
+        photos = ProfilePhoto.query.filter_by(profile_id=profile.id).all()
+    except Exception as e:
+        print(f"⚠️  Error loading photos: {e}")
+        photos = []
     
     return jsonify({
         "profile": {
@@ -199,52 +218,80 @@ def remove_achievement(achievement_id):
 @jwt_required()
 def upload_profile_photo():
     """Upload profile photo"""
-    user_id = int(get_jwt_identity())
-    data = request.get_json()
-    
-    profile = Profile.query.filter_by(user_id=user_id).first()
-    if not profile:
-        user = User.query.get(user_id)
-        profile = Profile(user_id=user_id, full_name=user.username)
-        db.session.add(profile)
+    try:
+        user_id = int(get_jwt_identity())
+        data = request.get_json()
+        
+        if not data or 'photo_url' not in data:
+            return jsonify({"message": "photo_url is required"}), 400
+        
+        profile = Profile.query.filter_by(user_id=user_id).first()
+        if not profile:
+            user = User.query.get(user_id)
+            profile = Profile(user_id=user_id, full_name=user.username)
+            db.session.add(profile)
+            db.session.commit()
+        
+        # Remove existing photos
+        try:
+            existing_photos = ProfilePhoto.query.filter_by(profile_id=profile.id).all()
+            for photo in existing_photos:
+                db.session.delete(photo)
+        except Exception as e:
+            print(f"⚠️  Error removing existing photos: {e}")
+            # Continue anyway
+        
+        # Add new photo
+        photo = ProfilePhoto(
+            profile_id=profile.id,
+            url=data['photo_url']
+        )
+        db.session.add(photo)
         db.session.commit()
-    
-    # Remove existing photos
-    existing_photos = ProfilePhoto.query.filter_by(profile_id=profile.id).all()
-    for photo in existing_photos:
-        db.session.delete(photo)
-    
-    # Add new photo
-    photo = ProfilePhoto(
-        profile_id=profile.id,
-        url=data['photo_url']
-    )
-    db.session.add(photo)
-    db.session.commit()
-    
-    return jsonify({
-        "message": "Profile photo uploaded successfully",
-        "photo": {
-            "id": photo.id,
-            "url": photo.url
-        }
-    }), 201
+        
+        return jsonify({
+            "message": "Profile photo uploaded successfully",
+            "photo": {
+                "id": photo.id,
+                "url": photo.url
+            }
+        }), 201
+        
+    except Exception as e:
+        print(f"🔴 Profile photo upload error: {e}")
+        db.session.rollback()
+        return jsonify({
+            "message": "Error uploading profile photo",
+            "error": str(e)
+        }), 500
 
 @profile_bp.route('/api/profile/photo', methods=['DELETE'])
 @jwt_required()
 def remove_profile_photo():
     """Remove profile photo"""
-    user_id = int(get_jwt_identity())
-    
-    profile = Profile.query.filter_by(user_id=user_id).first()
-    if not profile:
-        return jsonify({"message": "Profile not found"}), 404
-    
-    # Remove all photos for this profile
-    photos = ProfilePhoto.query.filter_by(profile_id=profile.id).all()
-    for photo in photos:
-        db.session.delete(photo)
-    
-    db.session.commit()
-    
-    return jsonify({"message": "Profile photo removed successfully"}), 200
+    try:
+        user_id = int(get_jwt_identity())
+        
+        profile = Profile.query.filter_by(user_id=user_id).first()
+        if not profile:
+            return jsonify({"message": "Profile not found"}), 404
+        
+        # Remove all photos for this profile
+        try:
+            photos = ProfilePhoto.query.filter_by(profile_id=profile.id).all()
+            for photo in photos:
+                db.session.delete(photo)
+            db.session.commit()
+        except Exception as e:
+            print(f"⚠️  Error removing photos: {e}")
+            # Continue anyway
+        
+        return jsonify({"message": "Profile photo removed successfully"}), 200
+        
+    except Exception as e:
+        print(f"🔴 Profile photo removal error: {e}")
+        db.session.rollback()
+        return jsonify({
+            "message": "Error removing profile photo",
+            "error": str(e)
+        }), 500

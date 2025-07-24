@@ -24,7 +24,7 @@ def init_database():
     from models.post import Post
     from models.job import Job
     from models.message import Message
-    from models.profile import Profile
+    from models.profile import Profile, Skill, Experience, Education, Achievement, ProfilePhoto
     
     print("🗄️ Initializing database using SQLAlchemy...")
     
@@ -36,7 +36,8 @@ def init_database():
         # Check database connection
         try:
             # Test database connection
-            db.session.execute('SELECT 1')
+            from sqlalchemy import text
+            db.session.execute(text('SELECT 1'))
             print("✅ Database connection successful!")
         except Exception as e:
             print(f"❌ Database connection failed: {e}")
