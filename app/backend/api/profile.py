@@ -214,20 +214,27 @@ def remove_achievement(achievement_id):
     
     return jsonify({"message": "Achievement removed successfully"}), 200
 
-@profile_bp.route('/api/profile/photo', methods=['POST', 'OPTIONS'])
+@profile_bp.route('/api/profile/photo', methods=['OPTIONS'])
+def profile_photo_options():
+    """Handle CORS preflight for profile photo upload"""
+    response = jsonify({'status': 'ok'})
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+    return response
+
+@profile_bp.route('/api/profile/photo', methods=['POST'])
 @jwt_required()
 def upload_profile_photo():
     """Upload profile photo - supports both base64 data URLs and file uploads"""
-    # Handle CORS preflight
-    if request.method == 'OPTIONS':
-        response = jsonify({'status': 'ok'})
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept'
-        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-        return response
-    
     try:
+        print(f"🔍 Profile photo upload request - Method: {request.method}")
+        print(f"🔍 Request headers: {dict(request.headers)}")
+        print(f"🔍 Request files: {list(request.files.keys()) if request.files else 'No files'}")
+        print(f"🔍 Request JSON: {request.is_json}")
+        
         user_id = int(get_jwt_identity())
+        print(f"🔍 User ID: {user_id}")
         
         # Check if it's a file upload or base64 data URL
         if 'photo' in request.files:
@@ -306,7 +313,9 @@ def upload_profile_photo():
         }), 201
         
     except Exception as e:
+        import traceback
         print(f"🔴 Profile photo upload error: {e}")
+        print(f"🔴 Full traceback: {traceback.format_exc()}")
         db.session.rollback()
         return jsonify({
             "message": "Error uploading profile photo",

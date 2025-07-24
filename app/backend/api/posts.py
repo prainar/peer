@@ -166,20 +166,26 @@ def delete_post(post_id):
     
     return jsonify({"message": "Post deleted successfully"}), 200
 
-@posts_bp.route('/api/posts/photo', methods=['POST', 'OPTIONS'])
+@posts_bp.route('/api/posts/photo', methods=['OPTIONS'])
+def post_photo_options():
+    """Handle CORS preflight for post photo upload"""
+    response = jsonify({'status': 'ok'})
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+    return response
+
+@posts_bp.route('/api/posts/photo', methods=['POST'])
 @jwt_required()
 def upload_post_photo():
     """Upload photo for a post"""
-    # Handle CORS preflight
-    if request.method == 'OPTIONS':
-        response = jsonify({'status': 'ok'})
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept'
-        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-        return response
-    
     try:
+        print(f"🔍 Post photo upload request - Method: {request.method}")
+        print(f"🔍 Request headers: {dict(request.headers)}")
+        print(f"🔍 Request files: {list(request.files.keys()) if request.files else 'No files'}")
+        
         user_id = int(get_jwt_identity())
+        print(f"🔍 User ID: {user_id}")
         
         if 'photo' not in request.files:
             return jsonify({"message": "No photo provided"}), 400
@@ -213,7 +219,9 @@ def upload_post_photo():
             return jsonify({"message": "Invalid file type. Allowed: png, jpg, jpeg, gif"}), 400
             
     except Exception as e:
+        import traceback
         print(f"🔴 Post photo upload error: {e}")
+        print(f"🔴 Full traceback: {traceback.format_exc()}")
         return jsonify({
             "message": "Error uploading photo",
             "error": str(e)

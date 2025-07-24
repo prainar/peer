@@ -25,10 +25,14 @@ export const profileApi = {
   },
 
   uploadProfilePhoto: async (photoData: string | FormData) => {
+    console.log('🔍 Uploading profile photo:', photoData instanceof FormData ? 'FormData' : 'Base64');
+    console.log('🔍 Token:', localStorage.getItem('token') ? 'Present' : 'Missing');
+    
     let response: Response;
     
     if (photoData instanceof FormData) {
       // Handle file upload
+      console.log('🔍 Sending FormData upload');
       response = await fetch(`${API_URL}/api/profile/photo`, {
         method: 'POST',
         headers: {
@@ -40,6 +44,7 @@ export const profileApi = {
       });
     } else {
       // Handle base64 data URL
+      console.log('🔍 Sending base64 upload');
       response = await fetch(`${API_URL}/api/profile/photo`, {
         method: 'POST',
         headers: {
