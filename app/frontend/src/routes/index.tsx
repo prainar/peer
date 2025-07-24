@@ -10,7 +10,7 @@ import JobList from '../components/job-board/JobList';
 import MessageList from '../components/messaging/MessageList';
 import Dashboard from '../components/dashboard/Dashboard';
 import ThreeDemo from '../components/ThreeDemo';
-import TestRoute from '../components/TestRoute';
+import RouteTest from '../components/RouteTest';
 
 // Debug function to log route changes
 const debugRoute = (path: string) => {
@@ -68,7 +68,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/test-route',
-    element: <TestRoute />,
+    element: <RouteTest />,
     loader: () => debugRoute('/test-route'),
   },
 ]); 
