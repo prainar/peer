@@ -217,17 +217,57 @@ def remove_achievement(achievement_id):
 @profile_bp.route('/api/profile/photo', methods=['POST'])
 @jwt_required()
 def upload_profile_photo():
-    """Upload profile photo"""
+    """Upload profile photo - supports both base64 data URLs and file uploads"""
     try:
         user_id = int(get_jwt_identity())
-        data = request.get_json()
         
-        if not data or 'photo_url' not in data:
-            return jsonify({"message": "photo_url is required"}), 400
+        # Check if it's a file upload or base64 data URL
+        if 'photo' in request.files:
+            # Handle file upload
+            file = request.files['photo']
+            if file.filename == '':
+                return jsonify({"message": "No file selected"}), 400
+            
+            # Validate file type
+            allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
+            if not ('.' in file.filename and 
+                   file.filename.rsplit('.', 1)[1].lower() in allowed_extensions):
+                return jsonify({"message": "Invalid file type. Allowed: png, jpg, jpeg, gif"}), 400
+            
+            # Generate unique filename and save
+            import uuid
+            from werkzeug.utils import secure_filename
+            import os
+            
+            filename = secure_filename(file.filename)
+            unique_filename = f"{user_id}_{uuid.uuid4().hex}_{filename}"
+            upload_folder = 'uploads/profile_photos'
+            os.makedirs(upload_folder, exist_ok=True)
+            file_path = os.path.join(upload_folder, unique_filename)
+            
+            file.save(file_path)
+            photo_url = f"/uploads/profile_photos/{unique_filename}"
+            
+        elif request.is_json:
+            # Handle base64 data URL
+            data = request.get_json()
+            if not data or 'photo_url' not in data:
+                return jsonify({"message": "photo_url is required"}), 400
+            
+            photo_url = data['photo_url']
+            
+            # Validate base64 data URL format
+            if not photo_url.startswith('data:image/'):
+                return jsonify({"message": "Invalid photo format. Expected base64 data URL"}), 400
+        else:
+            return jsonify({"message": "No photo provided. Send either a file or photo_url in JSON"}), 400
         
+        # Get or create profile
         profile = Profile.query.filter_by(user_id=user_id).first()
         if not profile:
             user = User.query.get(user_id)
+            if not user:
+                return jsonify({"message": "User not found"}), 404
             profile = Profile(user_id=user_id, full_name=user.username)
             db.session.add(profile)
             db.session.commit()
@@ -244,7 +284,7 @@ def upload_profile_photo():
         # Add new photo
         photo = ProfilePhoto(
             profile_id=profile.id,
-            url=data['photo_url']
+            url=photo_url
         )
         db.session.add(photo)
         db.session.commit()

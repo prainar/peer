@@ -24,15 +24,35 @@ export const profileApi = {
     return response.json();
   },
 
-  uploadProfilePhoto: async (photoUrl: string) => {
-    const response = await fetch(`${API_URL}/api/profile/photo`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify({ photo_url: photoUrl }),
-    });
+  uploadProfilePhoto: async (photoData: string | FormData) => {
+    let response: Response;
+    
+    if (photoData instanceof FormData) {
+      // Handle file upload
+      response = await fetch(`${API_URL}/api/profile/photo`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: photoData,
+      });
+    } else {
+      // Handle base64 data URL
+      response = await fetch(`${API_URL}/api/profile/photo`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ photo_url: photoData }),
+      });
+    }
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to upload photo');
+    }
+    
     return response.json();
   },
 

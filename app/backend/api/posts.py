@@ -170,30 +170,43 @@ def delete_post(post_id):
 @jwt_required()
 def upload_post_photo():
     """Upload photo for a post"""
-    user_id = int(get_jwt_identity())
-    
-    if 'photo' not in request.files:
-        return jsonify({"message": "No photo provided"}), 400
-    
-    file = request.files['photo']
-    if file.filename == '':
-        return jsonify({"message": "No file selected"}), 400
-    
-    if file and allowed_file(file.filename):
-        # Generate unique filename
-        filename = secure_filename(file.filename)
-        unique_filename = f"{user_id}_{uuid.uuid4().hex}_{filename}"
-        file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
+    try:
+        user_id = int(get_jwt_identity())
         
-        # Save the file
-        file.save(file_path)
+        if 'photo' not in request.files:
+            return jsonify({"message": "No photo provided"}), 400
         
-        # Return the URL that can be accessed
-        photo_url = f"/uploads/post_photos/{unique_filename}"
+        file = request.files['photo']
+        if file.filename == '':
+            return jsonify({"message": "No file selected"}), 400
         
+        # Validate file size (5MB limit)
+        max_size = 5 * 1024 * 1024  # 5MB
+        if file.content_length and file.content_length > max_size:
+            return jsonify({"message": "File too large. Maximum size is 5MB"}), 400
+        
+        if file and allowed_file(file.filename):
+            # Generate unique filename
+            filename = secure_filename(file.filename)
+            unique_filename = f"{user_id}_{uuid.uuid4().hex}_{filename}"
+            file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
+            
+            # Save the file
+            file.save(file_path)
+            
+            # Return the URL that can be accessed
+            photo_url = f"/uploads/post_photos/{unique_filename}"
+            
+            return jsonify({
+                "message": "Photo uploaded successfully",
+                "photo_url": photo_url
+            }), 201
+        else:
+            return jsonify({"message": "Invalid file type. Allowed: png, jpg, jpeg, gif"}), 400
+            
+    except Exception as e:
+        print(f"🔴 Post photo upload error: {e}")
         return jsonify({
-            "message": "Photo uploaded successfully",
-            "photo_url": photo_url
-        }), 201
-    else:
-        return jsonify({"message": "Invalid file type. Allowed: png, jpg, jpeg, gif"}), 400 
+            "message": "Error uploading photo",
+            "error": str(e)
+        }), 500 

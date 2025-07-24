@@ -48,6 +48,20 @@ const PostCreate: React.FC<PostCreateProps> = ({ onPostCreated }) => {
   const handlePhotoUpload = async (file: File) => {
     // setPhotoFile(file); // Commented out - variable not available
     
+    // Validate file size (5MB limit)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      alert('File size too large. Please select a file smaller than 5MB.');
+      return;
+    }
+    
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Invalid file type. Please select a JPG, PNG, or GIF file.');
+      return;
+    }
+    
     // Create preview
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -65,6 +79,8 @@ const PostCreate: React.FC<PostCreateProps> = ({ onPostCreated }) => {
     } catch (error) {
       console.error('Error uploading photo:', error);
       alert('Failed to upload photo. Please try again.');
+      // Clear preview on error
+      setPhotoPreview(null);
     }
   };
 

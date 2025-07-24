@@ -285,6 +285,20 @@ const Dashboard: React.FC = () => {
   };
 
   const handlePhotoUpload = (file: File) => {
+    // Validate file size (5MB limit)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      alert('File size too large. Please select a file smaller than 5MB.');
+      return;
+    }
+    
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Invalid file type. Please select a JPG, PNG, or GIF file.');
+      return;
+    }
+    
     const reader = new FileReader();
     reader.onload = (e) => {
       setPhotoPreview(e.target?.result as string);
@@ -325,10 +339,18 @@ const Dashboard: React.FC = () => {
     try {
       setIsUploadingPhoto(true);
       
-      // Upload photo to backend
-      const response = await profileApi.uploadProfilePhoto(photoPreview);
+      // Convert base64 to file for upload
+      const response = await fetch(photoPreview);
+      const blob = await response.blob();
+      const file = new File([blob], 'profile-photo.jpg', { type: 'image/jpeg' });
       
-      if (response.photo) {
+      // Create FormData and upload
+      const formData = new FormData();
+      formData.append('photo', file);
+      
+      const uploadResponse = await profileApi.uploadProfilePhoto(formData);
+      
+      if (uploadResponse.photo) {
         setPhoto(photoPreview);
         setShowPhotoModal(false);
         setPhotoPreview(null);

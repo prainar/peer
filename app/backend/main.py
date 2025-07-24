@@ -83,6 +83,18 @@ def uploaded_file(filename):
     """Serve uploaded files"""
     return send_from_directory('uploads', filename)
 
+# Route to serve profile photos
+@app.route('/uploads/profile_photos/<path:filename>')
+def profile_photo(filename):
+    """Serve profile photos"""
+    return send_from_directory('uploads/profile_photos', filename)
+
+# Route to serve post photos
+@app.route('/uploads/post_photos/<path:filename>')
+def post_photo(filename):
+    """Serve post photos"""
+    return send_from_directory('uploads/post_photos', filename)
+
 # Ensure CORS headers are properly set for production
 @app.after_request
 def after_request(response):

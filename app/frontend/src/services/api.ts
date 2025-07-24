@@ -8,6 +8,12 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
     });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Login failed');
+    }
+    
     return response.json();
   },
 
@@ -17,6 +23,12 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),
     });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Signup failed');
+    }
+    
     return response.json();
   },
 
@@ -27,6 +39,12 @@ export const api = {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
     });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to get profile');
+    }
+    
     return response.json();
   },
 
@@ -39,6 +57,12 @@ export const api = {
       },
       body: JSON.stringify(profileData),
     });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to update profile');
+    }
+    
     return response.json();
   },
 }; 
