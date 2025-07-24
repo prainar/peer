@@ -7,6 +7,11 @@ echo "🚀 Starting Flask application with Gunicorn..."
 export FLASK_APP=main.py
 export FLASK_ENV=production
 
+# Create instance directory with proper permissions
+echo "📁 Creating instance directory..."
+mkdir -p instance
+chmod 755 instance
+
 # Initialize database and create test user (with timeout)
 echo "🗄️ Initializing database..."
 timeout 30s python3 init_db.py || echo "⚠️ Database initialization failed or timed out, continuing..."

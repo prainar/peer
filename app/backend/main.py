@@ -105,10 +105,17 @@ def setup_database():
     """Setup database tables"""
     try:
         print("🔧 Setting up database...")
+        
+        # Ensure instance directory exists
+        instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
+        if not os.path.exists(instance_path):
+            os.makedirs(instance_path, exist_ok=True)
+            print(f"✅ Created instance directory: {instance_path}")
+        
+        # Try to initialize database using init_db.py
         import subprocess
         import sys
         
-        # Try to initialize database using init_db.py
         result = subprocess.run([sys.executable, 'init_db.py'], 
                               capture_output=True, text=True, cwd=os.path.dirname(__file__))
         if result.returncode == 0:

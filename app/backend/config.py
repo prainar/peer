@@ -14,6 +14,13 @@ class Config:
         print("⚠️ PostgreSQL detected, but using SQLite for compatibility")
         database_url = 'sqlite:///instance/app.db'
     
+    # Ensure instance directory exists
+    import os
+    instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
+    if not os.path.exists(instance_path):
+        os.makedirs(instance_path, exist_ok=True)
+        print(f"✅ Created instance directory: {instance_path}")
+    
     SQLALCHEMY_DATABASE_URI = database_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
