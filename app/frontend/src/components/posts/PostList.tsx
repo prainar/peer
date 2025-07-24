@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { postsApi } from './api';
 import { useAuth } from '../../context/AuthContext';
+import { getImageUrl } from '../../utils/imageUrl';
 
 interface Post {
   id: number;
@@ -194,7 +195,7 @@ const PostList: React.FC<PostListProps> = ({ userId, refreshTrigger }) => {
           {post.image_url && (
             <div className="mb-4">
               <img 
-                src={`http://localhost:5000${post.image_url}`} 
+                src={getImageUrl(post.image_url)} 
                 alt="Post" 
                 className="w-full max-h-96 object-cover rounded-lg"
                 onError={(e) => {

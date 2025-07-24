@@ -6,6 +6,7 @@ import PostCreate from '../posts/PostCreate';
 import PostList from '../posts/PostList';
 // import DashboardEffects from './DashboardEffects'; // Unused import
 import TestEffects from './TestEffects';
+import { getImageUrl } from '../../utils/imageUrl';
 
 // interface User { // Unused interface
 //   id: number;
@@ -274,7 +275,7 @@ const Dashboard: React.FC = () => {
 
         // Load profile photo from backend
         if (response.profile.photos && response.profile.photos.length > 0) {
-          setPhoto(response.profile.photos[0].url);
+          setPhoto(getImageUrl(response.profile.photos[0].url));
         }
       }
     } catch (error) {
