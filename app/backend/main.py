@@ -104,18 +104,22 @@ def after_request(response):
 def setup_database():
     """Setup database tables"""
     try:
-        # First try to use our working init_db script
-        import subprocess
-        import sys
-        result = subprocess.run([sys.executable, 'init_db.py'], 
-                              capture_output=True, text=True, cwd=os.path.dirname(__file__))
-        if result.returncode == 0:
-            print("✅ Database initialized using init_db.py")
+        # Only setup database if not in production (Render)
+        if not os.environ.get('RENDER'):
+            print("🔧 Development mode - setting up database...")
+            import subprocess
+            import sys
+            result = subprocess.run([sys.executable, 'init_db.py'], 
+                                  capture_output=True, text=True, cwd=os.path.dirname(__file__))
+            if result.returncode == 0:
+                print("✅ Database initialized using init_db.py")
+            else:
+                print("⚠️  init_db.py failed, trying SQLAlchemy fallback...")
+                with app.app_context():
+                    db.create_all()
+                    print("✅ Database tables created successfully using SQLAlchemy!")
         else:
-            print("⚠️  init_db.py failed, trying SQLAlchemy fallback...")
-            with app.app_context():
-                db.create_all()
-                print("✅ Database tables created successfully using SQLAlchemy!")
+            print("🚀 Production mode - database should be initialized during build")
     except Exception as e:
         print(f"⚠️  Database setup error: {e}")
         print("✅ Continuing anyway - database might already exist")
