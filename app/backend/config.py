@@ -13,5 +13,18 @@ class Config:
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'jwt-secret-key')
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
     
-    # CORS
-    CORS_HEADERS = 'Content-Type' 
+    # CORS Configuration
+    CORS_HEADERS = 'Content-Type'
+    CORS_ORIGINS = [
+        "https://peer-frontend.onrender.com",
+        "https://peer-frontend-yfr4.onrender.com",
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5176",
+        "http://localhost:5177",
+        "http://localhost:5178",
+        "http://localhost:5179",
+        "http://localhost:5180",
+    ] 

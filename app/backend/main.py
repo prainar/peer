@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_limiter import Limiter
@@ -23,11 +23,12 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Initialize extensions
+# Initialize CORS with configuration from config
 CORS(app, 
-     origins=["*"], 
+     origins=app.config.get('CORS_ORIGINS', ["*"]), 
      supports_credentials=False, 
-     allow_headers=["*"], 
-     methods=["*"], 
+     allow_headers=["Content-Type", "Authorization"], 
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      expose_headers=["*"],
      max_age=3600)
 db.init_app(app)
@@ -61,9 +62,20 @@ def uploaded_file(filename):
 # Add CORS headers to all responses
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    # Get the origin from the request
+    origin = request.headers.get('Origin')
+    allowed_origins = app.config.get('CORS_ORIGINS', ["*"])
+    
+    # Check if the origin is in our allowed list
+    if origin in allowed_origins:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+    elif origin and 'localhost' in origin:
+        # For development, allow localhost origins
+        response.headers.add('Access-Control-Allow-Origin', origin)
+    
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'false')
     return response
 
 
