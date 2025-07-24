@@ -60,11 +60,19 @@ export const postsApi = {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
       body: formData,
+      mode: 'cors',
+      credentials: 'omit',
     });
     
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to upload photo');
+      let errorMessage = 'Failed to upload photo';
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch (e) {
+        console.error('Error parsing error response:', e);
+      }
+      throw new Error(errorMessage);
     }
     
     return response.json();

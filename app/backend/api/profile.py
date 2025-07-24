@@ -214,10 +214,18 @@ def remove_achievement(achievement_id):
     
     return jsonify({"message": "Achievement removed successfully"}), 200
 
-@profile_bp.route('/api/profile/photo', methods=['POST'])
+@profile_bp.route('/api/profile/photo', methods=['POST', 'OPTIONS'])
 @jwt_required()
 def upload_profile_photo():
     """Upload profile photo - supports both base64 data URLs and file uploads"""
+    # Handle CORS preflight
+    if request.method == 'OPTIONS':
+        response = jsonify({'status': 'ok'})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        return response
+    
     try:
         user_id = int(get_jwt_identity())
         

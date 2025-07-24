@@ -29,7 +29,7 @@ cors_headers = app.config.get('CORS_ALLOW_HEADERS', ["Content-Type", "Authorizat
 cors_methods = app.config.get('CORS_METHODS', ["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 cors_supports_credentials = app.config.get('CORS_SUPPORTS_CREDENTIALS', False)
 
-# Initialize CORS for production
+# Initialize CORS for production with file upload support
 CORS(app, 
      origins=cors_origins, 
      supports_credentials=cors_supports_credentials, 
@@ -71,7 +71,7 @@ def handle_options(path):
     if origin and origin in allowed_origins:
         response.headers['Access-Control-Allow-Origin'] = origin
     
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
     response.headers['Access-Control-Allow-Credentials'] = 'false'
     
@@ -105,10 +105,14 @@ def after_request(response):
     if origin and origin in allowed_origins:
         response.headers['Access-Control-Allow-Origin'] = origin
     
-    # Ensure other CORS headers are set
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
+    # Ensure other CORS headers are set (including file upload support)
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
     response.headers['Access-Control-Allow-Credentials'] = 'false'
+    
+    # Add additional headers for file uploads
+    if request.method == 'POST' and 'photo' in request.files:
+        response.headers['Access-Control-Expose-Headers'] = 'Content-Length, Content-Range'
     
     return response
 

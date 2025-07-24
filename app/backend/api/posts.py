@@ -166,10 +166,18 @@ def delete_post(post_id):
     
     return jsonify({"message": "Post deleted successfully"}), 200
 
-@posts_bp.route('/api/posts/photo', methods=['POST'])
+@posts_bp.route('/api/posts/photo', methods=['POST', 'OPTIONS'])
 @jwt_required()
 def upload_post_photo():
     """Upload photo for a post"""
+    # Handle CORS preflight
+    if request.method == 'OPTIONS':
+        response = jsonify({'status': 'ok'})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        return response
+    
     try:
         user_id = int(get_jwt_identity())
         

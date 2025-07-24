@@ -8,7 +8,15 @@ export const feedApi = {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
+      mode: 'cors',
+      credentials: 'omit',
     });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to get feed');
+    }
+    
     return response.json();
   },
 
@@ -17,7 +25,15 @@ export const feedApi = {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
+      mode: 'cors',
+      credentials: 'omit',
     });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to get user feed');
+    }
+    
     return response.json();
   },
 }; 

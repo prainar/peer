@@ -7,6 +7,8 @@ export const api = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
+      mode: 'cors',
+      credentials: 'omit',
     });
     
     if (!response.ok) {
@@ -22,6 +24,8 @@ export const api = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),
+      mode: 'cors',
+      credentials: 'omit',
     });
     
     if (!response.ok) {
@@ -38,6 +42,8 @@ export const api = {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
+      mode: 'cors',
+      credentials: 'omit',
     });
     
     if (!response.ok) {
@@ -56,6 +62,8 @@ export const api = {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify(profileData),
+      mode: 'cors',
+      credentials: 'omit',
     });
     
     if (!response.ok) {

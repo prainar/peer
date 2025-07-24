@@ -43,5 +43,5 @@ class Config:
     
     # Additional CORS settings
     CORS_SUPPORTS_CREDENTIALS = False
-    CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "X-Requested-With"]
+    CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
     CORS_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"] 
