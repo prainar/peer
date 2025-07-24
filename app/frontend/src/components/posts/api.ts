@@ -54,6 +54,9 @@ export const postsApi = {
   },
 
   uploadPhoto: async (formData: FormData) => {
+    console.log('🔍 Uploading post photo: FormData');
+    console.log('🔍 Token:', localStorage.getItem('token') ? 'Present' : 'Missing');
+    
     const response = await fetch(`${API_URL}/api/posts/photo`, {
       method: 'POST',
       headers: {
@@ -64,17 +67,22 @@ export const postsApi = {
       credentials: 'omit',
     });
     
+    console.log('🔍 Post photo upload response status:', response.status);
+    
     if (!response.ok) {
       let errorMessage = 'Failed to upload photo';
       try {
         const errorData = await response.json();
         errorMessage = errorData.message || errorMessage;
+        console.log('🔍 Post photo upload error data:', errorData);
       } catch (e) {
         console.error('Error parsing error response:', e);
       }
       throw new Error(errorMessage);
     }
     
-    return response.json();
+    const result = await response.json();
+    console.log('🔍 Post photo upload success:', result);
+    return result;
   },
 }; 

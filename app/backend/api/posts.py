@@ -23,39 +23,64 @@ def allowed_file(filename):
 @jwt_required()
 def create_post():
     """Create a new post"""
-    user_id = int(get_jwt_identity())
-    data = request.get_json()
-    
-    if not data or 'content' not in data:
-        return jsonify({"message": "Content is required"}), 400
-    
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({"message": "User not found"}), 404
-    
-    post = Post(
-        user_id=user_id,
-        content=data['content'],
-        image_url=data.get('image_url')
-    )
-    db.session.add(post)
-    db.session.commit()
-    
-    return jsonify({
-        "message": "Post created successfully",
-        "post": {
-            "id": post.id,
-            "content": post.content,
-            "image_url": post.image_url,
-            "created_at": post.created_at.isoformat(),
-            "user": {
-                "id": user.id,
-                "username": user.username
-            },
-            "likes_count": 0,
-            "liked_by_user": False
-        }
-    }), 201
+    try:
+        user_id = int(get_jwt_identity())
+        data = request.get_json()
+        
+        if not data or 'content' not in data:
+            return jsonify({"message": "Content is required"}), 400
+        
+        # Ensure Post and PostLike tables exist
+        try:
+            inspector = db.inspect(db.engine)
+            if 'post' not in inspector.get_table_names():
+                print("🔧 Post table missing, creating it...")
+                Post.__table__.create(db.engine, checkfirst=True)
+                print("✅ Post table created!")
+            if 'post_like' not in inspector.get_table_names():
+                print("🔧 PostLike table missing, creating it...")
+                PostLike.__table__.create(db.engine, checkfirst=True)
+                print("✅ PostLike table created!")
+        except Exception as e:
+            print(f"⚠️  Error checking/creating Post tables: {e}")
+        
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"message": "User not found"}), 404
+        
+        post = Post(
+            user_id=user_id,
+            content=data['content'],
+            image_url=data.get('image_url')
+        )
+        db.session.add(post)
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Post created successfully",
+            "post": {
+                "id": post.id,
+                "content": post.content,
+                "image_url": post.image_url,
+                "created_at": post.created_at.isoformat(),
+                "user": {
+                    "id": user.id,
+                    "username": user.username
+                },
+                "likes_count": 0,
+                "liked_by_user": False
+            }
+        }), 201
+        
+    except Exception as e:
+        import traceback
+        print(f"🔴 Post creation error: {e}")
+        print(f"🔴 Full traceback: {traceback.format_exc()}")
+        db.session.rollback()
+        return jsonify({
+            "message": "Error creating post",
+            "error": str(e)
+        }), 500
 
 @posts_bp.route('/api/posts', methods=['GET'])
 @jwt_required()
