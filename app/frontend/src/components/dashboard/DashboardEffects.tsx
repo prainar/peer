@@ -169,7 +169,7 @@ const DashboardEffects: React.FC = () => {
       animationId = requestAnimationFrame(animate);
       
       const elapsedTime = clock.getElapsedTime();
-      const deltaTime = clock.getDelta();
+      // const deltaTime = clock.getDelta(); // Unused variable
 
       // Animate shapes
       shapes.forEach((shape, index) => {

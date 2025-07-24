@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { authApi } from './api';
 
 const Signup: React.FC = () => {
@@ -19,6 +19,7 @@ const Signup: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('🔵 Signup form submitted');
     setError('');
     setIsLoading(true);
     
@@ -34,20 +35,24 @@ const Signup: React.FC = () => {
     }
 
     try {
+      console.log('🔵 Attempting signup with:', { username: form.username, email: form.email });
       const response = await authApi.signup({
         username: form.username,
         email: form.email,
         password: form.password
       });
 
+      console.log('🔵 Signup response:', response);
+
       if (response.message === 'User created') {
         // Registration successful, redirect to login
+        console.log('🔵 Signup successful, redirecting to login');
         navigate('/login');
       } else {
         setError(response.message || 'Registration failed. Please try again.');
       }
     } catch (error) {
-      console.error('Signup error:', error);
+      console.error('🔴 Signup error:', error);
       setError('Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
@@ -128,13 +133,14 @@ const Signup: React.FC = () => {
             disabled={isLoading}
             style={{ backgroundColor: '#8B4513', color: 'white' }}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-semibold text-lg hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => console.log('🔵 Signup button clicked')}
           >
             {isLoading ? 'Creating account...' : 'Sign up'}
           </button>
         </form>
         <div className="text-center mt-4">
           <span className="text-sm text-gray-600">Already have an account? </span>
-          <a href="/login" className="font-medium text-brown-700 hover:text-brown-800">Sign in</a>
+          <Link to="/login" className="font-medium text-brown-700 hover:text-brown-800">Sign in</Link>
         </div>
       </div>
     </div>

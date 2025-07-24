@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: peer-backend
+    env: python
+    plan: free
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: cd app/backend && chmod +x simple_start.sh && ./simple_start.sh
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: RENDER
+        value: "true"
+      - key: FLASK_ENV
+        value: "production"
+      - key: DATABASE_URL
+        value: "sqlite:///instance/app.db" 

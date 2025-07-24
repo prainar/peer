@@ -1,9 +1,9 @@
-const API_URL = 'http://localhost:5000/api';
+import { API_URL } from '../config/api';
 
 export const api = {
   // Auth endpoints
   login: async (credentials: { email: string; password: string }) => {
-    const response = await fetch(`${API_URL}/login`, {
+    const response = await fetch(`${API_URL}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
@@ -12,7 +12,7 @@ export const api = {
   },
 
   signup: async (userData: { email: string; password: string; name: string }) => {
-    const response = await fetch(`${API_URL}/signup`, {
+    const response = await fetch(`${API_URL}/api/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),
@@ -22,7 +22,7 @@ export const api = {
 
   // Profile endpoints
   getProfile: async () => {
-    const response = await fetch(`${API_URL}/profile`, {
+    const response = await fetch(`${API_URL}/api/profile`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
@@ -31,7 +31,7 @@ export const api = {
   },
 
   updateProfile: async (profileData: any) => {
-    const response = await fetch(`${API_URL}/profile`, {
+    const response = await fetch(`${API_URL}/api/profile`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

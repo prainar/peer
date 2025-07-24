@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -232,7 +232,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     const animate = () => {
       animationId = requestAnimationFrame(animate);
       
-      const deltaTime = clock.getDelta();
+      // const deltaTime = clock.getDelta(); // Unused variable
       const elapsedTime = clock.getElapsedTime();
 
       // Update controls

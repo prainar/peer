@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_limiter import Limiter
@@ -16,22 +16,28 @@ from models.profile import Profile, Skill, Experience, Education, Achievement, P
 from models.post import Post, PostLike
 
 # Import blueprints
-from api.auth import auth_bp
-from api.profile import profile_bp
-from api.posts import posts_bp
+from api import auth_bp, profile_bp, posts_bp, feed_bp, jobs_bp, messaging_bp
 
 # Create Flask app
 app = Flask(__name__)
 app.config.from_object(Config)
 
 # Initialize extensions
+# Initialize CORS with configuration from config
+cors_origins = app.config.get('CORS_ORIGINS', ["*"])
+cors_headers = app.config.get('CORS_ALLOW_HEADERS', ["Content-Type", "Authorization"])
+cors_methods = app.config.get('CORS_METHODS', ["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+cors_supports_credentials = app.config.get('CORS_SUPPORTS_CREDENTIALS', False)
+
+# Initialize CORS for production
 CORS(app, 
-     origins=["*"], 
-     supports_credentials=False, 
-     allow_headers=["*"], 
-     methods=["*"], 
+     origins=cors_origins, 
+     supports_credentials=cors_supports_credentials, 
+     allow_headers=cors_headers, 
+     methods=cors_methods,
      expose_headers=["*"],
-     max_age=3600)
+     max_age=3600,
+     automatic_options=True)
 db.init_app(app)
 jwt = JWTManager(app)
 limiter = Limiter(
@@ -44,6 +50,32 @@ limiter = Limiter(
 app.register_blueprint(auth_bp)
 app.register_blueprint(profile_bp)
 app.register_blueprint(posts_bp)
+app.register_blueprint(feed_bp)
+app.register_blueprint(jobs_bp)
+app.register_blueprint(messaging_bp)
+
+# Health check endpoint
+@app.route('/')
+def health_check():
+    """Health check endpoint"""
+    return {'status': 'healthy', 'message': 'Peer backend is running!'}
+
+# CORS preflight handler for all routes
+@app.route('/api/<path:path>', methods=['OPTIONS'])
+def handle_options(path):
+    """Handle CORS preflight requests"""
+    response = app.make_default_options_response()
+    origin = request.headers.get('Origin')
+    allowed_origins = app.config.get('CORS_ORIGINS', ["*"])
+    
+    if origin and origin in allowed_origins:
+        response.headers['Access-Control-Allow-Origin'] = origin
+    
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Credentials'] = 'false'
+    
+    return response
 
 # Route to serve uploaded images
 @app.route('/uploads/<path:filename>')
@@ -51,20 +83,73 @@ def uploaded_file(filename):
     """Serve uploaded files"""
     return send_from_directory('uploads', filename)
 
-# Add CORS headers to all responses
+# Ensure CORS headers are properly set for production
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    # Get the origin from the request
+    origin = request.headers.get('Origin')
+    allowed_origins = app.config.get('CORS_ORIGINS', ["*"])
+    
+    if origin and origin in allowed_origins:
+        response.headers['Access-Control-Allow-Origin'] = origin
+    
+    # Ensure other CORS headers are set
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Credentials'] = 'false'
+    
     return response
 
 
 def setup_database():
     """Setup database tables"""
-    with app.app_context():
-        db.create_all()
-        print("✅ Database tables created successfully!")
+    try:
+        print("🔧 Setting up database...")
+        
+        # Ensure instance directory exists
+        instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
+        if not os.path.exists(instance_path):
+            os.makedirs(instance_path, exist_ok=True)
+            print(f"✅ Created instance directory: {instance_path}")
+        
+        # Try to initialize database using init_db.py
+        import subprocess
+        import sys
+        
+        print("🔧 Running init_db.py...")
+        result = subprocess.run([sys.executable, 'init_db.py'], 
+                              capture_output=True, text=True, cwd=os.path.dirname(__file__))
+        print(f"🔧 init_db.py stdout: {result.stdout}")
+        print(f"🔧 init_db.py stderr: {result.stderr}")
+        
+        if result.returncode == 0:
+            print("✅ Database initialized using init_db.py")
+        else:
+            print("⚠️  init_db.py failed, trying SQLAlchemy fallback...")
+            with app.app_context():
+                db.create_all()
+                print("✅ Database tables created successfully using SQLAlchemy!")
+                
+        # Create test user if in production
+        if os.environ.get('RENDER'):
+            print("🚀 Production mode - creating test user...")
+            try:
+                print("🔧 Running create_test_user.py...")
+                result = subprocess.run([sys.executable, 'create_test_user.py'], 
+                                      capture_output=True, text=True, cwd=os.path.dirname(__file__))
+                print(f"🔧 create_test_user.py stdout: {result.stdout}")
+                print(f"🔧 create_test_user.py stderr: {result.stderr}")
+                
+                if result.returncode == 0:
+                    print("✅ Test user created successfully")
+                else:
+                    print("⚠️  Test user creation failed, but continuing...")
+            except Exception as e:
+                print(f"⚠️  Test user creation error: {e}")
+                
+    except Exception as e:
+        print(f"⚠️  Database setup error: {e}")
+        print("✅ Continuing anyway - database might already exist")
 
 # Create a function to initialize the app
 def create_app():
@@ -76,4 +161,5 @@ if __name__ == '__main__':
     setup_database()
     
     # Run the app
-    app.run(debug=True) 
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False) 
