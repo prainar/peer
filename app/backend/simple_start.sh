@@ -7,6 +7,10 @@ echo "🚀 Starting Flask application with Gunicorn..."
 export FLASK_APP=main.py
 export FLASK_ENV=production
 
+# Initialize database if needed
+echo "🗄️ Initializing database..."
+python3 init_db.py
+
 # Get port from environment variable (Render sets this)
 PORT=${PORT:-10000}
 

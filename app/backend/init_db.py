@@ -4,103 +4,50 @@ Database initialization script for Peer backend
 """
 
 import os
-import sqlite3
 from pathlib import Path
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from config import Config
 
 def init_database():
-    """Initialize the database and create tables"""
+    """Initialize the database and create tables using SQLAlchemy"""
     
-    # Ensure instance directory exists
-    instance_dir = Path("instance")
-    instance_dir.mkdir(exist_ok=True)
+    # Create Flask app for database initialization
+    app = Flask(__name__)
+    app.config.from_object(Config)
     
-    db_path = instance_dir / "app.db"
+    # Initialize SQLAlchemy
+    db = SQLAlchemy(app)
     
-    print(f"🔧 Initializing database at: {db_path}")
+    # Import models to register them
+    from models.user import User
+    from models.post import Post
+    from models.job import Job
+    from models.message import Message
+    from models.profile import Profile
     
-    # Create database connection
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
+    print("🗄️ Initializing database using SQLAlchemy...")
     
-    # Create users table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
+    with app.app_context():
+        # Create all tables
+        db.create_all()
+        print("✅ Database tables created successfully!")
     
-    # Create posts table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS posts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            content TEXT NOT NULL,
-            image_path TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users (id)
-        )
-    ''')
-    
-    # Create jobs table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS jobs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            title TEXT NOT NULL,
-            description TEXT NOT NULL,
-            company TEXT NOT NULL,
-            location TEXT NOT NULL,
-            salary TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users (id)
-        )
-    ''')
-    
-    # Create messages table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS messages (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            sender_id INTEGER NOT NULL,
-            receiver_id INTEGER NOT NULL,
-            content TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (sender_id) REFERENCES users (id),
-            FOREIGN KEY (receiver_id) REFERENCES users (id)
-        )
-    ''')
-    
-    # Create profiles table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS profiles (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER UNIQUE NOT NULL,
-            bio TEXT,
-            location TEXT,
-            website TEXT,
-            photo_path TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users (id)
-        )
-    ''')
-    
-    # Commit changes
-    conn.commit()
-    conn.close()
-    
-    print("✅ Database initialized successfully!")
-    print(f"📁 Database file: {db_path}")
-    
-    # Check if database file exists and has content
-    if db_path.exists():
-        file_size = db_path.stat().st_size
-        print(f"📊 Database file size: {file_size} bytes")
-    else:
-        print("❌ Database file was not created!")
+        # Check database connection
+        try:
+            # Test database connection
+            db.session.execute('SELECT 1')
+            print("✅ Database connection successful!")
+        except Exception as e:
+            print(f"❌ Database connection failed: {e}")
+            return False
+        
+        return True
 
 if __name__ == "__main__":
-    init_database() 
+    success = init_database()
+    if success:
+        print("✅ Database initialization completed successfully!")
+    else:
+        print("❌ Database initialization failed!")
+        exit(1) 

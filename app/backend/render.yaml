@@ -12,9 +12,9 @@ services:
         generateValue: true
       - key: JWT_SECRET_KEY
         generateValue: true
-      - key: DATABASE_URL
-        value: sqlite:///instance/app.db
       - key: RENDER
         value: "true"
       - key: FLASK_ENV
-        value: "production" 
+        value: "production"
+    envVarGroups:
+      - group: postgresql 
