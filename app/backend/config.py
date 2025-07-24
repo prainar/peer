@@ -6,7 +6,14 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     
     # Database - Use environment variable or fallback to local path
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///instance/app.db')
+    # For production (Render), use the environment variable
+    # For local development, use the local path
+    if os.environ.get('RENDER'):
+        # Production environment
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///instance/app.db')
+    else:
+        # Local development
+        SQLALCHEMY_DATABASE_URI = 'sqlite:////home/prainart/per/app/backend/instance/app.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # JWT
