@@ -116,8 +116,12 @@ def setup_database():
         import subprocess
         import sys
         
+        print("🔧 Running init_db.py...")
         result = subprocess.run([sys.executable, 'init_db.py'], 
                               capture_output=True, text=True, cwd=os.path.dirname(__file__))
+        print(f"🔧 init_db.py stdout: {result.stdout}")
+        print(f"🔧 init_db.py stderr: {result.stderr}")
+        
         if result.returncode == 0:
             print("✅ Database initialized using init_db.py")
         else:
@@ -130,8 +134,12 @@ def setup_database():
         if os.environ.get('RENDER'):
             print("🚀 Production mode - creating test user...")
             try:
+                print("🔧 Running create_test_user.py...")
                 result = subprocess.run([sys.executable, 'create_test_user.py'], 
                                       capture_output=True, text=True, cwd=os.path.dirname(__file__))
+                print(f"🔧 create_test_user.py stdout: {result.stdout}")
+                print(f"🔧 create_test_user.py stderr: {result.stderr}")
+                
                 if result.returncode == 0:
                     print("✅ Test user created successfully")
                 else:

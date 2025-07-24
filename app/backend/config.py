@@ -21,6 +21,12 @@ class Config:
         os.makedirs(instance_path, exist_ok=True)
         print(f"✅ Created instance directory: {instance_path}")
     
+    # Use absolute path for SQLite database
+    if database_url.startswith('sqlite:///'):
+        db_path = os.path.join(instance_path, 'app.db')
+        database_url = f'sqlite:///{db_path}'
+        print(f"🔧 Using absolute database path: {db_path}")
+    
     SQLALCHEMY_DATABASE_URI = database_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     

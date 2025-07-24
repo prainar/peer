@@ -39,7 +39,12 @@ def signup():
     except Exception as e:
         print(f"🔴 Signup error: {e}")
         print(f"🔴 Traceback: {traceback.format_exc()}")
-        return jsonify({"message": "Internal server error during signup"}), 500
+        # Return more detailed error for debugging
+        return jsonify({
+            "message": "Internal server error during signup",
+            "error": str(e),
+            "type": type(e).__name__
+        }), 500
 
 @auth_bp.route('/api/login', methods=['POST'])
 def login():
@@ -60,4 +65,10 @@ def login():
             return jsonify({"token": token, "user": {"id": user.id, "username": user.username, "email": user.email}}), 200
         return jsonify({"message": "Invalid credentials"}), 401
     except Exception as e:
-        return jsonify({"message": "Internal server error during login"}), 500 
+        print(f"🔴 Login error: {e}")
+        print(f"🔴 Traceback: {traceback.format_exc()}")
+        return jsonify({
+            "message": "Internal server error during login",
+            "error": str(e),
+            "type": type(e).__name__
+        }), 500 

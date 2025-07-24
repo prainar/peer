@@ -33,9 +33,9 @@ def create_test_user():
         # Create test user
         test_user = User(
             username='testuser',
-            email='test@example.com',
-            password='testpassword123'
+            email='test@example.com'
         )
+        test_user.set_password('testpassword123')
         
         # Add to database
         db.session.add(test_user)
