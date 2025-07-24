@@ -24,8 +24,11 @@ app.config.from_object(Config)
 
 # Initialize extensions
 # Initialize CORS with configuration from config
+cors_origins = app.config.get('CORS_ORIGINS', ["*"])
+print(f"🔧 CORS Origins configured: {cors_origins}")
+
 CORS(app, 
-     origins=app.config.get('CORS_ORIGINS', ["*"]), 
+     origins=cors_origins, 
      supports_credentials=False, 
      allow_headers=["Content-Type", "Authorization"], 
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -66,12 +69,21 @@ def after_request(response):
     origin = request.headers.get('Origin')
     allowed_origins = app.config.get('CORS_ORIGINS', ["*"])
     
+    # Debug logging
+    if origin:
+        print(f"🌐 Request from origin: {origin}")
+        print(f"🔧 Allowed origins: {allowed_origins}")
+    
     # Check if the origin is in our allowed list
     if origin in allowed_origins:
         response.headers.add('Access-Control-Allow-Origin', origin)
+        print(f"✅ CORS allowed for origin: {origin}")
     elif origin and 'localhost' in origin:
         # For development, allow localhost origins
         response.headers.add('Access-Control-Allow-Origin', origin)
+        print(f"✅ CORS allowed for localhost origin: {origin}")
+    else:
+        print(f"❌ CORS denied for origin: {origin}")
     
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')

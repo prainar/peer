@@ -5,8 +5,8 @@ class Config:
     # Flask
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     
-    # Database - Force SQLite for this deployment
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////home/prainart/per/app/backend/instance/app.db'
+    # Database - Use environment variable or fallback to local path
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///instance/app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # JWT
