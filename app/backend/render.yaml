@@ -3,11 +3,11 @@ services:
     name: peer-backend
     env: python
     plan: free
-    buildCommand: pip install -r requirements-render.txt
+    buildCommand: chmod +x build.sh && ./build.sh
     startCommand: gunicorn main:app --bind 0.0.0.0:$PORT --config gunicorn_config.py
     envVars:
       - key: PYTHON_VERSION
-        value: 3.10.0
+        value: 3.11.0
       - key: SECRET_KEY
         generateValue: true
       - key: JWT_SECRET_KEY
@@ -16,5 +16,5 @@ services:
         value: "true"
       - key: FLASK_ENV
         value: "production"
-    envVarGroups:
-      - group: postgresql 
+      - key: DATABASE_URL
+        value: "sqlite:///instance/app.db" 

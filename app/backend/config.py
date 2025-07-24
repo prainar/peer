@@ -6,12 +6,13 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     
     # Database - Production configuration for Render
-    # Handle both SQLite and PostgreSQL
+    # Use SQLite for now to avoid PostgreSQL compatibility issues
     database_url = os.environ.get('DATABASE_URL', 'sqlite:///instance/app.db')
     
-    # If using PostgreSQL on Render, convert the URL format
-    if database_url.startswith('postgres://'):
-        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    # Force SQLite for now to avoid psycopg compatibility issues
+    if database_url.startswith('postgres://') or database_url.startswith('postgresql://'):
+        print("⚠️ PostgreSQL detected, but using SQLite for compatibility")
+        database_url = 'sqlite:///instance/app.db'
     
     SQLALCHEMY_DATABASE_URI = database_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
