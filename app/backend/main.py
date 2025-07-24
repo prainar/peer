@@ -71,7 +71,7 @@ def handle_options(path):
     if origin and origin in allowed_origins:
         response.headers['Access-Control-Allow-Origin'] = origin
     
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
     response.headers['Access-Control-Allow-Credentials'] = 'false'
     
@@ -94,7 +94,7 @@ def after_request(response):
         response.headers['Access-Control-Allow-Origin'] = origin
     
     # Ensure other CORS headers are set
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
     response.headers['Access-Control-Allow-Credentials'] = 'false'
     

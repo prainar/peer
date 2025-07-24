@@ -12,6 +12,12 @@ echo "📁 Creating instance directory..."
 mkdir -p instance
 chmod 755 instance
 
+# Create upload directories with proper permissions
+echo "📁 Creating upload directories..."
+mkdir -p uploads/post_photos
+chmod 755 uploads
+chmod 755 uploads/post_photos
+
 # Initialize database and create test user (with timeout)
 echo "🗄️ Initializing database..."
 timeout 30s python3 init_db.py || echo "⚠️ Database initialization failed or timed out, continuing..."

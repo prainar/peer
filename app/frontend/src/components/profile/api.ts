@@ -4,7 +4,7 @@ const API_URL = import.meta.env.PROD
 
 export const profileApi = {
   getProfile: async () => {
-    const response = await fetch(`${API_URL}/profile`, {
+    const response = await fetch(`${API_URL}/api/profile`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
@@ -13,7 +13,7 @@ export const profileApi = {
   },
 
   updateProfile: async (profileData: { bio?: string; location?: string; full_name?: string }) => {
-    const response = await fetch(`${API_URL}/profile`, {
+    const response = await fetch(`${API_URL}/api/profile`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const profileApi = {
   },
 
   uploadProfilePhoto: async (photoUrl: string) => {
-    const response = await fetch(`${API_URL}/profile/photo`, {
+    const response = await fetch(`${API_URL}/api/profile/photo`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export const profileApi = {
   },
 
   removeProfilePhoto: async () => {
-    const response = await fetch(`${API_URL}/profile/photo`, {
+    const response = await fetch(`${API_URL}/api/profile/photo`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -49,7 +49,7 @@ export const profileApi = {
 
 
   addExperience: async (experienceData: { title: string; company: string; start_date: string; end_date?: string; description: string }) => {
-    const response = await fetch(`${API_URL}/profile/experience`, {
+    const response = await fetch(`${API_URL}/api/profile/experience`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export const profileApi = {
   },
 
   removeExperience: async (experienceId: number) => {
-    const response = await fetch(`${API_URL}/profile/experience/${experienceId}`, {
+    const response = await fetch(`${API_URL}/api/profile/experience/${experienceId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -71,7 +71,7 @@ export const profileApi = {
   },
 
   addAchievement: async (achievementData: { title: string; description: string; date: string }) => {
-    const response = await fetch(`${API_URL}/profile/achievements`, {
+    const response = await fetch(`${API_URL}/api/profile/achievements`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export const profileApi = {
   },
 
   removeAchievement: async (achievementId: number) => {
-    const response = await fetch(`${API_URL}/profile/achievements/${achievementId}`, {
+    const response = await fetch(`${API_URL}/api/profile/achievements/${achievementId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,

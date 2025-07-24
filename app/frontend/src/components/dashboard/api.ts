@@ -13,7 +13,7 @@ const getAuthHeaders = () => {
 export const dashboardApi = {
   // Get user profile
   getProfile: async () => {
-    const response = await fetch(`${API_URL}/profile`, {
+    const response = await fetch(`${API_URL}/api/profile`, {
       method: 'GET',
       headers: getAuthHeaders(),
     });
@@ -22,7 +22,7 @@ export const dashboardApi = {
 
   // Update profile basic info
   updateProfile: async (data: { bio?: string; location?: string }) => {
-    const response = await fetch(`${API_URL}/profile`, {
+    const response = await fetch(`${API_URL}/api/profile`, {
       method: 'PUT',
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
@@ -32,7 +32,7 @@ export const dashboardApi = {
 
   // Add skill
   addSkill: async (name: string) => {
-    const response = await fetch(`${API_URL}/profile/skills`, {
+    const response = await fetch(`${API_URL}/api/profile/skills`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify({ name }),
@@ -42,7 +42,7 @@ export const dashboardApi = {
 
   // Remove skill
   removeSkill: async (skillId: number) => {
-    const response = await fetch(`${API_URL}/profile/skills/${skillId}`, {
+    const response = await fetch(`${API_URL}/api/profile/skills/${skillId}`, {
       method: 'DELETE',
       headers: getAuthHeaders(),
     });
@@ -57,7 +57,7 @@ export const dashboardApi = {
     end_date?: string;
     description?: string;
   }) => {
-    const response = await fetch(`${API_URL}/profile/experience`, {
+    const response = await fetch(`${API_URL}/api/profile/experience`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
@@ -67,7 +67,7 @@ export const dashboardApi = {
 
   // Remove experience
   removeExperience: async (expId: number) => {
-    const response = await fetch(`${API_URL}/profile/experience/${expId}`, {
+    const response = await fetch(`${API_URL}/api/profile/experience/${expId}`, {
       method: 'DELETE',
       headers: getAuthHeaders(),
     });
@@ -81,7 +81,7 @@ export const dashboardApi = {
     date?: string;
     image_url?: string;
   }) => {
-    const response = await fetch(`${API_URL}/profile/achievements`, {
+    const response = await fetch(`${API_URL}/api/profile/achievements`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
@@ -91,7 +91,7 @@ export const dashboardApi = {
 
   // Remove achievement
   removeAchievement: async (achievementId: number) => {
-    const response = await fetch(`${API_URL}/profile/achievements/${achievementId}`, {
+    const response = await fetch(`${API_URL}/api/profile/achievements/${achievementId}`, {
       method: 'DELETE',
       headers: getAuthHeaders(),
     });
