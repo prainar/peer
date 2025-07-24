@@ -27,4 +27,9 @@ class Config:
         "http://localhost:5178",
         "http://localhost:5179",
         "http://localhost:5180",
-    ] 
+    ]
+    
+    # Additional CORS settings
+    CORS_SUPPORTS_CREDENTIALS = False
+    CORS_ALLOW_HEADERS = ["Content-Type", "Authorization"]
+    CORS_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"] 
