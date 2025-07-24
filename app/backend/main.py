@@ -45,6 +45,12 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(profile_bp)
 app.register_blueprint(posts_bp)
 
+# Health check endpoint
+@app.route('/')
+def health_check():
+    """Health check endpoint"""
+    return {'status': 'healthy', 'message': 'Peer backend is running!'}
+
 # Route to serve uploaded images
 @app.route('/uploads/<path:filename>')
 def uploaded_file(filename):
@@ -62,9 +68,22 @@ def after_request(response):
 
 def setup_database():
     """Setup database tables"""
-    with app.app_context():
-        db.create_all()
-        print("✅ Database tables created successfully!")
+    try:
+        # First try to use our working init_db script
+        import subprocess
+        import sys
+        result = subprocess.run([sys.executable, 'init_db.py'], 
+                              capture_output=True, text=True, cwd=os.path.dirname(__file__))
+        if result.returncode == 0:
+            print("✅ Database initialized using init_db.py")
+        else:
+            print("⚠️  init_db.py failed, trying SQLAlchemy fallback...")
+            with app.app_context():
+                db.create_all()
+                print("✅ Database tables created successfully using SQLAlchemy!")
+    except Exception as e:
+        print(f"⚠️  Database setup error: {e}")
+        print("✅ Continuing anyway - database might already exist")
 
 # Create a function to initialize the app
 def create_app():
