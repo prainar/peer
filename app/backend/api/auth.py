@@ -28,8 +28,6 @@ def signup():
         db.session.commit()
         return jsonify({"message": "User created"}), 201
     except Exception as e:
-        print(f"🔴 Signup error: {str(e)}")
-        print(f"🔴 Traceback: {traceback.format_exc()}")
         return jsonify({"message": "Internal server error during signup"}), 500
 
 @auth_bp.route('/api/login', methods=['POST'])
@@ -51,6 +49,4 @@ def login():
             return jsonify({"token": token, "user": {"id": user.id, "username": user.username, "email": user.email}}), 200
         return jsonify({"message": "Invalid credentials"}), 401
     except Exception as e:
-        print(f"🔴 Login error: {str(e)}")
-        print(f"🔴 Traceback: {traceback.format_exc()}")
         return jsonify({"message": "Internal server error during login"}), 500 
