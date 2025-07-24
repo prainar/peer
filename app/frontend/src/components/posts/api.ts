@@ -1,5 +1,5 @@
 const API_URL = import.meta.env.PROD 
-  ? 'https://peer-backend.onrender.com'
+  ? 'https://peer-backend-yfr4.onrender.com'
   : 'http://localhost:5000';
 
 export const postsApi = {

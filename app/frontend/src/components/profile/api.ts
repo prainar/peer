@@ -1,5 +1,5 @@
 const API_URL = import.meta.env.PROD 
-  ? 'https://peer-backend.onrender.com/api'
+  ? 'https://peer-backend-yfr4.onrender.com/api'
   : 'http://localhost:5000/api';
 
 export const profileApi = {
