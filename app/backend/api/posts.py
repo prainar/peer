@@ -5,6 +5,7 @@ from models.post import Post, PostLike
 import os
 import uuid
 from werkzeug.utils import secure_filename
+import traceback
 
 posts_bp = Blueprint('posts', __name__)
 
@@ -212,6 +213,10 @@ def upload_post_photo():
         user_id = int(get_jwt_identity())
         print(f"🔍 User ID: {user_id}")
         
+        # Ensure upload directory exists
+        upload_folder = 'uploads/post_photos'
+        os.makedirs(upload_folder, exist_ok=True)
+
         if 'photo' not in request.files:
             return jsonify({"message": "No photo provided"}), 400
         
@@ -228,7 +233,7 @@ def upload_post_photo():
             # Generate unique filename
             filename = secure_filename(file.filename)
             unique_filename = f"{user_id}_{uuid.uuid4().hex}_{filename}"
-            file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
+            file_path = os.path.join(upload_folder, unique_filename)
             
             # Save the file
             file.save(file_path)
@@ -247,6 +252,7 @@ def upload_post_photo():
         import traceback
         print(f"🔴 Post photo upload error: {e}")
         print(f"🔴 Full traceback: {traceback.format_exc()}")
+        print(f"🔴 Request context: method={request.method}, headers={dict(request.headers)}, files={list(request.files.keys()) if request.files else 'No files'}")
         return jsonify({
             "message": "Error uploading photo",
             "error": str(e)

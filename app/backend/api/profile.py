@@ -236,6 +236,11 @@ def upload_profile_photo():
         user_id = int(get_jwt_identity())
         print(f"🔍 User ID: {user_id}")
         
+        # Ensure upload directory exists
+        upload_folder = 'uploads/profile_photos'
+        import os
+        os.makedirs(upload_folder, exist_ok=True)
+        
         # Check if it's a file upload or base64 data URL
         if 'photo' in request.files:
             # Handle file upload
@@ -252,12 +257,9 @@ def upload_profile_photo():
             # Generate unique filename and save
             import uuid
             from werkzeug.utils import secure_filename
-            import os
             
             filename = secure_filename(file.filename)
             unique_filename = f"{user_id}_{uuid.uuid4().hex}_{filename}"
-            upload_folder = 'uploads/profile_photos'
-            os.makedirs(upload_folder, exist_ok=True)
             file_path = os.path.join(upload_folder, unique_filename)
             
             file.save(file_path)
@@ -327,6 +329,7 @@ def upload_profile_photo():
         import traceback
         print(f"🔴 Profile photo upload error: {e}")
         print(f"🔴 Full traceback: {traceback.format_exc()}")
+        print(f"🔴 Request context: method={request.method}, headers={dict(request.headers)}, files={list(request.files.keys()) if request.files else 'No files'}, is_json={request.is_json}")
         db.session.rollback()
         return jsonify({
             "message": "Error uploading profile photo",
